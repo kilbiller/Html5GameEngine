@@ -1,82 +1,70 @@
-define(['lib/class'],function (Class) {
+define(['timer','entity','player'],function (Timer,Entity,Player) {
 
-    var Game = Class.extend({
+    var Game = function() {
+        this.isStopped = false;
+        this.ctx;
+        this.timer;
+        this.keysDown = {};
+        //this.entities = [];
+        this.player;
+    }
 
-        init: function() {
-            this.isStopped = false;
-            this.canvas;
-            this.ctx;
+    // Allows the game to perform any initialization it needs to before starting to run.
+    // This is where it can query for any required services and load any non-graphic related content.
+    Game.prototype.initialize = function() {
+        // Create the canvas.
+        var canvas = document.createElement("canvas");
+        canvas.width = 800;
+        canvas.height = 400;
+        this.ctx = canvas.getContext("2d");
+        document.body.appendChild(canvas);
 
-            this.Player = {x:50,y:50,width:20,height:50,speed:150};
+        // Create the timer.
+        this.timer = new Timer();
 
-            this.gameTime = {};
-            this.keysDown = {};
-        },
+        // Handle keyboard controls
+        addEventListener("keydown", function (e) {this.keysDown[e.keyCode] = true;}.bind(this), false);
+        addEventListener("keyup", function (e) {delete this.keysDown[e.keyCode];}.bind(this), false);
 
-        // Allows the game to perform any initialization it needs to before starting to run.
-        // This is where it can query for any required services and load any non-graphic related content.
-        initialize: function() {
-            // Create the canvas
-            this.canvas = document.createElement("canvas");
-            this.ctx = this.canvas.getContext("2d");
-            this.canvas.width = 800;
-            this.canvas.height = 400;
-            document.body.appendChild(this.canvas);
-        },
+        // Create the player.
+        this.player = new Player(this,50,50,20,50);
+    }
 
-        // LoadContent will be called once per game and is the place to load all of your content.
-        loadContent: function() {},
+    // LoadContent will be called once per game and is the place to load all of your content.
+    Game.prototype.loadContent = function() {
+        //TODO : should preload all textures related to the level before starting a level
+        this.player.loadContent("img/hero.png");
+    }
 
-        // Allows the game to run logic such as updating the world, checking for collisions, gathering input, and playing audio.
-        update: function(delta) {
-            if (90 in this.keysDown) { // Player holding z
-                this.Player.y -= this.Player.speed * delta;
-            }
-            if (83 in this.keysDown) { // Player holding s
-                this.Player.y += this.Player.speed * delta;
-            }
-            if (81 in this.keysDown) { // Player holding q
-                this.Player.x -= this.Player.speed * delta;
-            }
-            if (68 in this.keysDown) { // Player holding d
-                this.Player.x += this.Player.speed * delta;
-            }
-        },
+    // Run logic such as updating the world, checking for collisions, gathering input, and playing audio.
+    Game.prototype.update = function(dt) {
+        this.player.update(dt);
+    }
 
-        // This is called when the game should draw itself.
-        draw: function() {
-            this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
-            this.ctx.fillRect(this.Player.x,this.Player.y,this.Player.width,this.Player.height);
-        },
+    // This is called when the game should draw itself.
+    Game.prototype.draw = function() {
+        // Clear the canvas.
+        this.ctx.clearRect(0,0,this.ctx.canvas.width,this.ctx.canvas.height);
+        // Draw the player.
+        this.player.draw(this.ctx);
+    }
 
-        tick: function() {
-            this.gameTime.now = Date.now();
-            var delta = this.gameTime.now - this.gameTime.then;
+    // Actual gameloop.
+    Game.prototype.gameloop = function() {
+        var delta = this.timer.tick();
+        this.update(delta);
+        this.draw();
 
-            this.update(delta/1000);
-            this.draw();
+        if(!this.isStopped)
+            requestAnimationFrame(this.gameloop.bind(this));
+    }
 
-            //console.log("then :" + this.gameTime.then + ", now :" + this.gameTime.now);
-
-            this.gameTime.then = this.gameTime.now;
-
-            if(!this.isStopped)
-                requestAnimationFrame(this.tick.bind(this));
-        },
-
-        // Call this method to start the game.
-        run: function() {
-            this.initialize();
-            this.loadContent();
-
-            // Handle keyboard controls
-            addEventListener("keydown", function (e) {this.keysDown[e.keyCode] = true;}.bind(this), false);
-            addEventListener("keyup", function (e) {delete this.keysDown[e.keyCode];}.bind(this), false);
-
-            this.gameTime.then = Date.now();
-            this.tick();
-        }
-    });
+    // Call this method to start the game.
+    Game.prototype.run = function() {
+        this.initialize();
+        this.loadContent();
+        this.gameloop();
+    }
 
     return Game;
 });
