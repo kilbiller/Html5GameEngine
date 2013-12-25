@@ -1,15 +1,27 @@
 define(function () {
 
+    /**
+    Entity class
+    @class Entity
+    **/
     var Entity = function(game,x,y) {
         this.game = game;
         this.x = x;
         this.y = y;
     }
 
-    Entity.prototype.update = function() {
+    /**
+    Update entity's data.
+    @method update
+    **/
+    Entity.prototype.update = function(dt) {
     }
 
-    Entity.prototype.draw = function(ctx) {
+    /**
+    Draw the entity on screen.
+    @method draw
+    **/
+    Entity.prototype.draw = function(dt, ctx) {
         /*if (this.game.showOutlines && this.radius) {
             ctx.beginPath();
             ctx.strokeStyle = "green";

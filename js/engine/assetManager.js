@@ -1,6 +1,9 @@
-// Unused for now.
 define(function () {
 
+    /**
+    AssetManager class
+    @class AssetManager
+    **/
     var AssetManager = function() {
         this.successCount = 0;
         this.errorCount = 0;
@@ -8,30 +11,52 @@ define(function () {
         this.downloadQueue = [];
     }
 
-    AssetManager.prototype.queueDownload = function(path) {
+    /**
+    Add asset to the queue.
+    @method addQueue
+    **/
+    AssetManager.prototype.addQueue = function(path) {
         this.downloadQueue.push(path);
     }
 
+    /**
+    Check if all assets in the queue are loaded.
+    @method isDone
+    **/
     AssetManager.prototype.isDone = function() {
         return (this.downloadQueue.length == this.successCount + this.errorCount);
     }
 
+    /**
+    Load all of the assets.
+    @method downloadAll
+    **/
     AssetManager.prototype.downloadAll = function(callback) {
         for (var i = 0; i < this.downloadQueue.length; i++) {
             var path = this.downloadQueue[i];
             var img = new Image();
-            var that = this;
+
             img.addEventListener("load", function() {
-                that.successCount += 1;
-                if (that.isDone()) { callback(); }
-            });
+                this.successCount += 1;
+                if (this.isDone()) { callback(); }
+            }.bind(this));
+
             img.addEventListener("error", function() {
-                that.errorCount += 1;
-                if (that.isDone()) { callback(); }
-            });
+                this.errorCount += 1;
+                if (this.isDone()) { callback(); }
+            }.bind(this));
+
             img.src = path;
             this.cache[path] = img;
         }
+    }
+
+    /**
+    Return the specified asset.
+    @method getAsset
+    **/
+    AssetManager.prototype.getAsset = function(path) {
+        return this.cache[path];
     }
 
     return AssetManager;
