@@ -4,7 +4,7 @@ define(function () {
     AssetManager class
     @class AssetManager
     **/
-    var AssetManager = function() {
+    function AssetManager() {
         this.successCount = 0;
         this.errorCount = 0;
         this.cache = {};

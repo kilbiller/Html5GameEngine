@@ -4,8 +4,7 @@ define(function () {
     Animation class
     @class Animation
     **/
-    var Animation = function (spriteSheet, frameWidth, frameHeight, frameList, frameDuration, loop) {
-
+    function Animation(spriteSheet, frameWidth, frameHeight, frameList, frameDuration, loop) {
         this.spriteSheet = spriteSheet;
         this.frameWidth = frameWidth;
         this.frameHeight= frameHeight;
@@ -26,13 +25,15 @@ define(function () {
     Animation.prototype.drawFrame = function(tick, ctx, x, y, scaleBy) {
         var scaleBy = scaleBy || 1;
         this.elapsedTime += tick;
-        if (this.loop) {
-            if (this.isDone()) {
+
+        if (this.isDone())
+        {
+            if (this.loop)
                 this.elapsedTime = 0;
-            }
-        } else if (this.isDone()) {
-            return;
+            else
+                return;
         }
+
         var index = this.currentFrame();
         var source = this.getSourcePos(index);
 

@@ -4,7 +4,7 @@ define(['engine/gameEngine','player'],function (GameEngine,Player) {
      Game class
      @class Game
      **/
-    var Game = function() {
+    function Game() {
         GameEngine.call(this);
         this.player = null;
     }
@@ -25,7 +25,7 @@ define(['engine/gameEngine','player'],function (GameEngine,Player) {
         addEventListener("keyup", function (e) {delete this.keysDown[e.keyCode];}.bind(this), false);
 
         // Create the player.
-        this.player = new Player(this,50,50,20,50);
+        this.addEntity(new Player(this,50,50,20,50,"img/player.png"));
     }
 
     /**
@@ -35,11 +35,13 @@ define(['engine/gameEngine','player'],function (GameEngine,Player) {
     Game.prototype.loadContent = function(callback) {
         //GameEngine.prototype.loadContent.call(this,callback);
         // Add assets to the queue
-        this.assetManager.addQueue("img/test.png");
+        this.assetManager.addQueue("img/player.png");
 
         // Assign assets once they are loaded.
         this.assetManager.downloadAll(function(){
-            this.player.loadContent(this.assetManager.getAsset("img/test.png"));
+            for (var i = 0; i < this.entities.length; i++) {
+                this.entities[i].loadContent();
+            }
             callback();
         }.bind(this));
     }
@@ -50,7 +52,19 @@ define(['engine/gameEngine','player'],function (GameEngine,Player) {
     **/
     Game.prototype.update = function(dt) {
         GameEngine.prototype.update.call(this,dt);
-        this.player.update(dt);
+
+        for (var i = 0; i < this.entities.length; i++) {
+            if (!this.entities[i].removeFromWorld) {
+                this.entities[i].update(dt);
+            }
+        }
+
+        for (var i = this.entities.length-1; i >= 0; --i) {
+            if (this.entities[i].removeFromWorld) {
+                this.entities.splice(i, 1);
+                console.log("Entity removed.");
+            }
+        }
     }
 
     /**
@@ -59,10 +73,14 @@ define(['engine/gameEngine','player'],function (GameEngine,Player) {
     **/
     Game.prototype.draw = function(dt,ctx) {
         GameEngine.prototype.draw.call(this,dt,ctx);
+
         // Clear the canvas.
         this.ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
-        // Draw the player.
-        this.player.draw(dt,ctx);
+
+        //Draw entities
+        for (var i = 0; i < this.entities.length; i++) {
+            this.entities[i].draw(dt,ctx);
+        }
     }
 
     return Game;

@@ -4,10 +4,11 @@ define(function () {
     Entity class
     @class Entity
     **/
-    var Entity = function(game,x,y) {
+    function Entity(game,x,y) {
         this.game = game;
         this.x = x;
         this.y = y;
+        this.removeFromWorld = false;
     }
 
     /**
@@ -30,6 +31,11 @@ define(function () {
             ctx.closePath();
         }*/
     }
+
+    /*Entity.prototype.outsideScreen = function() {
+        return (this.x > this.game.halfSurfaceWidth || this.x < -(this.game.halfSurfaceWidth) ||
+        this.y > this.game.halfSurfaceHeight || this.y < -(this.game.halfSurfaceHeight));
+    }*/
 
     return Entity;
 });

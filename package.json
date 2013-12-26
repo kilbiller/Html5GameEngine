@@ -1,0 +1,23 @@
+{
+  "main": "index.html",
+  "name": "Html5Game",
+  "description": "Html5Game - lol",
+  "version": "0.1.0",
+  "keywords": [ "demo", "node-webkit" ],
+  "window": {
+    "title": "Html5Game",
+    //"icon": "link.png",
+    "toolbar": false,
+    "frame": false,
+    "width": 850,
+    "height": 500,
+    "position": "mouse",
+    "min_width": 400,
+    "min_height": 200,
+    "max_width": 800,
+    "max_height": 600
+  },
+  "webkit": {
+    "plugin": true
+  }
+}

@@ -4,11 +4,12 @@ define(['engine/timer','engine/assetManager','engine/entity'],function (Timer,As
     GameEngine class
     @class GameEngine
     **/
-    var GameEngine = function() {
+    function GameEngine() {
         this.ctx = null;
         this.timer = null;
         this.assetManager = null;
         this.keysDown = {};
+        this.entities = [];
     }
 
 
@@ -73,6 +74,14 @@ define(['engine/timer','engine/assetManager','engine/entity'],function (Timer,As
             this.gameloop();
         }.bind(this));
 
+    }
+
+    /**
+    Add entity to the entities list.
+    @method addEntity
+    **/
+    GameEngine.prototype.addEntity = function(entity) {
+        this.entities.push(entity);
     }
 
     return GameEngine;

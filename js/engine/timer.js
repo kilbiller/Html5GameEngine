@@ -4,7 +4,7 @@ define(function () {
     Timer class
     @class Timer
     **/
-    var Timer = function () {
+    function Timer() {
       this.gameTime = 0;
       this.maxStep = 0.05;
       this.previousTime = 0;
