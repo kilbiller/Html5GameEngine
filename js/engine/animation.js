@@ -4,7 +4,7 @@ define(function () {
     Animation class
     @class Animation
     **/
-    function Animation(spriteSheet, frameWidth, frameHeight, frameList, frameDuration, loop) {
+    function Animation(spriteSheet, frameWidth, frameHeight, frameList, frameDuration, loop, freeze) {
         this.spriteSheet = spriteSheet;
         this.frameWidth = frameWidth;
         this.frameHeight= frameHeight;
@@ -12,7 +12,8 @@ define(function () {
         this.frameDuration = frameDuration;
         this.totalTime = this.frameList.length * this.frameDuration;
         this.elapsedTime = 0;
-        this.loop = loop;
+        this.loop = loop || false;
+        this.freeze = freeze || false;
 
         this.maxColumn = this.spriteSheet.width / this.frameWidth;
         this.maxRow = this.spriteSheet.height / this.frameHeight;
@@ -31,11 +32,17 @@ define(function () {
             if (this.loop)
                 this.elapsedTime = 0;
             else
-                return;
+                if(!this.freeze)
+                    return;
         }
 
         var index = this.currentFrame();
         var source = this.getSourcePos(index);
+
+        //Round the number to prevent sub-pixel drawing on canvas
+        //(prevent blurring and supposedly improve performance)
+        x = (x + .5) | 0;
+        y = (y + .5) | 0;
 
         ctx.drawImage(this.spriteSheet,
                      source.x,source.y,
@@ -49,7 +56,10 @@ define(function () {
     @method currentFrame
     **/
     Animation.prototype.currentFrame = function() {
-        return Math.floor(this.elapsedTime / this.frameDuration);
+        if(this.elapsedTime <= this.totalTime)
+            return Math.floor(this.elapsedTime / this.frameDuration);
+        else
+            return this.frameList.length - 1;
     }
 
     /**
@@ -72,9 +82,9 @@ define(function () {
 
     /**
     Reset the animation loop.
-    @method resetAnim
+    @method reset
     **/
-    Animation.prototype.resetAnim = function() {
+    Animation.prototype.reset = function() {
         this.elapsedTime = 0;
     }
 

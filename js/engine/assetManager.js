@@ -9,14 +9,23 @@ define(function () {
         this.errorCount = 0;
         this.cache = {};
         this.downloadQueue = [];
+        this.soundsQueue = [];
     }
 
     /**
-    Add asset to the queue.
-    @method addQueue
+    Add images to the queue.
+    @method queueDownload
     **/
-    AssetManager.prototype.addQueue = function(path) {
+    AssetManager.prototype.queueDownload  = function(path) {
         this.downloadQueue.push(path);
+    }
+
+    /**
+    Add sounds to the queue.
+    @method queueSound
+    **/
+    AssetManager.prototype.queueSound = function(path) {
+        this.soundsQueue.push(path);
     }
 
     /**
@@ -24,7 +33,7 @@ define(function () {
     @method isDone
     **/
     AssetManager.prototype.isDone = function() {
-        return (this.downloadQueue.length == this.successCount + this.errorCount);
+        return ((this.downloadQueue.length + this.soundsQueue.length) == this.successCount + this.errorCount);
     }
 
     /**
@@ -32,6 +41,10 @@ define(function () {
     @method downloadAll
     **/
     AssetManager.prototype.downloadAll = function(callback) {
+        if (this.downloadQueue.length === 0 && this.soundsQueue.length === 0) {
+            callback();
+        }
+
         for (var i = 0; i < this.downloadQueue.length; i++) {
             var path = this.downloadQueue[i];
             var img = new Image();
@@ -49,6 +62,23 @@ define(function () {
             img.src = path;
             this.cache[path] = img;
         }
+
+        for (var i = 0; i < this.soundsQueue.length; i++) {
+            var path = this.soundsQueue[i];
+            var audio = new Audio(path);
+            this.successCount += 1;
+
+            audio.src = path;
+            this.cache[path] = audio;
+        }
+    }
+
+    /**
+    Return the specified audio.
+    @method getSound
+    **/
+    AssetManager.prototype.getSound = function(path) {
+        return this.cache[path];
     }
 
     /**

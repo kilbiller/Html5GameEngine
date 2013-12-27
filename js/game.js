@@ -1,4 +1,4 @@
-define(['engine/gameEngine','player'],function (GameEngine,Player) {
+define(['engine/gameEngine','player','staticObject','ennemy'],function (GameEngine, Player, StaticObject, Ennemy) {
 
      /**
      Game class
@@ -24,8 +24,18 @@ define(['engine/gameEngine','player'],function (GameEngine,Player) {
         addEventListener("keydown", function (e) {this.keysDown[e.keyCode] = true;}.bind(this), false);
         addEventListener("keyup", function (e) {delete this.keysDown[e.keyCode];}.bind(this), false);
 
-        // Create the player.
-        this.addEntity(new Player(this,50,50,20,50,"img/player.png"));
+        // Create the entities.
+        this.addEntity(new StaticObject(this,150,150,32,32,"img/trunks.png"));
+        this.addEntity(new StaticObject(this,180,230,32,32,"img/trunks.png"));
+        this.addEntity(new StaticObject(this,340,200,32,32,"img/trunks.png"));
+
+        this.addEntity(new Ennemy(this,300,300,32,32,"img/player.png"));
+        this.addEntity(new Ennemy(this,400,300,32,32,"img/player.png"));
+        this.addEntity(new Ennemy(this,300,20,32,32,"img/player.png"));
+        this.addEntity(new Ennemy(this,50,300,32,32,"img/player.png"));
+        this.addEntity(new Ennemy(this,90,300,32,32,"img/player.png"));
+
+        this.addEntity(new Player(this,50,50,32,32,"img/player.png"));
     }
 
     /**
@@ -35,7 +45,11 @@ define(['engine/gameEngine','player'],function (GameEngine,Player) {
     Game.prototype.loadContent = function(callback) {
         //GameEngine.prototype.loadContent.call(this,callback);
         // Add assets to the queue
-        this.assetManager.addQueue("img/player.png");
+        this.assetManager.queueDownload("img/player.png");
+        this.assetManager.queueSound("sounds/slime_death.wav");
+        this.assetManager.queueSound("sounds/punch.wav");
+        this.assetManager.queueDownload("img/trunks.png");
+
 
         // Assign assets once they are loaded.
         this.assetManager.downloadAll(function(){

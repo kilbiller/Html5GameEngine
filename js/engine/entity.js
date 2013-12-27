@@ -6,8 +6,7 @@ define(function () {
     **/
     function Entity(game,x,y) {
         this.game = game;
-        this.x = x;
-        this.y = y;
+        this.pos = {x: x, y: y}
         this.removeFromWorld = false;
     }
 
