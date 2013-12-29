@@ -1,12 +1,13 @@
-define(['engine/entity','engine/animation','engine/rectangle'],function (Entity, Animation, Rectangle) {
+define(['engine/Entity', 'engine/SpriteSheet','engine/Animation','engine/Rectangle'],
+function (Entity, SpriteSheet, Animation, Rectangle) {
 
     function Ennemy(game, x, y, width, height, assetPath) {
         Entity.call(this, game, x, y);
         this.width = width;
         this.height = height;
         this.speed = 150;
-        this.animations = {};
-        this.currentAnimation = null;
+        this.anims = {};
+        this.currentAnim = null;
 
         this.direction = "Down";
         this.isAttacking = false;
@@ -16,26 +17,20 @@ define(['engine/entity','engine/animation','engine/rectangle'],function (Entity,
         this.assetPath = assetPath;
         this.isAlive = true;
         this.hp = 30;
+
+        this.offsetX = 6;
+        this.offsetY = 20;
+        this.boundingbox = new Rectangle (  this.pos.x + this.offsetX, this.pos.y + this.offsetY,
+                                            this.width - this.offsetX * 2, 10);
     }
 
     Ennemy.prototype = new Entity();
     Ennemy.prototype.constructor = Ennemy;
 
     Ennemy.prototype.loadContent = function() {
-
-        var spriteSheet = this.game.assetManager.getAsset(this.assetPath);
-        this.animations["idle"] = new Animation(spriteSheet, this.width, this.height, [0], 0.15, false, true);
-        this.animations["moveDown"] = new Animation(spriteSheet, this.width, this.height, [4,5,6,7], 0.15, true);
-        this.animations["moveUp"] = new Animation(spriteSheet, this.width, this.height, [8,9,10,11], 0.15, true);
-        this.animations["moveLeft"] = new Animation(spriteSheet, this.width, this.height, [12,13,14,15], 0.15, true);
-        this.animations["moveRight"] = new Animation(spriteSheet, this.width, this.height, [16,17,18,19], 0.15, true);
-
-        this.animations["attackDown"] = new Animation(spriteSheet, this.width, this.height, [20,21,22], 0.1, false);
-        this.animations["attackUp"] = new Animation(spriteSheet, this.width, this.height, [24,25,26], 0.1, false);
-        this.animations["attackLeft"] = new Animation(spriteSheet, this.width, this.height, [28,29,30], 0.1, false);
-        this.animations["attackRight"] = new Animation(spriteSheet, this.width, this.height, [32,33,34], 0.1, false);
-
-        this.animations["death"] = new Animation(spriteSheet, this.width, this.height, [36,37,38], 0.12, false, true);
+        var spriteSheet = new SpriteSheet(this.game.assetManager.getAsset(this.assetPath),this.width,this.height);
+        this.addAnim("idle", spriteSheet, [0], 0.15, false, true);
+        this.addAnim("death", spriteSheet, [36,37,38], 0.12, false, true);
     }
 
     Ennemy.prototype.update = function(dt) {
@@ -43,31 +38,47 @@ define(['engine/entity','engine/animation','engine/rectangle'],function (Entity,
 
         if(this.isAlive)
         {
-            this.currentAnimation = this.animations["idle"];
+            this.currentAnim = this.anims["idle"];
             if(this.hp <= 0)
                 this.die();
         }
 
+        this.currentAnim.update(dt);
+
+        // Update zIndex.
+        this.zIndex = this.pos.y + this.height;
         // Update previousPos.
         this.previousPos.x = this.pos.x;
         this.previousPos.y = this.pos.y;
     }
 
-    Ennemy.prototype.draw = function(dt,ctx) {
-        Entity.prototype.draw.call(this, dt, ctx);
-        this.currentAnimation.drawFrame(dt, ctx, this.pos.x, this.pos.y);
+    Ennemy.prototype.draw = function(ctx) {
+        Entity.prototype.draw.call(this, ctx);
+        this.currentAnim.draw(ctx, this.pos.x, this.pos.y);
 
+        /*if(this.hitbox != null)
+            this.boundingbox.draw(ctx);
         if(this.hitbox != null)
-            this.hitbox.draw(ctx);
+            this.hitbox.draw(ctx);*/
     }
 
     Ennemy.prototype.die = function() {
         var deathSound = this.game.assetManager.getSound("sounds/slime_death.wav");
         deathSound.play();
-        this.currentAnimation = this.animations["death"];
+        this.currentAnim = this.anims["death"];
         this.isAlive = false;
         //this.hitbox = null;
     }
+
+    Ennemy.prototype.addAnim = function(name, spriteSheet, frameList, step, loop, freeze) {
+        var loop = loop || false;
+        var freeze = freeze || false;
+        this.anims[name] = new Animation(spriteSheet, frameList, step, loop, freeze);
+    }
+
+    //TODO
+    Ennemy.prototype.takeDamage = function() {}
+
 
     return Ennemy;
 });

@@ -7,6 +7,7 @@ define(function () {
     function Entity(game,x,y) {
         this.game = game;
         this.pos = {x: x, y: y}
+        this.zIndex = y;
         this.removeFromWorld = false;
     }
 

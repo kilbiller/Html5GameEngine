@@ -1,31 +1,22 @@
-define(function () {
+define(['engine/SpriteSheet'], function (SpriteSheet) {
 
     /**
     Animation class
     @class Animation
     **/
-    function Animation(spriteSheet, frameWidth, frameHeight, frameList, frameDuration, loop, freeze) {
+    function Animation(spriteSheet, frameList, frameDuration, loop, freeze) {
         this.spriteSheet = spriteSheet;
-        this.frameWidth = frameWidth;
-        this.frameHeight= frameHeight;
         this.frameList = frameList;
         this.frameDuration = frameDuration;
         this.totalTime = this.frameList.length * this.frameDuration;
         this.elapsedTime = 0;
         this.loop = loop || false;
         this.freeze = freeze || false;
-
-        this.maxColumn = this.spriteSheet.width / this.frameWidth;
-        this.maxRow = this.spriteSheet.height / this.frameHeight;
+        this.source = {}
     }
 
-    /**
-    Draw the current frame on the screen at the specified location.
-    @method drawFrame
-    **/
-    Animation.prototype.drawFrame = function(tick, ctx, x, y, scaleBy) {
-        var scaleBy = scaleBy || 1;
-        this.elapsedTime += tick;
+    Animation.prototype.update = function(dt) {
+        this.elapsedTime += dt;
 
         if (this.isDone())
         {
@@ -37,18 +28,29 @@ define(function () {
         }
 
         var index = this.currentFrame();
-        var source = this.getSourcePos(index);
 
-        //Round the number to prevent sub-pixel drawing on canvas
-        //(prevent blurring and supposedly improve performance)
+        // Find frame position inside the spritesheet.
+        this.source.x = (this.frameList[index]%this.spriteSheet.maxColumn) * this.spriteSheet.frameWidth;
+        this.source.y = Math.floor(this.frameList[index]/this.spriteSheet.maxColumn) * this.spriteSheet.frameHeight;
+    }
+
+    /**
+    Draw the current frame on the screen at the specified location.
+    @method drawFrame
+    **/
+    Animation.prototype.draw = function(ctx, x, y, scaleBy) {
+        var scaleBy = scaleBy || 1;
+
+        // Round the numbers to prevent sub-pixel drawing on canvas.
+        // (prevent blurring and supposedly improve performance)
         x = (x + .5) | 0;
         y = (y + .5) | 0;
 
-        ctx.drawImage(this.spriteSheet,
-                     source.x,source.y,
-                     this.frameWidth, this.frameHeight,
+        ctx.drawImage(this.spriteSheet.image,
+                     this.source.x,this.source.y,
+                     this.spriteSheet.frameWidth, this.spriteSheet.frameHeight,
                      x, y,
-                     this.frameWidth*scaleBy, this.frameHeight*scaleBy);
+                     this.spriteSheet.frameWidth*scaleBy, this.spriteSheet.frameHeight*scaleBy);
     }
 
     /**
@@ -68,16 +70,6 @@ define(function () {
     **/
     Animation.prototype.isDone = function() {
         return (this.elapsedTime >= this.totalTime);
-    }
-
-    /**
-    Return the top-left corner of the frame to draw.
-    @method getSourcePos
-    **/
-    Animation.prototype.getSourcePos = function(index) {
-        var sourceX = (this.frameList[index]%this.maxColumn) * this.frameWidth;
-        var sourceY = Math.floor(this.frameList[index]/this.maxColumn) * this.frameHeight;
-        return {x: sourceX,y: sourceY}
     }
 
     /**

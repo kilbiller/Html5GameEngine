@@ -17,7 +17,8 @@ define(function () {
     @method queueDownload
     **/
     AssetManager.prototype.queueDownload  = function(path) {
-        this.downloadQueue.push(path);
+        if(!(path in this.downloadQueue))
+            this.downloadQueue.push(path);
     }
 
     /**
@@ -25,7 +26,8 @@ define(function () {
     @method queueSound
     **/
     AssetManager.prototype.queueSound = function(path) {
-        this.soundsQueue.push(path);
+        if(!(path in this.soundsQueue))
+            this.soundsQueue.push(path);
     }
 
     /**
@@ -33,7 +35,7 @@ define(function () {
     @method isDone
     **/
     AssetManager.prototype.isDone = function() {
-        return ((this.downloadQueue.length + this.soundsQueue.length) == this.successCount + this.errorCount);
+        return ((this.downloadQueue.length + this.soundsQueue.length) === this.successCount + this.errorCount);
     }
 
     /**

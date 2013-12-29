@@ -1,4 +1,5 @@
-define(['engine/timer','engine/assetManager','engine/entity'],function (Timer,AssetManager,Entity) {
+define(['engine/Timer','engine/AssetManager','engine/Entity','engine/Keyboard','engine/Mouse'],
+function (Timer,AssetManager,Entity,Keyboard,Mouse) {
 
     /**
     GameEngine class
@@ -8,8 +9,9 @@ define(['engine/timer','engine/assetManager','engine/entity'],function (Timer,As
         this.ctx = null;
         this.timer = null;
         this.assetManager = null;
-        this.keysDown = {};
         this.entities = [];
+        this.keyboard = null;
+        this.mouse = null;
     }
 
 
@@ -28,6 +30,8 @@ define(['engine/timer','engine/assetManager','engine/entity'],function (Timer,As
         this.ctx = canvas.getContext("2d");
         this.timer = new Timer();
         this.assetManager = new AssetManager();
+        this.keyboard = new Keyboard();
+        this.mouse = new Mouse(this);
     }
 
     /**
@@ -48,7 +52,7 @@ define(['engine/timer','engine/assetManager','engine/entity'],function (Timer,As
     This is called when the game should draw itself.
     @method draw
     **/
-    GameEngine.prototype.draw = function(dt,ctx) {
+    GameEngine.prototype.draw = function(ctx) {
     }
 
     /**
@@ -58,7 +62,7 @@ define(['engine/timer','engine/assetManager','engine/entity'],function (Timer,As
     GameEngine.prototype.gameloop = function() {
         var dt = this.timer.tick();
         this.update(dt);
-        this.draw(dt,this.ctx);
+        this.draw(this.ctx);
 
         if(!this.isStopped)
             requestAnimationFrame(this.gameloop.bind(this));
