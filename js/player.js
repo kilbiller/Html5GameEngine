@@ -2,43 +2,33 @@
 define(function (require) {
 
     "use strict";
-    var Entity = require('engine/Entity'),
-        SpriteSheet = require('engine/SpriteSheet'),
+    var SpriteSheet = require('engine/SpriteSheet'),
         Animation = require('engine/Animation'),
         Rectangle = require('engine/Rectangle'),
-        Vector = require('engine/Vector');
+        Vector = require('engine/Vector'),
+        Actor = require('Actor');
 
     function Player(game, x, y, width, height, assetPath) {
-        Entity.call(this, game, x, y);
-        this.width = width;
-        this.height = height;
-        this.assetPath = assetPath;
+        Actor.call(this, game, x, y, width, height, assetPath);
 
         this.speed = 150;
-        this.anims = {};
-        this.currentAnim = null;
-        this.direction = "Down";
         this.isAttacking = false;
-        this.hitbox = new Rectangle(this.pos.x, this.pos.y, this.width, this.height);
-        this.previousPos = new Vector(this.pos.x, this.pos.y);
         this.attackRect = null;
-        this.isAlive = true;
-        this.boundingbox = null;
-        this.isMoving = false;
-
+        this.boundingbox = new Rectangle(6, 20, 20, 10);
+        //this.isMoving = false;
         this.COOLDOWN_TIME = 0.5;
         this.attackCooldown = 0;
     }
 
-    Player.prototype = new Entity();
+    Player.prototype = new Actor();
     Player.prototype.constructor = Player;
 
     Player.prototype.loadContent = function () {
         var spriteSheet = new SpriteSheet(this.game.assetManager.getAsset(this.assetPath), this.width, this.height);
-        this.addAnim("idleDown", spriteSheet, [0], 0.15, false, true);
-        this.addAnim("idleUp", spriteSheet, [1], 0.15, false, true);
-        this.addAnim("idleLeft", spriteSheet, [2], 0.15, false, true);
-        this.addAnim("idleRight", spriteSheet, [3], 0.15, false, true);
+        this.addAnim("idleDown", spriteSheet, [0], 0.15, false);
+        this.addAnim("idleUp", spriteSheet, [1], 0.15, false);
+        this.addAnim("idleLeft", spriteSheet, [2], 0.15, false);
+        this.addAnim("idleRight", spriteSheet, [3], 0.15, false);
 
         this.addAnim("moveDown", spriteSheet, [4, 5, 6, 7], 0.15, true);
         this.addAnim("moveUp", spriteSheet, [8, 9, 10, 11], 0.15, true);
@@ -50,11 +40,11 @@ define(function (require) {
         this.addAnim("attackLeft", spriteSheet, [28, 29, 30], 0.1, false);
         this.addAnim("attackRight", spriteSheet, [32, 33, 34], 0.1, false);
 
-        this.addAnim("death", spriteSheet, [36, 37, 38], 0.12, false, true);
+        this.addAnim("death", spriteSheet, [36, 37, 38], 0.12, false);
     };
 
     Player.prototype.update = function (dt) {
-        Entity.prototype.update.call(this, dt);
+        Actor.prototype.update.call(this, dt);
 
         var kb = this.game.keyboard,
             ms = this.game.mouse;
@@ -65,120 +55,95 @@ define(function (require) {
             if (kb.keysDown.hasOwnProperty(90)) { // Player holding z
                 this.direction = "Up";
                 this.pos.y -= this.speed * dt;
-                this.currentAnim = this.anims["move" + this.direction];
+                this.currentAnim = this.anims.moveUp;
             }
             if (kb.keysDown.hasOwnProperty(83)) { // Player holding s
                 this.direction = "Down";
                 this.pos.y += this.speed * dt;
-                this.currentAnim = this.anims["move" + this.direction];
+                this.currentAnim = this.anims.moveDown;
             }
             if (kb.keysDown.hasOwnProperty(81)) { // Player holding q
                 this.direction = "Left";
                 this.pos.x -= this.speed * dt;
-                this.currentAnim = this.anims["move" + this.direction];
+                this.currentAnim = this.anims.moveLeft;
             }
             if (kb.keysDown.hasOwnProperty(68)) { // Player holding d
                 this.direction = "Right";
                 this.pos.x += this.speed * dt;
-                this.currentAnim = this.anims["move" + this.direction];
+                this.currentAnim = this.anims.moveRight;
             }
 
+            /*
+            // Mouse movement.
             if (ms.leftClick) {
                 this.isMoving = true;
             }
             if (this.isMoving) {
                 this.pos = Vector.moveTowards(this.pos, ms.pos, this.speed * dt);
-
-                if (Math.abs(ms.pos.x - this.pos.x) <=  this.speed * dt && Math.abs(ms.pos.y - this.pos.y) <= this.speed * dt) {this.isMoving = false; }
+                if (Math.abs(ms.pos.x - this.pos.x) <=  this.speed * dt && Math.abs(ms.pos.y - this.pos.y) <= this.speed * dt) {
+                    this.isMoving = false;
+                }
             }
+            */
 
             // Collision logic.
             this.updateCollisions();
 
-            if (this.attackCooldown <= 0 && kb.keysDown.hasOwnProperty(32)) { // Player holding space
+            // Player attack if press space
+            if (this.attackCooldown <= 0 && kb.keysDown.hasOwnProperty(32)) {
                 this.attack();
-                this.attackCooldown = this.COOLDOWN_TIME;
             }
         }
 
         this.currentAnim.update(dt);
 
-        if (this.currentAnim.isDone()) {
+        // If player finished his attack.
+        if (this.isAttacking && this.currentAnim.isDone()) {
             this.currentAnim.reset();
             this.isAttacking = false;
             this.attackRect = null;
         }
 
-        this.attackCooldown -= dt;
-        this.hitbox.offset(this.pos.x, this.pos.y);
+        if (this.attackCooldown > 0) {this.attackCooldown -= dt; }
         this.zIndex = this.pos.y + this.height;
         this.previousPos = new Vector(this.pos.x, this.pos.y);
     };
 
     Player.prototype.draw = function (ctx) {
-        Entity.prototype.draw.call(this, ctx);
-        this.currentAnim.draw(ctx, this.pos.x, this.pos.y);
+        Actor.prototype.draw.call(this, ctx);
 
-        if (this.hitbox !== null) {this.hitbox.draw(ctx); }
-        if (this.boundingbox !== null) {this.boundingbox.draw(ctx); }
+        this.getHitBox().draw(ctx);
+        this.getCollisionBox().draw(ctx);
         if (this.attackRect !== null) {this.attackRect.draw(ctx); }
-    };
-
-    Player.prototype.setAttackRect = function () {
-        if (this.direction === "Up") {
-            this.attackRect = new Rectangle(this.pos.x + 12, this.pos.y - 1, 10, 1);
-        } else if (this.direction === "Down") {
-            this.attackRect = new Rectangle(this.pos.x + 8, this.pos.y + 18, 20, 12);
-        } else if (this.direction === "Left") {
-            this.attackRect = new Rectangle(this.pos.x - 4, this.pos.y + 13, 25, 12);
-        } else if (this.direction === "Right") {
-            this.attackRect = new Rectangle(this.pos.x + 8, this.pos.y + 13, 25, 12);
-        }
     };
 
     Player.prototype.attack = function () {
         var i, punchSound, entity;
         punchSound = this.game.assetManager.getSound("sounds/punch.wav");
         punchSound.play();
-        this.currentAnim = this.anims["attack" + this.direction];
         this.isAttacking = true;
-        this.setAttackRect();
+        this.attackCooldown = this.COOLDOWN_TIME;
+
+        if (this.direction === "Up") {
+            this.attackRect = new Rectangle(this.pos.x + 12, this.pos.y - 1, 10, 1);
+            this.currentAnim = this.anims.attackUp;
+        } else if (this.direction === "Down") {
+            this.attackRect = new Rectangle(this.pos.x + 8, this.pos.y + 18, 20, 12);
+            this.currentAnim = this.anims.attackDown;
+        } else if (this.direction === "Left") {
+            this.attackRect = new Rectangle(this.pos.x - 4, this.pos.y + 13, 25, 12);
+            this.currentAnim = this.anims.attackLeft;
+        } else if (this.direction === "Right") {
+            this.attackRect = new Rectangle(this.pos.x + 8, this.pos.y + 13, 25, 12);
+            this.currentAnim = this.anims.attackRight;
+        }
 
         for (i = 0; i < this.game.entities.length; i += 1) {
             entity = this.game.entities[i];
-            if (this !== entity && entity.isAlive && this.attackRect.intersects(entity.hitbox)) {
-                entity.hp -= 10;
+            if (this !== entity && entity.hitbox !== null && entity.isAlive && this.attackRect.intersects(entity.getHitBox())) {
+                entity.takeDamage(10);
             }
         }
-    };
-
-    Player.prototype.setBoundingBox = function () {
-        this.boundingbox = new Rectangle(this.pos.x + 6, this.pos.y + 20, 20, 10);
-    };
-
-    Player.prototype.updateCollisions = function () {
-        var i, entity;
-        this.setBoundingBox();
-        for (i = 0; i < this.game.entities.length; i += 1) {
-            entity = this.game.entities[i];
-            if (this !== entity && entity.boundingbox !== null && this.boundingbox.intersects(entity.boundingbox)) {
-                this.pos = new Vector(this.previousPos.x, this.previousPos.y);
-                this.setBoundingBox();
-            }
-        }
-    };
-
-    Player.prototype.die = function () {
-        var deathSound = this.game.assetManager.getSound("sounds/slime_death.wav");
-        deathSound.play();
-        this.currentAnim = this.anims.death;
-        this.isAlive = false;
-    };
-
-    Player.prototype.addAnim = function (name, spriteSheet, frameList, step, loop, freeze) {
-        loop = loop || false;
-        freeze = freeze || false;
-        this.anims[name] = new Animation(spriteSheet, frameList, step, loop, freeze);
     };
 
     return Player;

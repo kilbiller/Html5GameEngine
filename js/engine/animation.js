@@ -2,21 +2,19 @@
 define(function (require) {
 
     "use strict";
-
     var SpriteSheet = require('engine/SpriteSheet');
 
     /**
     Animation class
     @class Animation
     **/
-    function Animation(spriteSheet, frameList, frameDuration, loop, freeze) {
+    function Animation(spriteSheet, frameList, frameDuration, loop) {
         this.spriteSheet = spriteSheet;
         this.frameList = frameList;
         this.frameDuration = frameDuration;
         this.totalTime = this.frameList.length * this.frameDuration;
         this.elapsedTime = 0;
         this.loop = loop || false;
-        this.freeze = freeze || false;
         this.source = {};
     }
 
@@ -26,7 +24,7 @@ define(function (require) {
         if (this.isDone()) {
             if (this.loop) {
                 this.reset();
-            } else if (!this.freeze) {
+            } else {
                 return;
             }
         }

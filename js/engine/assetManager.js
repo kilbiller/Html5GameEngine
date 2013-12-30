@@ -1,11 +1,12 @@
 /*global define, Image, Audio*/
 define(function () {
 
+    "use strict";
+
     /**
     AssetManager class
     @class AssetManager
     **/
-    "use strict";
     function AssetManager() {
         this.successCount = 0;
         this.errorCount = 0;

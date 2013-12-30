@@ -3,6 +3,7 @@
 define(function () {
 
     "use strict";
+
     function Keyboard() {
         this.keysDown = {};
 

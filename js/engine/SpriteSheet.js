@@ -2,6 +2,7 @@
 define(function () {
 
     "use strict";
+
     function SpriteSheet(image, width, height) {
         this.image = image;
         this.frameWidth = width;

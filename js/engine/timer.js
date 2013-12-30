@@ -2,6 +2,7 @@
 define(function () {
 
     "use strict";
+
     /**
     Timer class
     @class Timer

@@ -11,12 +11,10 @@ define(function (require) {
         Entity.call(this, game, x, y);
         this.width = width;
         this.height = height;
+        this.assetPath = assetPath;
         this.anims = {};
         this.currentAnim = null;
-        this.boundingbox = new Rectangle(this.pos.x, this.pos.y, this.width, this.height);
-        this.assetPath = assetPath;
-
-        // Update zIndex.
+        this.boundingbox = new Rectangle(0, 0, this.width, this.height);
         this.zIndex = this.pos.y + this.height;
     }
 
@@ -25,7 +23,7 @@ define(function (require) {
 
     StaticObject.prototype.loadContent = function () {
         var spriteSheet = new SpriteSheet(this.game.assetManager.getAsset(this.assetPath), this.width, this.height);
-        this.addAnim("idle", spriteSheet, [0], 0.15, false, true);
+        this.addAnim("idle", spriteSheet, [0], 0.15, false);
     };
 
     StaticObject.prototype.update = function (dt) {
@@ -38,14 +36,16 @@ define(function (require) {
         Entity.prototype.draw.call(this, ctx);
         this.currentAnim.draw(ctx, this.pos.x, this.pos.y);
 
-        /*if(this.boundingbox != null)
-            this.boundingbox.draw(ctx);*/
+        if (this.boundingbox !== null) {this.getCollisionBox().draw(ctx); }
     };
 
-    StaticObject.prototype.addAnim = function (name, spriteSheet, frameList, step, loop, freeze) {
-        loop = loop || false;
-        freeze = freeze || false;
-        this.anims[name] = new Animation(spriteSheet, frameList, step, loop, freeze);
+    StaticObject.prototype.addAnim = function (name, spriteSheet, frameList, step, loop) {
+        this.anims[name] = new Animation(spriteSheet, frameList, step, loop);
+    };
+
+    StaticObject.prototype.getCollisionBox = function () {
+        return new Rectangle(this.pos.x + this.boundingbox.x, this.pos.y + this.boundingbox.y,
+                             this.boundingbox.width, this.boundingbox.height);
     };
 
     return StaticObject;
