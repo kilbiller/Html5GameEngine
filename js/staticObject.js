@@ -1,14 +1,14 @@
-define(['engine/Entity', 'engine/SpriteSheet', 'engine/Animation','engine/Rectangle'],
-function (Entity, SpriteSheet, Animation, Rectangle) {
+/*global define*/
+define(['engine/Entity', 'engine/SpriteSheet', 'engine/Animation', 'engine/Rectangle'], function (Entity, SpriteSheet, Animation, Rectangle) {
 
-    function StaticObject (game, x, y, width, height, assetPath)
-    {
+    "use strict";
+    function StaticObject(game, x, y, width, height, assetPath) {
         Entity.call(this, game, x, y);
         this.width = width;
         this.height = height;
         this.anims = {};
         this.currentAnim = null;
-        this.boundingbox = new Rectangle (this.pos.x, this.pos.y, this.width, this.height);
+        this.boundingbox = new Rectangle(this.pos.x, this.pos.y, this.width, this.height);
         this.assetPath = assetPath;
 
         // Update zIndex.
@@ -18,30 +18,30 @@ function (Entity, SpriteSheet, Animation, Rectangle) {
     StaticObject.prototype = new Entity();
     StaticObject.prototype.constructor = StaticObject;
 
-    StaticObject.prototype.loadContent = function() {
-        var spriteSheet = new SpriteSheet(this.game.assetManager.getAsset(this.assetPath),this.width,this.height);
+    StaticObject.prototype.loadContent = function () {
+        var spriteSheet = new SpriteSheet(this.game.assetManager.getAsset(this.assetPath), this.width, this.height);
         this.addAnim("idle", spriteSheet, [0], 0.15, false, true);
-    }
+    };
 
-    StaticObject.prototype.update = function(dt) {
+    StaticObject.prototype.update = function (dt) {
         Entity.prototype.update.call(this, dt);
-        this.currentAnim = this.anims["idle"];
+        this.currentAnim = this.anims.idle;
         this.currentAnim.update(dt);
-    }
+    };
 
-    StaticObject.prototype.draw = function(ctx) {
+    StaticObject.prototype.draw = function (ctx) {
         Entity.prototype.draw.call(this, ctx);
         this.currentAnim.draw(ctx, this.pos.x, this.pos.y);
 
         /*if(this.boundingbox != null)
             this.boundingbox.draw(ctx);*/
-    }
+    };
 
-    StaticObject.prototype.addAnim = function(name, spriteSheet, frameList, step, loop, freeze) {
-        var loop = loop || false;
-        var freeze = freeze || false;
+    StaticObject.prototype.addAnim = function (name, spriteSheet, frameList, step, loop, freeze) {
+        loop = loop || false;
+        freeze = freeze || false;
         this.anims[name] = new Animation(spriteSheet, frameList, step, loop, freeze);
-    }
+    };
 
     return StaticObject;
 });

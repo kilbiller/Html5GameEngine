@@ -1,6 +1,8 @@
+/*global define*/
 define(function () {
 
-    function SpriteSheet (image, width, height) {
+    "use strict";
+    function SpriteSheet(image, width, height) {
         this.image = image;
         this.frameWidth = width;
         this.frameHeight = height;
@@ -11,7 +13,7 @@ define(function () {
 
     SpriteSheet.prototype.getImage = function () {
         return this.image;
-    }
+    };
 
     return SpriteSheet;
 });

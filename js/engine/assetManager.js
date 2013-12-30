@@ -1,9 +1,11 @@
+/*global define, Image, Audio*/
 define(function () {
 
     /**
     AssetManager class
     @class AssetManager
     **/
+    "use strict";
     function AssetManager() {
         this.successCount = 0;
         this.errorCount = 0;
@@ -16,80 +18,72 @@ define(function () {
     Add images to the queue.
     @method queueDownload
     **/
-    AssetManager.prototype.queueDownload  = function(path) {
-        if(!(path in this.downloadQueue))
+    AssetManager.prototype.queueDownload  = function (path) {
+        if (!this.downloadQueue.hasOwnProperty(path)) {
             this.downloadQueue.push(path);
-    }
+        }
+    };
 
     /**
     Add sounds to the queue.
     @method queueSound
     **/
-    AssetManager.prototype.queueSound = function(path) {
-        if(!(path in this.soundsQueue))
+    AssetManager.prototype.queueSound = function (path) {
+        if (!this.soundsQueue.hasOwnProperty(path)) {
             this.soundsQueue.push(path);
-    }
+        }
+    };
 
     /**
     Check if all assets in the queue are loaded.
     @method isDone
     **/
-    AssetManager.prototype.isDone = function() {
+    AssetManager.prototype.isDone = function () {
         return ((this.downloadQueue.length + this.soundsQueue.length) === this.successCount + this.errorCount);
-    }
+    };
 
     /**
     Load all of the assets.
     @method downloadAll
     **/
-    AssetManager.prototype.downloadAll = function(callback) {
-        if (this.downloadQueue.length === 0 && this.soundsQueue.length === 0) {
-            callback();
-        }
+    AssetManager.prototype.downloadAll = function () {
+        var i, path, img, audio, onLoad;
 
-        for (var i = 0; i < this.downloadQueue.length; i++) {
-            var path = this.downloadQueue[i];
-            var img = new Image();
-
-            img.addEventListener("load", function() {
-                this.successCount += 1;
-                if (this.isDone()) { callback(); }
-            }.bind(this));
-
-            img.addEventListener("error", function() {
-                this.errorCount += 1;
-                if (this.isDone()) { callback(); }
-            }.bind(this));
-
+        for (i = 0; i < this.downloadQueue.length; i += 1) {
+            path = this.downloadQueue[i];
+            img = new Image();
+            img.addEventListener("load", this.onLoad.bind(this), false);
             img.src = path;
             this.cache[path] = img;
         }
-
-        for (var i = 0; i < this.soundsQueue.length; i++) {
-            var path = this.soundsQueue[i];
-            var audio = new Audio(path);
+        for (i = 0; i < this.soundsQueue.length; i += 1) {
+            path = this.soundsQueue[i];
+            audio = new Audio(path);
             this.successCount += 1;
-
             audio.src = path;
             this.cache[path] = audio;
         }
-    }
+    };
 
     /**
     Return the specified audio.
     @method getSound
     **/
-    AssetManager.prototype.getSound = function(path) {
+    AssetManager.prototype.getSound = function (path) {
         return this.cache[path];
-    }
+    };
 
     /**
     Return the specified asset.
     @method getAsset
     **/
-    AssetManager.prototype.getAsset = function(path) {
+    AssetManager.prototype.getAsset = function (path) {
         return this.cache[path];
-    }
+    };
+
+    AssetManager.prototype.onLoad = function () {
+        this.successCount += 1;
+    };
 
     return AssetManager;
 });

@@ -1,12 +1,14 @@
-define(function () {
+/*global define*/
+define(['engine/Vector'], function (Vector) {
 
     /**
     Entity class
     @class Entity
     **/
-    function Entity(game,x,y) {
+    "use strict";
+    function Entity(game, x, y) {
         this.game = game;
-        this.pos = {x: x, y: y}
+        this.pos = new Vector(x, y);
         this.zIndex = y;
         this.removeFromWorld = false;
     }
@@ -15,14 +17,13 @@ define(function () {
     Update entity's data.
     @method update
     **/
-    Entity.prototype.update = function(dt) {
-    }
+    Entity.prototype.update = function (dt) { };
 
     /**
     Draw the entity on screen.
     @method draw
     **/
-    Entity.prototype.draw = function(dt, ctx) {
+    Entity.prototype.draw = function (dt, ctx) {
         /*if (this.game.showOutlines && this.radius) {
             ctx.beginPath();
             ctx.strokeStyle = "green";
@@ -30,7 +31,7 @@ define(function () {
             ctx.stroke();
             ctx.closePath();
         }*/
-    }
+    };
 
     /*Entity.prototype.outsideScreen = function() {
         return (this.x > this.game.halfSurfaceWidth || this.x < -(this.game.halfSurfaceWidth) ||
