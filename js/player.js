@@ -1,7 +1,13 @@
 /*global define*/
-define(['engine/Entity', 'engine/SpriteSheet', 'engine/Animation', 'engine/Rectangle', 'engine/Vector'], function (Entity, SpriteSheet, Animation, Rectangle, Vector) {
+define(function (require) {
 
     "use strict";
+    var Entity = require('engine/Entity'),
+        SpriteSheet = require('engine/SpriteSheet'),
+        Animation = require('engine/Animation'),
+        Rectangle = require('engine/Rectangle'),
+        Vector = require('engine/Vector');
+
     function Player(game, x, y, width, height, assetPath) {
         Entity.call(this, game, x, y);
         this.width = width;

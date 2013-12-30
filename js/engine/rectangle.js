@@ -1,5 +1,6 @@
 /*global define*/
 define(function () {
+
     "use strict";
     function Rectangle(x, y, width, height) {
         this.x = x || 0;

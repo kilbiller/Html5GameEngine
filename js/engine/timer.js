@@ -1,11 +1,11 @@
 /*global define*/
 define(function () {
 
+    "use strict";
     /**
     Timer class
     @class Timer
     **/
-    "use strict";
     function Timer() {
         this.gameTime = 0;
         this.maxStep = 0.05;

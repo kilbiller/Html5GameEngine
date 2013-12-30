@@ -1,12 +1,18 @@
 /*global define*/
 /*jslint browser: true*/
-define(['engine/Timer', 'engine/AssetManager', 'engine/Entity', 'engine/Keyboard', 'engine/Mouse'], function (Timer, AssetManager, Entity, Keyboard, Mouse) {
+define(function (require) {
+
+    "use strict";
+    var Timer = require('engine/Timer'),
+        AssetManager = require('engine/AssetManager'),
+        Entity = require('engine/Entity'),
+        Keyboard = require('engine/Keyboard'),
+        Mouse = require('engine/Mouse');
 
     /**
     GameEngine class
     @class GameEngine
     **/
-    "use strict";
     function GameEngine(width, height) {
         this.width = width;
         this.height = height;

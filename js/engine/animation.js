@@ -1,11 +1,14 @@
 /*global define*/
-define(['engine/SpriteSheet'], function (SpriteSheet) {
+define(function (require) {
+
+    "use strict";
+
+    var SpriteSheet = require('engine/SpriteSheet');
 
     /**
     Animation class
     @class Animation
     **/
-    "use strict";
     function Animation(spriteSheet, frameList, frameDuration, loop, freeze) {
         this.spriteSheet = spriteSheet;
         this.frameList = frameList;

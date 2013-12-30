@@ -1,11 +1,13 @@
 /*global define*/
-define(['engine/Vector'], function (Vector) {
+define(function (require) {
+
+    "use strict";
+    var Vector = require('engine/Vector');
 
     /**
     Entity class
     @class Entity
     **/
-    "use strict";
     function Entity(game, x, y) {
         this.game = game;
         this.pos = new Vector(x, y);

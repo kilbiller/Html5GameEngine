@@ -1,7 +1,9 @@
 /*global define*/
-define(['engine/Rectangle'], function (Rectangle) {
+define(function (require) {
 
     "use strict";
+    var Rectangle = require('engine/Rectangle');
+
     function Camera(x, y, width, height) {
         this.viewport = new Rectangle(x, y, width, height);
         // Entity that should be followed.

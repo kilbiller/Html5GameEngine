@@ -1,12 +1,18 @@
 /*global define*/
 /*jslint browser: true*/
-define(['engine/GameEngine', 'engine/Camera', 'Player', 'StaticObject', 'Ennemy'], function (GameEngine, Camera, Player, StaticObject, Ennemy) {
+define(function (require) {
+
+    "use strict";
+    var GameEngine = require('engine/GameEngine'),
+        Camera = require('engine/Camera'),
+        Player = require('Player'),
+        StaticObject = require('StaticObject'),
+        Ennemy = require('Ennemy');
 
      /**
      Game class
      @class Game
      **/
-    "use strict";
     function Game(width, height) {
         GameEngine.call(this, width, height);
         this.camera = null;

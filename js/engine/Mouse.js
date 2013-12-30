@@ -1,8 +1,10 @@
 /*global define*/
 /*jslint browser: true*/
-define(['engine/Vector'], function (Vector) {
+define(function (require) {
 
     "use strict";
+    var Vector = require('engine/Vector');
+
     function Mouse(game) {
         this.pos = new Vector(0, 0);
         this.leftClick = false;

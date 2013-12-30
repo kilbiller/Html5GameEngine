@@ -1,6 +1,10 @@
-/*global requirejs*/
-requirejs(['game'], function (Game) {
+/*global define*/
+define(function (require) {
+
     "use strict";
-    var game = new Game(800, 400);
+    var Game = require('game'),
+        game;
+
+    game = new Game(800, 400);
     game.run();
 });
