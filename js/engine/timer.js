@@ -18,10 +18,10 @@ define(function () {
     @method tick
     **/
     Timer.prototype.tick = function () {
-        var currentTime, actualDelta, gameDelta;
-        currentTime = Date.now();
-        actualDelta = (currentTime - this.previousTime) / 1000;
-        this.previousTime = currentTime;
+        var now, actualDelta, gameDelta;
+        now = Date.now();
+        actualDelta = (now - this.previousTime) / 1000;
+        this.previousTime = now;
 
         gameDelta = Math.min(actualDelta, this.maxStep);
         this.gameTime += gameDelta;

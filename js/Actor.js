@@ -59,6 +59,7 @@ define(function (require) {
     Actor.prototype.updateCollisions = function () {
         var i, entity, collisionBox;
         collisionBox = this.getCollisionBox();
+
         for (i = 0; i < this.game.entities.length; i += 1) {
             entity = this.game.entities[i];
             if (this !== entity && entity.boundingbox !== null && collisionBox.intersects(entity.getCollisionBox())) {

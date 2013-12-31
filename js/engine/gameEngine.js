@@ -8,34 +8,17 @@ define(function (require) {
         Entity = require('engine/Entity'),
         Keyboard = require('engine/Keyboard'),
         Mouse = require('engine/Mouse');
+        //StateStack = require('engine/StateStack');
 
     /**
     GameEngine class
     @class GameEngine
     **/
     function GameEngine(width, height) {
-        this.width = width;
-        this.height = height;
-
-        this.ctx = null;
-        this.timer = null;
-        this.assetManager = null;
-        this.entities = [];
-        this.keyboard = null;
-        this.mouse = null;
-    }
-
-
-    /**
-    Allows the game to perform any initialization it needs to before starting to run.
-    This is where it can query for any required services and load any non-graphic related content.
-    @method initialize
-    **/
-    GameEngine.prototype.initialize = function () {
         // Create the canvas.
         var canvas = document.createElement("canvas");
-        canvas.width = this.width;
-        canvas.height = this.height;
+        canvas.width = width;
+        canvas.height = height;
         document.body.appendChild(canvas);
 
         this.ctx = canvas.getContext("2d");
@@ -43,13 +26,13 @@ define(function (require) {
         this.assetManager = new AssetManager();
         this.keyboard = new Keyboard();
         this.mouse = new Mouse(this);
-    };
+    }
 
     /**
-    LoadContent will be called once per game and is the place to load all of your content.
-    @method loadContent
+    Init will be called once per game and is the place to load all of your content.
+    @method init
     **/
-    GameEngine.prototype.loadContent = function () {
+    GameEngine.prototype.init = function () {
     };
 
     /**
@@ -74,8 +57,7 @@ define(function (require) {
         var dt = this.timer.tick();
         this.update(dt);
         this.draw(this.ctx);
-
-        if (!this.isStopped) { window.requestAnimationFrame(this.gameloop.bind(this)); }
+        window.requestAnimationFrame(this.gameloop.bind(this));
     };
 
     /**
@@ -83,16 +65,7 @@ define(function (require) {
     @method run
     **/
     GameEngine.prototype.run = function () {
-        this.initialize();
-        this.loadContent();
-    };
-
-    /**
-    Add entity to the entities list.
-    @method addEntity
-    **/
-    GameEngine.prototype.addEntity = function (entity) {
-        this.entities.push(entity);
+        this.init();
     };
 
     return GameEngine;

@@ -34,7 +34,6 @@ define(function (require) {
         this.pos.x += this.game.camera.viewport.x;
         this.pos.y += this.game.camera.viewport.y;
 
-        //console.log("x : " + this.pos.x + " y : " + this.pos.y)
         if (e.button === 0) {
             this.leftClick = true;
         }

@@ -19,8 +19,8 @@ define(function (require) {
     Ennemy.prototype = new Actor();
     Ennemy.prototype.constructor = Ennemy;
 
-    Ennemy.prototype.loadContent = function () {
-        var spriteSheet = new SpriteSheet(this.game.assetManager.getAsset(this.assetPath), this.width, this.height);
+    Ennemy.prototype.loadContent = function (assetManager) {
+        var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
         this.addAnim("idle", spriteSheet, [0], 0.15, false);
         this.addAnim("death", spriteSheet, [36, 37, 38], 0.12, false);
     };

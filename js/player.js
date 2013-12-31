@@ -23,8 +23,8 @@ define(function (require) {
     Player.prototype = new Actor();
     Player.prototype.constructor = Player;
 
-    Player.prototype.loadContent = function () {
-        var spriteSheet = new SpriteSheet(this.game.assetManager.getAsset(this.assetPath), this.width, this.height);
+    Player.prototype.loadContent = function (assetManager) {
+        var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
         this.addAnim("idleDown", spriteSheet, [0], 0.15, false);
         this.addAnim("idleUp", spriteSheet, [1], 0.15, false);
         this.addAnim("idleLeft", spriteSheet, [2], 0.15, false);

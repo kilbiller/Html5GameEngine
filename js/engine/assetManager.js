@@ -50,10 +50,14 @@ define(function () {
     AssetManager.prototype.downloadAll = function () {
         var i, path, img, audio, onLoad;
 
+        onLoad = function () {
+            this.successCount += 1;
+        };
+
         for (i = 0; i < this.downloadQueue.length; i += 1) {
             path = this.downloadQueue[i];
             img = new Image();
-            img.addEventListener("load", this.onLoad.bind(this), false);
+            img.addEventListener("load", onLoad.bind(this), false);
             img.src = path;
             this.cache[path] = img;
         }
@@ -80,10 +84,6 @@ define(function () {
     **/
     AssetManager.prototype.getAsset = function (path) {
         return this.cache[path];
-    };
-
-    AssetManager.prototype.onLoad = function () {
-        this.successCount += 1;
     };
 
     return AssetManager;

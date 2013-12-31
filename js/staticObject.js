@@ -21,8 +21,8 @@ define(function (require) {
     StaticObject.prototype = new Entity();
     StaticObject.prototype.constructor = StaticObject;
 
-    StaticObject.prototype.loadContent = function () {
-        var spriteSheet = new SpriteSheet(this.game.assetManager.getAsset(this.assetPath), this.width, this.height);
+    StaticObject.prototype.loadContent = function (assetManager) {
+        var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
         this.addAnim("idle", spriteSheet, [0], 0.15, false);
     };
 
