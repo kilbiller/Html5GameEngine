@@ -4,7 +4,7 @@ define(function (require) {
     "use strict";
     var Entity = require('engine/Entity'),
         SpriteSheet = require('engine/SpriteSheet'),
-        Animation = require('engine/Animation'),
+        Animations = require('engine/Animations'),
         Rectangle = require('engine/Rectangle');
 
     function StaticObject(game, x, y, width, height, assetPath) {
@@ -12,7 +12,7 @@ define(function (require) {
         this.width = width;
         this.height = height;
         this.assetPath = assetPath;
-        this.anims = {};
+        this.anims = null;
         this.currentAnim = null;
         this.boundingbox = new Rectangle(0, 0, this.width, this.height);
         this.zIndex = this.pos.y + this.height;
@@ -23,12 +23,18 @@ define(function (require) {
 
     StaticObject.prototype.loadContent = function (assetManager) {
         var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
-        this.addAnim("idle", spriteSheet, [0], 0.15, false);
+        this.anims = new Animations(spriteSheet, {
+            idle: {
+                frames: [0],
+                step: 0.15,
+                loop: false
+            }
+        });
     };
 
     StaticObject.prototype.update = function (dt) {
         Entity.prototype.update.call(this, dt);
-        this.currentAnim = this.anims.idle;
+        this.currentAnim = this.anims.getAnim("idle");
         this.currentAnim.update(dt);
     };
 
@@ -37,10 +43,6 @@ define(function (require) {
         this.currentAnim.draw(ctx, this.pos.x, this.pos.y);
 
         if (this.boundingbox !== null) {this.getCollisionBox().draw(ctx); }
-    };
-
-    StaticObject.prototype.addAnim = function (name, spriteSheet, frameList, step, loop) {
-        this.anims[name] = new Animation(spriteSheet, frameList, step, loop);
     };
 
     StaticObject.prototype.getCollisionBox = function () {

@@ -3,7 +3,7 @@ define(function (require) {
 
     "use strict";
     var SpriteSheet = require('engine/SpriteSheet'),
-        Animation = require('engine/Animation'),
+        Animations = require('engine/Animations'),
         Rectangle = require('engine/Rectangle'),
         Vector = require('engine/Vector'),
         Actor = require('Actor');
@@ -25,22 +25,73 @@ define(function (require) {
 
     Player.prototype.loadContent = function (assetManager) {
         var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
-        this.addAnim("idleDown", spriteSheet, [0], 0.15, false);
-        this.addAnim("idleUp", spriteSheet, [1], 0.15, false);
-        this.addAnim("idleLeft", spriteSheet, [2], 0.15, false);
-        this.addAnim("idleRight", spriteSheet, [3], 0.15, false);
-
-        this.addAnim("moveDown", spriteSheet, [4, 5, 6, 7], 0.15, true);
-        this.addAnim("moveUp", spriteSheet, [8, 9, 10, 11], 0.15, true);
-        this.addAnim("moveLeft", spriteSheet, [12, 13, 14, 15], 0.15, true);
-        this.addAnim("moveRight", spriteSheet, [16, 17, 18, 19], 0.15, true);
-
-        this.addAnim("attackDown", spriteSheet, [20, 21, 22], 0.1, false);
-        this.addAnim("attackUp", spriteSheet, [24, 25, 26], 0.1, false);
-        this.addAnim("attackLeft", spriteSheet, [28, 29, 30], 0.1, false);
-        this.addAnim("attackRight", spriteSheet, [32, 33, 34], 0.1, false);
-
-        this.addAnim("death", spriteSheet, [36, 37, 38], 0.12, false);
+        this.anims = new Animations(spriteSheet, {
+            idleDown: {
+                frames: [0],
+                step: 0.15,
+                loop: false
+            },
+            idleUp: {
+                frames: [1],
+                step: 0.15,
+                loop: false
+            },
+            idleLeft: {
+                frames: [2],
+                step: 0.15,
+                loop: false
+            },
+            idleRight: {
+                frames: [3],
+                step: 0.15,
+                loop: false
+            },
+            moveDown: {
+                frames: [4, 5, 6, 7],
+                step: 0.15,
+                loop: true
+            },
+            moveUp: {
+                frames: [8, 9, 10, 11],
+                step: 0.15,
+                loop: true
+            },
+            moveLeft: {
+                frames: [12, 13, 14, 15],
+                step: 0.15,
+                loop: true
+            },
+            moveRight: {
+                frames: [16, 17, 18, 19],
+                step: 0.15,
+                loop: true
+            },
+            attackDown: {
+                frames: [20, 21, 22],
+                step: 0.1,
+                loop: false
+            },
+            attackUp: {
+                frames: [24, 25, 26],
+                step: 0.1,
+                loop: false
+            },
+            attackLeft: {
+                frames: [28, 29, 30],
+                step: 0.1,
+                loop: false
+            },
+            attackRight: {
+                frames: [32, 33, 34],
+                step: 0.1,
+                loop: false
+            },
+            death: {
+                frames: [36, 37, 38],
+                step: 0.12,
+                loop: false
+            }
+        });
     };
 
     Player.prototype.update = function (dt) {
@@ -50,27 +101,27 @@ define(function (require) {
             ms = this.game.mouse;
 
         if (!this.isAttacking && this.isAlive) {
-            this.currentAnim = this.anims["idle" + this.direction];
+            this.currentAnim = this.anims.getAnim("idle" + this.direction);
 
             if (kb.keysDown.hasOwnProperty(90)) { // Player holding z
                 this.direction = "Up";
                 this.pos.y -= this.speed * dt;
-                this.currentAnim = this.anims.moveUp;
+                this.currentAnim = this.anims.getAnim("moveUp");
             }
             if (kb.keysDown.hasOwnProperty(83)) { // Player holding s
                 this.direction = "Down";
                 this.pos.y += this.speed * dt;
-                this.currentAnim = this.anims.moveDown;
+                this.currentAnim = this.anims.getAnim("moveDown");
             }
             if (kb.keysDown.hasOwnProperty(81)) { // Player holding q
                 this.direction = "Left";
                 this.pos.x -= this.speed * dt;
-                this.currentAnim = this.anims.moveLeft;
+                this.currentAnim = this.anims.getAnim("moveLeft");
             }
             if (kb.keysDown.hasOwnProperty(68)) { // Player holding d
                 this.direction = "Right";
                 this.pos.x += this.speed * dt;
-                this.currentAnim = this.anims.moveRight;
+                this.currentAnim = this.anims.getAnim("moveRight");
             }
 
             /*
@@ -126,16 +177,16 @@ define(function (require) {
 
         if (this.direction === "Up") {
             this.attackRect = new Rectangle(this.pos.x + 12, this.pos.y - 1, 10, 1);
-            this.currentAnim = this.anims.attackUp;
+            this.currentAnim = this.anims.getAnim("attackUp");
         } else if (this.direction === "Down") {
             this.attackRect = new Rectangle(this.pos.x + 8, this.pos.y + 18, 20, 12);
-            this.currentAnim = this.anims.attackDown;
+            this.currentAnim = this.anims.getAnim("attackDown");
         } else if (this.direction === "Left") {
             this.attackRect = new Rectangle(this.pos.x - 4, this.pos.y + 13, 25, 12);
-            this.currentAnim = this.anims.attackLeft;
+            this.currentAnim = this.anims.getAnim("attackLeft");
         } else if (this.direction === "Right") {
             this.attackRect = new Rectangle(this.pos.x + 8, this.pos.y + 13, 25, 12);
-            this.currentAnim = this.anims.attackRight;
+            this.currentAnim = this.anims.getAnim("attackRight");
         }
 
         for (i = 0; i < this.game.entities.length; i += 1) {

@@ -14,7 +14,7 @@ define(function (require) {
         this.frameDuration = frameDuration;
         this.totalTime = this.frameList.length * this.frameDuration;
         this.elapsedTime = 0;
-        this.loop = loop || false;
+        this.loop = loop;
         this.source = {};
     }
 

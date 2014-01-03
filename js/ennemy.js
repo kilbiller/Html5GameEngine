@@ -4,7 +4,7 @@ define(function (require) {
     "use strict";
     var Actor = require('Actor'),
         SpriteSheet = require('engine/SpriteSheet'),
-        Animation = require('engine/Animation'),
+        Animations = require('engine/Animations'),
         Rectangle = require('engine/Rectangle'),
         Vector = require('engine/Vector');
 
@@ -21,15 +21,25 @@ define(function (require) {
 
     Ennemy.prototype.loadContent = function (assetManager) {
         var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
-        this.addAnim("idle", spriteSheet, [0], 0.15, false);
-        this.addAnim("death", spriteSheet, [36, 37, 38], 0.12, false);
+        this.anims = new Animations(spriteSheet, {
+            idle: {
+                frames: [0],
+                step: 0.15,
+                loop: false
+            },
+            death: {
+                frames: [36, 37, 38],
+                step: 0.15,
+                loop: false
+            }
+        });
     };
 
     Ennemy.prototype.update = function (dt) {
         Actor.prototype.update.call(this, dt);
 
         if (this.isAlive) {
-            this.currentAnim = this.anims.idle;
+            this.currentAnim = this.anims.getAnim("idle");
         }
 
         this.currentAnim.update(dt);

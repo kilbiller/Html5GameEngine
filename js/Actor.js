@@ -3,8 +3,6 @@ define(function (require) {
 
     "use strict";
     var Entity = require('engine/Entity'),
-        SpriteSheet = require('engine/SpriteSheet'),
-        Animation = require('engine/Animation'),
         Rectangle = require('engine/Rectangle'),
         Vector = require('engine/Vector');
 
@@ -14,7 +12,7 @@ define(function (require) {
         this.height = height;
         this.assetPath = assetPath;
 
-        this.anims = {};
+        this.anims = null;
         this.currentAnim = null;
         this.direction = "Down";
         this.hitbox = new Rectangle(0, 0, this.width, this.height);
@@ -38,12 +36,8 @@ define(function (require) {
     Actor.prototype.die = function () {
         var deathSound = this.game.assetManager.getSound("sounds/slime_death.wav");
         deathSound.play();
-        this.currentAnim = this.anims.death;
+        this.currentAnim = this.anims.getAnim("death");
         this.isAlive = false;
-    };
-
-    Actor.prototype.addAnim = function (name, spriteSheet, frameList, step, loop) {
-        this.anims[name] = new Animation(spriteSheet, frameList, step, loop);
     };
 
     Actor.prototype.getCollisionBox = function () {
