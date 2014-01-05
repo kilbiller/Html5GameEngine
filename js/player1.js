@@ -26,71 +26,19 @@ define(function (require) {
     Player.prototype.loadContent = function (assetManager) {
         var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
         this.anims = new Animations(spriteSheet, {
-            idleDown: {
-                frames: [0],
-                step: 0.15,
-                loop: false
-            },
-            idleUp: {
-                frames: [1],
-                step: 0.15,
-                loop: false
-            },
-            idleLeft: {
-                frames: [2],
-                step: 0.15,
-                loop: false
-            },
-            idleRight: {
-                frames: [3],
-                step: 0.15,
-                loop: false
-            },
-            moveDown: {
-                frames: [4, 5, 6, 7],
-                step: 0.15,
-                loop: true
-            },
-            moveUp: {
-                frames: [8, 9, 10, 11],
-                step: 0.15,
-                loop: true
-            },
-            moveLeft: {
-                frames: [12, 13, 14, 15],
-                step: 0.15,
-                loop: true
-            },
-            moveRight: {
-                frames: [16, 17, 18, 19],
-                step: 0.15,
-                loop: true
-            },
-            attackDown: {
-                frames: [20, 21, 22],
-                step: 0.1,
-                loop: false
-            },
-            attackUp: {
-                frames: [24, 25, 26],
-                step: 0.1,
-                loop: false
-            },
-            attackLeft: {
-                frames: [28, 29, 30],
-                step: 0.1,
-                loop: false
-            },
-            attackRight: {
-                frames: [32, 33, 34],
-                step: 0.1,
-                loop: false
-            },
-            death: {
-                frames: [36, 37, 38],
-                step: 0.12,
-                loop: false
-            }
+            idleDown: { frames: [0],  step: 0.15, loop: false },
+            idleUp: { frames: [1], step: 0.15, loop: false },
+            idleLeft: { frames: [2], step: 0.15, loop: false },
+            idleRight: { frames: [3], step: 0.15, loop: false },
+            moveDown: { frames: [4, 5, 6, 7], step: 0.15, loop: true },
+            moveUp: { frames: [8, 9, 10, 11], step: 0.15, loop: true },
+            moveLeft: { frames: [12, 13, 14, 15], step: 0.15, loop: true },
+            moveRight: { frames: [16, 17, 18, 19], step: 0.15, loop: true },
+            attackDown: { frames: [20, 21, 22], step: 0.1, loop: false },
+            attackUp: { frames: [24, 25, 26], step: 0.1, loop: false },
+            attackLeft: { frames: [28, 29, 30], step: 0.1, loop: false },
+            attackRight: {  frames: [32, 33, 34], step: 0.1, loop: false },
+            death: { frames: [36, 37, 38], step: 0.12, loop: false }
         });
     };
 
@@ -148,7 +96,7 @@ define(function (require) {
 
         this.currentAnim.update(dt);
 
-        // If player finished his attack.
+        // If player has finished his attack.
         if (this.isAttacking && this.currentAnim.isDone()) {
             this.currentAnim.reset();
             this.isAttacking = false;
