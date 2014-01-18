@@ -47,6 +47,12 @@ define(function (require) {
         var i, game;
         game = this.game;
 
+        //Spawn a box each time left mouse button is clicked
+        if (game.mouse.leftClick) {
+            game.entities.push(new StaticObject(game, game.mouse.pos.x, game.mouse.pos.y, 32, 32, "img/trunks.png"));
+            game.entities[game.entities.length - 1].loadContent(game.assetManager);
+        }
+
         for (i = 0; i < game.entities.length; i += 1) {
             if (!game.entities[i].removeFromWorld) {
                 game.entities[i].update(dt);
@@ -89,10 +95,7 @@ define(function (require) {
         ctx.restore();
     };
 
-    LevelState.prototype.onExit = function () {
-
-    };
+    LevelState.prototype.onExit = function () {};
 
     return LevelState;
-
 });

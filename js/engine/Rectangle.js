@@ -17,10 +17,10 @@ define(function () {
 
     Rectangle.prototype.draw = function (ctx, color, scaleBy) {
         scaleBy = scaleBy || 1;
-        color = color || null;
+        color = color || "#000000";
 
         ctx.save();
-        if (color !== null) {ctx.strokeStyle = color; }
+        ctx.strokeStyle = color;
 
         // Round the numbers to prevent sub-pixel drawing on canvas.
         // (prevent blurring and supposedly improve performance)
