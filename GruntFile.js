@@ -10,10 +10,21 @@ module.exports = function (grunt) {
                     open: {target: 'http://localhost'}
                 }
             }
+        },
+        requirejs: {
+            compile: {
+                options: {
+                    baseUrl: "js",
+                    include: ['lib/require', 'main'],
+                    out: "./optimized.js"
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-requirejs');
 
     grunt.registerTask('default', ['connect']);
+    grunt.registerTask('optimize', ['requirejs']);
 };
