@@ -1,10 +1,7 @@
-/*global define*/
-define(function (require) {
+"use strict";
 
-    "use strict";
-    var Game = require('game'),
-        game;
+var Game = require('./Game'),
+    game;
 
-    game = new Game(800, 400);
-    game.run();
-});
+game = new Game(800, 400);
+game.run();

@@ -1,30 +1,28 @@
-/*global module*/
+"use strict";
+
 module.exports = function (grunt) {
-    "use strict";
+
     grunt.initConfig({
         connect: {
             server: {
                 options: {
                     port: 80,
-                    keepalive: true,
-                    open: {target: 'http://localhost'}
+                    //open: {target: 'http://localhost'},
+                    keepalive: true
                 }
             }
         },
-        requirejs: {
-            compile: {
-                options: {
-                    baseUrl: "js",
-                    include: ['lib/require', 'main'],
-                    out: "./optimized.js"
+        browserify: {
+            dist: {
+                files: {
+                    'game.js': ['js/**/*.js']
                 }
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-requirejs');
+    grunt.loadNpmTasks('grunt-browserify');
 
-    grunt.registerTask('default', ['connect']);
-    grunt.registerTask('optimize', ['requirejs']);
+    grunt.registerTask('default', ['browserify', 'connect']);
 };

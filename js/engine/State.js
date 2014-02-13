@@ -1,36 +1,31 @@
-/*global define*/
-define(function () {
+"use strict";
 
-    "use strict";
+function State(game) {
+    this.game = game;
+}
 
-    function State(game) {
-        this.game = game;
-    }
+State.prototype.onEnter = function () {
 
-    State.prototype.onEnter = function () {
+};
 
-    };
+State.prototype.update = function (dt) {
 
-    State.prototype.update = function (dt) {
+};
 
-    };
+State.prototype.draw = function (ctx) {
 
-    State.prototype.draw = function (ctx) {
+};
 
-    };
+State.prototype.onExit = function () {
 
-    State.prototype.onExit = function () {
+};
 
-    };
+State.prototype.onPause = function () {
 
-    State.prototype.onPause = function () {
+};
 
-    };
+State.prototype.onResume = function () {
 
-    State.prototype.onResume = function () {
+};
 
-    };
-
-    return State;
-
-});
+module.exports = State;

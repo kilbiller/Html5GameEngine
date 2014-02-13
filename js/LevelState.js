@@ -1,101 +1,97 @@
-/*global define*/
-define(function (require) {
+"use strict";
 
-    "use strict";
-    var State = require('engine/State'),
-        Camera = require('engine/Camera'),
-        Player = require('Player'),
-        Ennemy = require('Ennemy'),
-        StaticObject = require('StaticObject');
+var State = require('./engine/State'),
+    Camera = require('./engine/Camera'),
+    Player = require('./Player'),
+    Ennemy = require('./Ennemy'),
+    StaticObject = require('./StaticObject');
 
 
-    function LevelState(game) {
-        State.call(this, game);
+function LevelState(game) {
+    State.call(this, game);
+}
+
+LevelState.prototype = new State();
+
+LevelState.prototype.onEnter = function () {
+    var i, game;
+    game = this.game;
+
+    // Create the entities.
+    game.entities.push(new StaticObject(game, 150, 150, 32, 32, "img/trunks.png"));
+    game.entities.push(new StaticObject(game, 180, 230, 32, 32, "img/trunks.png"));
+    game.entities.push(new StaticObject(game, 340, 200, 32, 32, "img/trunks.png"));
+
+    game.entities.push(new Ennemy(game, 300, 300, 32, 32, "img/player.png"));
+    game.entities.push(new Ennemy(game, 400, 300, 32, 32, "img/player.png"));
+    game.entities.push(new Ennemy(game, 300, 20, 32, 32, "img/player.png"));
+    game.entities.push(new Ennemy(game, 50, 300, 32, 32, "img/player.png"));
+    game.entities.push(new Ennemy(game, 90, 300, 32, 32, "img/player.png"));
+
+    game.entities.push(new Player(game, 50, 50, 32, 32, "img/player.png"));
+
+    for (i = 0; i < game.entities.length; i += 1) {
+        game.entities[i].loadContent(game.assetManager);
     }
 
-    LevelState.prototype = new State();
-    LevelState.prototype.constructor = LevelState;
+    //Follow the player
+    game.camera.follow(game.entities[game.entities.length - 1]);
+};
 
-    LevelState.prototype.onEnter = function () {
-        var i, game;
-        game = this.game;
+LevelState.prototype.update = function (dt) {
+    State.prototype.update.call(this, dt);
 
-        // Create the entities.
-        game.entities.push(new StaticObject(game, 150, 150, 32, 32, "img/trunks.png"));
-        game.entities.push(new StaticObject(game, 180, 230, 32, 32, "img/trunks.png"));
-        game.entities.push(new StaticObject(game, 340, 200, 32, 32, "img/trunks.png"));
+    var i, game;
+    game = this.game;
 
-        game.entities.push(new Ennemy(game, 300, 300, 32, 32, "img/player.png"));
-        game.entities.push(new Ennemy(game, 400, 300, 32, 32, "img/player.png"));
-        game.entities.push(new Ennemy(game, 300, 20, 32, 32, "img/player.png"));
-        game.entities.push(new Ennemy(game, 50, 300, 32, 32, "img/player.png"));
-        game.entities.push(new Ennemy(game, 90, 300, 32, 32, "img/player.png"));
+    //Spawn a box each time left mouse button is clicked
+    if (game.mouse.leftClick) {
+        game.entities.push(new StaticObject(game, game.mouse.pos.x, game.mouse.pos.y, 32, 32, "img/trunks.png"));
+        game.entities[game.entities.length - 1].loadContent(game.assetManager);
+    }
 
-        game.entities.push(new Player(game, 50, 50, 32, 32, "img/player.png"));
-
-        for (i = 0; i < game.entities.length; i += 1) {
-            game.entities[i].loadContent(game.assetManager);
+    for (i = 0; i < game.entities.length; i += 1) {
+        if (!game.entities[i].removeFromWorld) {
+            game.entities[i].update(dt);
         }
+    }
 
-        //Follow the player
-        game.camera.follow(game.entities[game.entities.length - 1]);
-    };
-
-    LevelState.prototype.update = function (dt) {
-        State.prototype.update.call(this, dt);
-
-        var i, game;
-        game = this.game;
-
-        //Spawn a box each time left mouse button is clicked
-        if (game.mouse.leftClick) {
-            game.entities.push(new StaticObject(game, game.mouse.pos.x, game.mouse.pos.y, 32, 32, "img/trunks.png"));
-            game.entities[game.entities.length - 1].loadContent(game.assetManager);
+    for (i = game.entities.length - 1; i >= 0;  i -= 1) {
+        if (game.entities[i].removeFromWorld) {
+            game.entities.splice(i, 1);
         }
+    }
 
-        for (i = 0; i < game.entities.length; i += 1) {
-            if (!game.entities[i].removeFromWorld) {
-                game.entities[i].update(dt);
-            }
-        }
+    // Basic Depth sorting.
+    // TODO : Upgrade and implement in the engine.
+    game.entities.sort(function (a, b) { return a.zIndex - b.zIndex; });
 
-        for (i = game.entities.length - 1; i >= 0;  i -= 1) {
-            if (game.entities[i].removeFromWorld) {
-                game.entities.splice(i, 1);
-            }
-        }
+    game.camera.update();
+};
 
-        // Basic Depth sorting.
-        // TODO : Upgrade and implement in the engine.
-        game.entities.sort(function (a, b) { return a.zIndex - b.zIndex; });
+LevelState.prototype.draw = function (ctx) {
+    State.prototype.draw.call(this, ctx);
 
-        game.camera.update();
-    };
+    var i, game;
+    game = this.game;
 
-    LevelState.prototype.draw = function (ctx) {
-        State.prototype.draw.call(this, ctx);
+    // Clear the canvas.
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    //this.ctx.canvas.width = this.ctx.canvas.width;
 
-        var i, game;
-        game = this.game;
+    // Save context before camera translation.
+    ctx.save();
+    game.camera.transform(ctx);
 
-        // Clear the canvas.
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        //this.ctx.canvas.width = this.ctx.canvas.width;
+    //Draw entities
+    for (i = 0; i < game.entities.length; i += 1) {
+        game.entities[i].draw(ctx);
+    }
 
-        // Save context before camera translation.
-        ctx.save();
-        game.camera.transform(ctx);
+    // Restore the canvas.
+    ctx.restore();
+};
 
-        //Draw entities
-        for (i = 0; i < game.entities.length; i += 1) {
-            game.entities[i].draw(ctx);
-        }
+LevelState.prototype.onExit = function () {};
 
-        // Restore the canvas.
-        ctx.restore();
-    };
-
-    LevelState.prototype.onExit = function () {};
-
-    return LevelState;
-});
+module.exports = LevelState;

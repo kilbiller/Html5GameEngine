@@ -1,44 +1,41 @@
-/*global define*/
-define(function (require) {
+"use strict";
 
-    "use strict";
-    var Vector = require('engine/Vector');
+var Vector = require('./Vector');
 
-    /**
-    Entity class
-    @class Entity
-    **/
-    function Entity(game, x, y) {
-        this.game = game;
-        this.pos = new Vector(x, y);
-        this.zIndex = y;
-        this.removeFromWorld = false;
-    }
+/**
+Entity class
+@class Entity
+**/
+function Entity(game, x, y) {
+    this.game = game;
+    this.pos = new Vector(x, y);
+    this.zIndex = y;
+    this.removeFromWorld = false;
+}
 
-    /**
-    Update entity's data.
-    @method update
-    **/
-    Entity.prototype.update = function (dt) { };
+/**
+Update entity's data.
+@method update
+**/
+Entity.prototype.update = function (dt) { };
 
-    /**
-    Draw the entity on screen.
-    @method draw
-    **/
-    Entity.prototype.draw = function (dt, ctx) {
-        /*if (this.game.showOutlines && this.radius) {
-            ctx.beginPath();
-            ctx.strokeStyle = "green";
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, false);
-            ctx.stroke();
-            ctx.closePath();
-        }*/
-    };
-
-    /*Entity.prototype.outsideScreen = function() {
-        return (this.x > this.game.halfSurfaceWidth || this.x < -(this.game.halfSurfaceWidth) ||
-        this.y > this.game.halfSurfaceHeight || this.y < -(this.game.halfSurfaceHeight));
+/**
+Draw the entity on screen.
+@method draw
+**/
+Entity.prototype.draw = function (dt, ctx) {
+    /*if (this.game.showOutlines && this.radius) {
+        ctx.beginPath();
+        ctx.strokeStyle = "green";
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, false);
+        ctx.stroke();
+        ctx.closePath();
     }*/
+};
 
-    return Entity;
-});
+/*Entity.prototype.outsideScreen = function() {
+    return (this.x > this.game.halfSurfaceWidth || this.x < -(this.game.halfSurfaceWidth) ||
+    this.y > this.game.halfSurfaceHeight || this.y < -(this.game.halfSurfaceHeight));
+}*/
+
+module.exports = Entity;

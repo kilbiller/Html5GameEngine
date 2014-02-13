@@ -1,9 +1,0 @@
-{
-    "name": "Html5GameEngine",
-    "description": "Html5GameEngine",
-    "version": "0.0.1",
-    //"url": "http://example.com/",
-    "options": {
-        "outdir": "../docs"
-    }
-}
