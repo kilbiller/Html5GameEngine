@@ -1,5 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
+
 var Entity = require('./engine/Entity'),
     Rectangle = require('./engine/Rectangle'),
     Vector = require('./engine/Vector');
@@ -15,35 +16,30 @@ function Actor(game, x, y, width, height, assetPath) {
     this.direction = "Down";
     this.hitbox = new Rectangle(0, 0, this.width, this.height);
     this.boundingbox = new Rectangle(0, 0, this.width, this.height);
-    this.previousPos = new Vector(this.pos.x, this.pos.y);
+    this.previousPos = new Vector(this.x, this.y);
     this.isAlive = true;
 }
 
-Actor.prototype = new Entity();
+Actor.prototype = Object.create(Entity.prototype);
 
 Actor.prototype.update = function (dt) {
     Entity.prototype.update.call(this, dt);
 };
 
-Actor.prototype.draw = function (ctx) {
-    Entity.prototype.draw.call(this, ctx);
-    this.currentAnim.draw(ctx, this.pos.x, this.pos.y);
-};
-
 Actor.prototype.die = function () {
     var deathSound = this.game.assetManager.getSound("sounds/slime_death.wav");
-    deathSound.play();
-    this.currentAnim = this.anims.getAnim("death");
+    //deathSound.play();
+    this.anims.setAnim("death");
     this.isAlive = false;
 };
 
 Actor.prototype.getCollisionBox = function () {
-    return new Rectangle(this.pos.x + this.boundingbox.x, this.pos.y + this.boundingbox.y,
+    return new Rectangle(this.x + this.boundingbox.x, this.y + this.boundingbox.y,
                          this.boundingbox.width, this.boundingbox.height);
 };
 
 Actor.prototype.getHitBox = function () {
-    return new Rectangle(this.pos.x + this.hitbox.x, this.pos.y + this.hitbox.y,
+    return new Rectangle(this.x + this.hitbox.x, this.y + this.hitbox.y,
                          this.hitbox.width, this.hitbox.height);
 };
 
@@ -51,18 +47,20 @@ Actor.prototype.updateCollisions = function () {
     var i, entity, collisionBox;
     collisionBox = this.getCollisionBox();
 
-    for (i = 0; i < this.game.entities.length; i += 1) {
-        entity = this.game.entities[i];
+    for (i = 0; i < this.game.entities.children.length; i += 1) {
+        entity = this.game.entities.children[i];
         if (this !== entity && entity.boundingbox !== null && collisionBox.intersects(entity.getCollisionBox())) {
-            this.pos = new Vector(this.previousPos.x, this.previousPos.y);
+            this.x = this.previousPos.x;
+            this.y = this.previousPos.y;
         }
     }
 };
 
 module.exports = Actor;
 
-},{"./engine/Entity":11,"./engine/Rectangle":15,"./engine/Vector":20}],2:[function(require,module,exports){
+},{"./engine/Entity":12,"./engine/Rectangle":16,"./engine/Vector":21}],2:[function(require,module,exports){
 "use strict";
+
 var Actor = require('./Actor'),
     SpriteSheet = require('./engine/SpriteSheet'),
     Animations = require('./engine/Animations'),
@@ -75,17 +73,13 @@ function Ennemy(game, x, y, width, height, assetPath) {
     this.speed = 150;
     this.hp = 30;
     this.boundingbox = new Rectangle(6, 20, 20, 10);
-}
 
-Ennemy.prototype = new Actor();
-
-Ennemy.prototype.loadContent = function (assetManager) {
-    var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
+    var spriteSheet = new SpriteSheet(this.assetPath, this.width, this.height);
     this.anims = new Animations(spriteSheet, {
         idle: {
             frames: [0],
             step: 0.15,
-            loop: false
+            loop: true
         },
         death: {
             frames: [36, 37, 38],
@@ -93,25 +87,19 @@ Ennemy.prototype.loadContent = function (assetManager) {
             loop: false
         }
     });
-};
+    this.addChild(this.anims);
+}
+
+Ennemy.prototype = Object.create(Actor.prototype);
 
 Ennemy.prototype.update = function (dt) {
-    Actor.prototype.update.call(this, dt);
-
     if (this.isAlive) {
-        this.currentAnim = this.anims.getAnim("idle");
+        this.anims.setAnim("idle");
     }
 
-    this.currentAnim.update(dt);
-    this.zIndex = this.pos.y + this.height;
-    this.previousPos = new Vector(this.pos.x, this.pos.y);
-};
-
-Ennemy.prototype.draw = function (ctx) {
-    Actor.prototype.draw.call(this, ctx);
-
-    this.getHitBox().draw(ctx);
-    this.getCollisionBox().draw(ctx);
+    this.anims.getCurrent().update(dt);
+    this.zIndex = this.y + this.height;
+    this.previousPos = new Vector(this.x, this.y);
 };
 
 Ennemy.prototype.takeDamage = function (damage) {
@@ -121,8 +109,9 @@ Ennemy.prototype.takeDamage = function (damage) {
 
 module.exports = Ennemy;
 
-},{"./Actor":1,"./engine/Animations":8,"./engine/Rectangle":15,"./engine/SpriteSheet":16,"./engine/Vector":20}],3:[function(require,module,exports){
+},{"./Actor":1,"./engine/Animations":9,"./engine/Rectangle":16,"./engine/SpriteSheet":17,"./engine/Vector":21}],3:[function(require,module,exports){
 "use strict";
+
 var GameEngine = require('./engine/GameEngine'),
     Camera = require('./engine/Camera'),
     Player = require('./Player'),
@@ -133,49 +122,27 @@ var GameEngine = require('./engine/GameEngine'),
 
 function Game(width, height) {
     GameEngine.call(this, width, height);
-    this.entities = [];
+    this.entities = null;
     this.camera = new Camera(0, 0, width, height);
     this.stateManager = new StateManager();
 }
 
-Game.prototype = new GameEngine();
+Game.prototype = Object.create(GameEngine.prototype);
 
 Game.prototype.init = function () {
-    var wait;
-    GameEngine.prototype.init.call(this);
-
-    // Add assets to the queue
-    this.assetManager.queueDownload("img/player.png");
-    this.assetManager.queueSound("sounds/slime_death.wav");
-    this.assetManager.queueSound("sounds/punch.wav");
-    this.assetManager.queueDownload("img/trunks.png");
-
-    this.assetManager.downloadAll();
-
-    wait = setInterval(function () {
-        if (this.assetManager.isDone()) {
-            clearInterval(wait);
-            // Start the game.
-            this.stateManager.push(new LevelState(this));
-            this.gameloop();
-        }
-    }.bind(this), 100);
+    this.stateManager.push(new LevelState(this));
+    this.gameloop();
 };
 
 Game.prototype.update = function (dt) {
-    GameEngine.prototype.update.call(this, dt);
     this.stateManager.update(dt);
-};
-
-Game.prototype.draw = function (ctx) {
-    GameEngine.prototype.draw.call(this, ctx);
-    this.stateManager.draw(ctx);
 };
 
 module.exports = Game;
 
-},{"./Ennemy":2,"./LevelState":4,"./Player":5,"./StaticObject":6,"./engine/Camera":10,"./engine/GameEngine":12,"./engine/StateManager":18}],4:[function(require,module,exports){
+},{"./Ennemy":2,"./LevelState":4,"./Player":6,"./StaticObject":7,"./engine/Camera":11,"./engine/GameEngine":13,"./engine/StateManager":19}],4:[function(require,module,exports){
 "use strict";
+
 var State = require('./engine/State'),
     Camera = require('./engine/Camera'),
     Player = require('./Player'),
@@ -187,92 +154,74 @@ function LevelState(game) {
     State.call(this, game);
 }
 
-LevelState.prototype = new State();
+LevelState.prototype = Object.create(State.prototype);
 
 LevelState.prototype.onEnter = function () {
-    var i, game;
-    game = this.game;
+    var game = this.game;
+
+    game.entities = new PIXI.DisplayObjectContainer();
 
     // Create the entities.
-    game.entities.push(new StaticObject(game, 150, 150, 32, 32, "img/trunks.png"));
-    game.entities.push(new StaticObject(game, 180, 230, 32, 32, "img/trunks.png"));
-    game.entities.push(new StaticObject(game, 340, 200, 32, 32, "img/trunks.png"));
+    game.entities.addChild(new StaticObject(game, 150, 150, 32, 32, "img/trunks.png"));
+    game.entities.addChild(new StaticObject(game, 180, 230, 32, 32, "img/trunks.png"));
+    game.entities.addChild(new StaticObject(game, 340, 200, 32, 32, "img/trunks.png"));
 
-    game.entities.push(new Ennemy(game, 300, 300, 32, 32, "img/player.png"));
-    game.entities.push(new Ennemy(game, 400, 300, 32, 32, "img/player.png"));
-    game.entities.push(new Ennemy(game, 300, 20, 32, 32, "img/player.png"));
-    game.entities.push(new Ennemy(game, 50, 300, 32, 32, "img/player.png"));
-    game.entities.push(new Ennemy(game, 90, 300, 32, 32, "img/player.png"));
+    game.entities.addChild(new Ennemy(game, 300, 300, 32, 32, "img/player.png"));
+    game.entities.addChild(new Ennemy(game, 400, 300, 32, 32, "img/player.png"));
+    game.entities.addChild(new Ennemy(game, 300, 20, 32, 32, "img/player.png"));
+    game.entities.addChild(new Ennemy(game, 50, 300, 32, 32, "img/player.png"));
+    game.entities.addChild(new Ennemy(game, 90, 300, 32, 32, "img/player.png"));
 
-    game.entities.push(new Player(game, 50, 50, 32, 32, "img/player.png"));
-
-    for (i = 0; i < game.entities.length; i += 1) {
-        game.entities[i].loadContent(game.assetManager);
-    }
+    game.entities.addChild(new Player(game, 50, 50, 32, 32, "img/player.png"));
 
     //Follow the player
-    game.camera.follow(game.entities[game.entities.length - 1]);
+    //game.camera.follow(game.entities.children[game.entities.children.length - 1]);
+
+    game.stage.addChild(game.entities);
 };
 
 LevelState.prototype.update = function (dt) {
     State.prototype.update.call(this, dt);
 
-    var i, game;
-    game = this.game;
-
-    //Spawn a box each time left mouse button is clicked
+    /*//Spawn a box each time left mouse button is clicked
     if (game.mouse.leftClick) {
         game.entities.push(new StaticObject(game, game.mouse.pos.x, game.mouse.pos.y, 32, 32, "img/trunks.png"));
-        game.entities[game.entities.length - 1].loadContent(game.assetManager);
-    }
+    }*/
 
-    for (i = 0; i < game.entities.length; i += 1) {
-        if (!game.entities[i].removeFromWorld) {
-            game.entities[i].update(dt);
+    var game = this.game;
+    for (var i = 0; i < game.entities.children.length; i += 1) {
+        if (!game.entities.children[i].removeFromWorld) {
+            game.entities.children[i].update(dt);
         }
     }
 
-    for (i = game.entities.length - 1; i >= 0;  i -= 1) {
-        if (game.entities[i].removeFromWorld) {
-            game.entities.splice(i, 1);
+    for (i = game.entities.children.length - 1; i >= 0;  i -= 1) {
+        if (game.entities.children[i].removeFromWorld) {
+            game.entities.children.splice(i, 1);
         }
     }
 
-    // Basic Depth sorting.
-    // TODO : Upgrade and implement in the engine.
-    game.entities.sort(function (a, b) { return a.zIndex - b.zIndex; });
+    game.entities.children.sort(function (a, b) { return a.zIndex - b.zIndex; });
 
-    game.camera.update();
-};
-
-LevelState.prototype.draw = function (ctx) {
-    State.prototype.draw.call(this, ctx);
-
-    var i, game;
-    game = this.game;
-
-    // Clear the canvas.
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    //this.ctx.canvas.width = this.ctx.canvas.width;
-
-    // Save context before camera translation.
-    ctx.save();
-    game.camera.transform(ctx);
-
-    //Draw entities
-    for (i = 0; i < game.entities.length; i += 1) {
-        game.entities[i].draw(ctx);
-    }
-
-    // Restore the canvas.
-    ctx.restore();
+    game.camera.update(game.stage);
 };
 
 LevelState.prototype.onExit = function () {};
 
 module.exports = LevelState;
-},{"./Ennemy":2,"./Player":5,"./StaticObject":6,"./engine/Camera":10,"./engine/State":17}],5:[function(require,module,exports){
+
+},{"./Ennemy":2,"./Player":6,"./StaticObject":7,"./engine/Camera":11,"./engine/State":18}],5:[function(require,module,exports){
 "use strict";
+
+var Game = require('./Game'),
+    game;
+
+game = new Game(800, 400);
+game.run();
+
+},{"./Game":3}],6:[function(require,module,exports){
+"use strict";
+
 var SpriteSheet = require('./engine/SpriteSheet'),
     Animations = require('./engine/Animations'),
     Rectangle = require('./engine/Rectangle'),
@@ -286,20 +235,15 @@ function Player(game, x, y, width, height, assetPath) {
     this.isAttacking = false;
     this.attackRect = null;
     this.boundingbox = new Rectangle(6, 20, 20, 10);
-    //this.isMoving = false;
     this.COOLDOWN_TIME = 0.5;
     this.attackCooldown = 0;
-}
 
-Player.prototype = new Actor();
-
-Player.prototype.loadContent = function (assetManager) {
-    var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
+    var spriteSheet = new SpriteSheet(this.assetPath, this.width, this.height);
     this.anims = new Animations(spriteSheet, {
-        idleDown: { frames: [0],  step: 0.15, loop: false },
-        idleUp: { frames: [1], step: 0.15, loop: false },
-        idleLeft: { frames: [2], step: 0.15, loop: false },
-        idleRight: { frames: [3], step: 0.15, loop: false },
+        idleDown: { frames: [0],  step: 0.15, loop: true },
+        idleUp: { frames: [1], step: 0.15, loop: true },
+        idleLeft: { frames: [2], step: 0.15, loop: true },
+        idleRight: { frames: [3], step: 0.15, loop: true },
         moveDown: { frames: [4, 5, 6, 7], step: 0.15, loop: true },
         moveUp: { frames: [8, 9, 10, 11], step: 0.15, loop: true },
         moveLeft: { frames: [12, 13, 14, 15], step: 0.15, loop: true },
@@ -310,50 +254,43 @@ Player.prototype.loadContent = function (assetManager) {
         attackRight: {  frames: [32, 33, 34], step: 0.1, loop: false },
         death: { frames: [36, 37, 38], step: 0.12, loop: false }
     });
-};
+
+    this.addChild(this.anims);
+}
+
+Player.prototype = Object.create(Actor.prototype);
 
 Player.prototype.update = function (dt) {
-    Actor.prototype.update.call(this, dt);
-
     var kb = this.game.keyboard,
         ms = this.game.mouse;
 
     if (!this.isAttacking && this.isAlive) {
-        this.currentAnim = this.anims.getAnim("idle" + this.direction);
+        this.anims.setAnim("idle" + this.direction);
 
         if (kb.keysDown.hasOwnProperty(90)) { // Player holding z
             this.direction = "Up";
-            this.pos.y -= this.speed * dt;
-            this.currentAnim = this.anims.getAnim("moveUp");
+            this.y -= this.speed * dt;
+            this.anims.setAnim("moveUp");
         }
         if (kb.keysDown.hasOwnProperty(83)) { // Player holding s
             this.direction = "Down";
-            this.pos.y += this.speed * dt;
-            this.currentAnim = this.anims.getAnim("moveDown");
+            this.y += this.speed * dt;
+            this.anims.setAnim("moveDown");
         }
         if (kb.keysDown.hasOwnProperty(81)) { // Player holding q
             this.direction = "Left";
-            this.pos.x -= this.speed * dt;
-            this.currentAnim = this.anims.getAnim("moveLeft");
+            this.x -= this.speed * dt;
+            this.anims.setAnim("moveLeft");
         }
         if (kb.keysDown.hasOwnProperty(68)) { // Player holding d
             this.direction = "Right";
-            this.pos.x += this.speed * dt;
-            this.currentAnim = this.anims.getAnim("moveRight");
+            this.x += this.speed * dt;
+            this.anims.setAnim("moveRight");
         }
 
-        /*
-        // Mouse movement.
-        if (ms.leftClick) {
-            this.isMoving = true;
-        }
-        if (this.isMoving) {
-            this.pos = Vector.moveTowards(this.pos, ms.pos, this.speed * dt);
-            if (Math.abs(ms.pos.x - this.pos.x) <=  this.speed * dt && Math.abs(ms.pos.y - this.pos.y) <= this.speed * dt) {
-                this.isMoving = false;
-            }
-        }
-        */
+        // Prevent sub-pixel movements
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
 
         // Collision logic.
         this.updateCollisions();
@@ -364,51 +301,43 @@ Player.prototype.update = function (dt) {
         }
     }
 
-    this.currentAnim.update(dt);
+    this.anims.getCurrent().update(dt);
 
     // If player has finished his attack.
-    if (this.isAttacking && this.currentAnim.isDone()) {
-        this.currentAnim.reset();
+    if (this.isAttacking && this.anims.getCurrent().isDone()) {
+        this.anims.getCurrent().reset();
         this.isAttacking = false;
         this.attackRect = null;
     }
 
     if (this.attackCooldown > 0) {this.attackCooldown -= dt; }
-    this.zIndex = this.pos.y + this.height;
-    this.previousPos = new Vector(this.pos.x, this.pos.y);
-};
-
-Player.prototype.draw = function (ctx) {
-    Actor.prototype.draw.call(this, ctx);
-
-    this.getHitBox().draw(ctx);
-    this.getCollisionBox().draw(ctx);
-    if (this.attackRect !== null) {this.attackRect.draw(ctx); }
+    this.zIndex = this.y + this.height;
+    this.previousPos = new Vector(this.x, this.y);
 };
 
 Player.prototype.attack = function () {
     var i, punchSound, entity;
     punchSound = this.game.assetManager.getSound("sounds/punch.wav");
-    punchSound.play();
+    //punchSound.play();
     this.isAttacking = true;
     this.attackCooldown = this.COOLDOWN_TIME;
 
     if (this.direction === "Up") {
-        this.attackRect = new Rectangle(this.pos.x + 12, this.pos.y - 1, 10, 1);
-        this.currentAnim = this.anims.getAnim("attackUp");
+        this.attackRect = new Rectangle(this.x + 12, this.y - 1, 10, 1);
+        this.anims.setAnim("attackUp");
     } else if (this.direction === "Down") {
-        this.attackRect = new Rectangle(this.pos.x + 8, this.pos.y + 18, 20, 12);
-        this.currentAnim = this.anims.getAnim("attackDown");
+        this.attackRect = new Rectangle(this.x + 8, this.y + 18, 20, 12);
+        this.anims.setAnim("attackDown");
     } else if (this.direction === "Left") {
-        this.attackRect = new Rectangle(this.pos.x - 4, this.pos.y + 13, 25, 12);
-        this.currentAnim = this.anims.getAnim("attackLeft");
+        this.attackRect = new Rectangle(this.x - 4, this.y + 13, 25, 12);
+        this.anims.setAnim("attackLeft");
     } else if (this.direction === "Right") {
-        this.attackRect = new Rectangle(this.pos.x + 8, this.pos.y + 13, 25, 12);
-        this.currentAnim = this.anims.getAnim("attackRight");
+        this.attackRect = new Rectangle(this.x + 8, this.y + 13, 25, 12);
+        this.anims.setAnim("attackRight");
     }
 
-    for (i = 0; i < this.game.entities.length; i += 1) {
-        entity = this.game.entities[i];
+    for (i = 0; i < this.game.entities.children.length; i += 1) {
+        entity = this.game.entities.children[i];
         if (this !== entity && entity.hitbox !== null && entity.isAlive && this.attackRect.intersects(entity.getHitBox())) {
             entity.takeDamage(10);
         }
@@ -417,8 +346,9 @@ Player.prototype.attack = function () {
 
 module.exports = Player;
 
-},{"./Actor":1,"./engine/Animations":8,"./engine/Rectangle":15,"./engine/SpriteSheet":16,"./engine/Vector":20}],6:[function(require,module,exports){
+},{"./Actor":1,"./engine/Animations":9,"./engine/Rectangle":16,"./engine/SpriteSheet":17,"./engine/Vector":21}],7:[function(require,module,exports){
 "use strict";
+
 var Entity = require('./engine/Entity'),
     SpriteSheet = require('./engine/SpriteSheet'),
     Animations = require('./engine/Animations'),
@@ -432,49 +362,40 @@ function StaticObject(game, x, y, width, height, assetPath) {
     this.anims = null;
     this.currentAnim = null;
     this.boundingbox = new Rectangle(0, 0, this.width, this.height);
-    this.zIndex = this.pos.y + this.height;
-}
+    this.zIndex = this.y + this.height;
 
-StaticObject.prototype = new Entity();
-
-StaticObject.prototype.loadContent = function (assetManager) {
-    var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
+    var spriteSheet = new SpriteSheet(this.assetPath, this.width, this.height);
     this.anims = new Animations(spriteSheet, {
         idle: {
             frames: [0],
             step: 0.15,
-            loop: false
+            loop: true
         }
     });
-};
+    this.addChild(this.anims);
+}
+
+StaticObject.prototype = Object.create(Entity.prototype);
 
 StaticObject.prototype.update = function (dt) {
-    Entity.prototype.update.call(this, dt);
-    this.currentAnim = this.anims.getAnim("idle");
-    this.currentAnim.update(dt);
-};
-
-StaticObject.prototype.draw = function (ctx) {
-    Entity.prototype.draw.call(this, ctx);
-    this.currentAnim.draw(ctx, this.pos.x, this.pos.y);
-
-    if (this.boundingbox !== null) {this.getCollisionBox().draw(ctx); }
+    this.anims.setAnim("idle");
+    this.anims.getCurrent().update(dt);
 };
 
 StaticObject.prototype.getCollisionBox = function () {
-    return new Rectangle(this.pos.x + this.boundingbox.x, this.pos.y + this.boundingbox.y,
+    return new Rectangle(this.x + this.boundingbox.x, this.y + this.boundingbox.y,
                          this.boundingbox.width, this.boundingbox.height);
 };
 
 module.exports = StaticObject;
 
-},{"./engine/Animations":8,"./engine/Entity":11,"./engine/Rectangle":15,"./engine/SpriteSheet":16}],7:[function(require,module,exports){
+},{"./engine/Animations":9,"./engine/Entity":12,"./engine/Rectangle":16,"./engine/SpriteSheet":17}],8:[function(require,module,exports){
 "use strict";
 
 var SpriteSheet = require('./SpriteSheet');
 
 function Animation(spriteSheet, frameList, frameDuration, loop) {
-    this.spriteSheet = spriteSheet;
+    PIXI.Sprite.call(this, spriteSheet);
     this.frameList = frameList;
     this.frameDuration = frameDuration;
     this.totalTime = this.frameList.length * this.frameDuration;
@@ -482,6 +403,8 @@ function Animation(spriteSheet, frameList, frameDuration, loop) {
     this.loop = loop;
     this.source = {};
 }
+
+Animation.prototype = Object.create(PIXI.Sprite.prototype);
 
 Animation.prototype.update = function (dt) {
     this.elapsedTime += dt;
@@ -497,33 +420,13 @@ Animation.prototype.update = function (dt) {
     var index = this.currentFrame();
 
     // Find frame position inside the spritesheet.
-    this.source.x = (this.frameList[index] % this.spriteSheet.maxColumn) * this.spriteSheet.frameWidth;
-    this.source.y = Math.floor(this.frameList[index] / this.spriteSheet.maxColumn) * this.spriteSheet.frameHeight;
+    this.source.x = (this.frameList[index] % this.texture.maxColumn) * this.texture.frameWidth;
+    this.source.y = Math.floor(this.frameList[index] / this.texture.maxColumn) * this.texture.frameHeight;
+
+    //Change the frame rectangle position inside the spritesheet
+    this.texture.setFrame(new PIXI.Rectangle(this.source.x, this.source.y, this.texture.frameWidth, this.texture.frameHeight));
 };
 
-/**
-Draw the current frame on the screen at the specified location.
-@method drawFrame
-**/
-Animation.prototype.draw = function (ctx, x, y, scaleBy) {
-    scaleBy = scaleBy || 1;
-
-    // Round the numbers to prevent sub-pixel drawing on canvas.
-    // (prevent blurring and supposedly improve performance)
-    x = Math.round(x);
-    y = Math.round(y);
-
-    ctx.drawImage(this.spriteSheet.image,
-                 this.source.x, this.source.y,
-                 this.spriteSheet.frameWidth, this.spriteSheet.frameHeight,
-                 x, y,
-                 this.spriteSheet.frameWidth * scaleBy, this.spriteSheet.frameHeight * scaleBy);
-};
-
-/**
-Return the index of the frame to draw.
-@method currentFrame
-**/
 Animation.prototype.currentFrame = function () {
     if (this.elapsedTime <= this.totalTime) {
         return Math.floor(this.elapsedTime / this.frameDuration);
@@ -532,36 +435,26 @@ Animation.prototype.currentFrame = function () {
     }
 };
 
-/**
-Check if the animation loop is done.
-@method isDone
-**/
 Animation.prototype.isDone = function () {
     return (this.elapsedTime >= this.totalTime);
 };
 
-/**
-Reset the animation loop.
-@method reset
-**/
 Animation.prototype.reset = function () {
     this.elapsedTime = 0;
 };
 
 module.exports = Animation;
-},{"./SpriteSheet":16}],8:[function(require,module,exports){
+
+},{"./SpriteSheet":17}],9:[function(require,module,exports){
 "use strict";
 
 var Animation = require('./Animation');
 
-/**
-Animations class
-@class Animations
-**/
 function Animations(spriteSheet, animData) {
+    PIXI.DisplayObjectContainer.call(this);
     this.anims = [];
     this.spriteSheet = spriteSheet;
-
+    this.current = null;
 
     var anim, data;
     try {
@@ -577,63 +470,47 @@ function Animations(spriteSheet, animData) {
     }
 }
 
+Animations.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
+
 Animations.prototype.addAnim = function (name, frames, step, loop) {
     this.anims[name] = new Animation(this.spriteSheet, frames, step, loop);
+    this.addChild(this.anims[name]);
 };
 
-Animations.prototype.getAnim = function (name) {
-    return this.anims[name];
+Animations.prototype.setAnim = function (name) {
+    this.current = name;
+    for (var anim in this.anims) {
+        this.anims[anim].visible = false;
+    }
+    this.anims[anim].visible = true;
+};
+
+Animations.prototype.getCurrent = function () {
+    return this.anims[this.current];
 };
 
 module.exports = Animations;
 
-},{"./Animation":7}],9:[function(require,module,exports){
+},{"./Animation":8}],10:[function(require,module,exports){
 "use strict";
 
-/**
-AssetManager class
-@class AssetManager
-**/
 function AssetManager() {
     this.successCount = 0;
     this.errorCount = 0;
     this.cache = {};
-    this.downloadQueue = [];
     this.soundsQueue = [];
 }
 
-/**
-Add images to the queue.
-@method queueDownload
-**/
-AssetManager.prototype.queueDownload  = function (path) {
-    if (!this.downloadQueue.hasOwnProperty(path)) {
-        this.downloadQueue.push(path);
-    }
-};
-
-/**
-Add sounds to the queue.
-@method queueSound
-**/
 AssetManager.prototype.queueSound = function (path) {
     if (!this.soundsQueue.hasOwnProperty(path)) {
         this.soundsQueue.push(path);
     }
 };
 
-/**
-Check if all assets in the queue are loaded.
-@method isDone
-**/
 AssetManager.prototype.isDone = function () {
-    return ((this.downloadQueue.length + this.soundsQueue.length) === this.successCount + this.errorCount);
+    return (this.soundsQueue.length === this.successCount + this.errorCount);
 };
 
-/**
-Load all of the assets.
-@method downloadAll
-**/
 AssetManager.prototype.downloadAll = function () {
     var i, path, img, audio, onLoad;
 
@@ -641,13 +518,6 @@ AssetManager.prototype.downloadAll = function () {
         this.successCount += 1;
     };
 
-    for (i = 0; i < this.downloadQueue.length; i += 1) {
-        path = this.downloadQueue[i];
-        img = new Image();
-        img.addEventListener("load", onLoad.bind(this), false);
-        img.src = path;
-        this.cache[path] = img;
-    }
     for (i = 0; i < this.soundsQueue.length; i += 1) {
         path = this.soundsQueue[i];
         audio = new Audio(path);
@@ -657,26 +527,15 @@ AssetManager.prototype.downloadAll = function () {
     }
 };
 
-/**
-Return the specified audio.
-@method getSound
-**/
 AssetManager.prototype.getSound = function (path) {
-    return this.cache[path];
-};
-
-/**
-Return the specified asset.
-@method getAsset
-**/
-AssetManager.prototype.getAsset = function (path) {
     return this.cache[path];
 };
 
 module.exports = AssetManager;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
+
 var Rectangle = require('./Rectangle');
 
 function Camera(x, y, width, height) {
@@ -693,68 +552,38 @@ Camera.prototype.follow = function (entity) {
     this.followed = entity;
 };
 
-Camera.prototype.update = function () {
+Camera.prototype.update = function (stage) {
     // Keep following the entity.
     if (this.followed !== null) {
         this.offset((this.followed.pos.x  + this.followed.width / 2) - this.viewport.width / 2,
                     (this.followed.pos.y + this.followed.height / 2) - this.viewport.height / 2);
     }
-};
 
-Camera.prototype.transform = function (ctx) {
-    var x, y;
-    // Round the numbers to prevent sub-pixel drawing on canvas.
-    // (prevent blurring and supposedly improve performance)
-    x = Math.round(this.viewport.x);
-    y = Math.round(this.viewport.y);
-    ctx.translate(-x, -y);
+    stage.getChildAt(0).position.x = -this.viewport.x;
+    stage.getChildAt(0).position.y = -this.viewport.y;
 };
 
 module.exports = Camera;
 
-},{"./Rectangle":15}],11:[function(require,module,exports){
+},{"./Rectangle":16}],12:[function(require,module,exports){
 "use strict";
-var Vector = require('./Vector');
 
-/**
-Entity class
-@class Entity
-**/
 function Entity(game, x, y) {
+    PIXI.DisplayObjectContainer.call(this);
     this.game = game;
-    this.pos = new Vector(x, y);
+    this.x = x;
+    this.y = y;
     this.zIndex = y;
     this.removeFromWorld = false;
 }
 
-/**
-Update entity's data.
-@method update
-**/
-Entity.prototype.update = function (dt) { };
+Entity.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 
-/**
-Draw the entity on screen.
-@method draw
-**/
-Entity.prototype.draw = function (dt, ctx) {
-    /*if (this.game.showOutlines && this.radius) {
-        ctx.beginPath();
-        ctx.strokeStyle = "green";
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, false);
-        ctx.stroke();
-        ctx.closePath();
-    }*/
-};
-
-/*Entity.prototype.outsideScreen = function() {
-    return (this.x > this.game.halfSurfaceWidth || this.x < -(this.game.halfSurfaceWidth) ||
-    this.y > this.game.halfSurfaceHeight || this.y < -(this.game.halfSurfaceHeight));
-}*/
+Entity.prototype.update = function (dt) {};
 
 module.exports = Entity;
 
-},{"./Vector":20}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 var Timer = require('./Timer'),
     AssetManager = require('./AssetManager'),
@@ -762,67 +591,31 @@ var Timer = require('./Timer'),
     Keyboard = require('./Keyboard'),
     Mouse = require('./Mouse');
 
-/**
-GameEngine class
-@class GameEngine
-**/
 function GameEngine(width, height) {
-    // Create the canvas.
-    var canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    document.body.appendChild(canvas);
+    this.stage = new PIXI.Stage(0x008000);
+    this.renderer = PIXI.autoDetectRenderer(width, height);
+    document.body.appendChild(this.renderer.view);
 
-    this.ctx = canvas.getContext("2d");
     this.timer = new Timer();
     this.assetManager = new AssetManager();
     this.keyboard = new Keyboard();
-    this.mouse = new Mouse(this);
+    //this.mouse = new Mouse(this);
 }
 
-/**
-Init will be called once per game and is the place to load all of your content.
-@method init
-**/
-GameEngine.prototype.init = function () {
-};
-
-/**
-Run logic such as updating the world, checking for collisions, gathering input, and playing audio.
-@method update
-**/
-GameEngine.prototype.update = function (dt) {
-};
-
-/**
-This is called when the game should draw itself.
-@method draw
-**/
-GameEngine.prototype.draw = function (ctx) {
-};
-
-/**
-Actual gameloop.
-@method gameloop
-**/
 GameEngine.prototype.gameloop = function () {
     var dt = this.timer.tick();
     this.update(dt);
-    this.draw(this.ctx);
-    window.requestAnimationFrame(this.gameloop.bind(this));
+    this.renderer.render(this.stage);
+    requestAnimFrame(this.gameloop.bind(this));
 };
 
-/**
-Call this method to start the game.
-@method run
-**/
 GameEngine.prototype.run = function () {
     this.init();
 };
 
 module.exports = GameEngine;
 
-},{"./AssetManager":9,"./Entity":11,"./Keyboard":13,"./Mouse":14,"./Timer":19}],13:[function(require,module,exports){
+},{"./AssetManager":10,"./Entity":12,"./Keyboard":14,"./Mouse":15,"./Timer":20}],14:[function(require,module,exports){
 "use strict";
 
 function Keyboard() {
@@ -835,8 +628,9 @@ function Keyboard() {
 
 module.exports = Keyboard;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
+
 var Vector = require('./Vector');
 
 function Mouse(game) {
@@ -896,7 +690,7 @@ Mouse.prototype.isOutsideCanvas = function (x, y) {
 
 module.exports = Mouse;
 
-},{"./Vector":20}],15:[function(require,module,exports){
+},{"./Vector":21}],16:[function(require,module,exports){
 "use strict";
 
 function Rectangle(x, y, width, height) {
@@ -938,25 +732,25 @@ Rectangle.prototype.intersects = function (rect) {
 
 module.exports = Rectangle;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
-function SpriteSheet(image, width, height) {
-    this.image = image;
-    this.frameWidth = width;
-    this.frameHeight = height;
+function SpriteSheet(assetPath, frameWidth, frameHeight) {
 
-    this.maxColumn = this.image.width / this.frameWidth;
-    this.maxRow = this.image.height / this.frameHeight;
+    PIXI.Texture.call(this, PIXI.Texture.fromImage(assetPath));
+
+    this.frameWidth = frameWidth;
+    this.frameHeight = frameHeight;
+
+    this.maxColumn = 128 / this.frameWidth;
+    this.maxRow = 320 / this.frameHeight;
 }
 
-SpriteSheet.prototype.getImage = function () {
-    return this.image;
-};
+SpriteSheet.prototype = Object.create(PIXI.Texture.prototype);
 
 module.exports = SpriteSheet;
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 "use strict";
 
 function State(game) {
@@ -968,10 +762,6 @@ State.prototype.onEnter = function () {
 };
 
 State.prototype.update = function (dt) {
-
-};
-
-State.prototype.draw = function (ctx) {
 
 };
 
@@ -989,7 +779,7 @@ State.prototype.onResume = function () {
 
 module.exports = State;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 "use strict";
 
 function StateManager() {
@@ -999,11 +789,6 @@ function StateManager() {
 StateManager.prototype.update = function (dt) {
     var state = this.states[this.states.length - 1];
     if (state) {state.update(dt); }
-};
-
-StateManager.prototype.draw = function (ctx) {
-    var state = this.states[this.states.length - 1];
-    if (state) {state.draw(ctx); }
 };
 
 StateManager.prototype.push = function (state) {
@@ -1033,7 +818,7 @@ StateManager.prototype.resume = function () {
 
 module.exports = StateManager;
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 "use strict";
 
 /**
@@ -1063,7 +848,7 @@ Timer.prototype.tick = function () {
 
 module.exports = Timer;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 function Vector(x, y) {
@@ -1085,11 +870,5 @@ Vector.moveTowards = function (origin, goal, step) {
 };
 
 module.exports = Vector;
-},{}],21:[function(require,module,exports){
-"use strict";
-var Game = require('./Game'),
-    game;
 
-game = new Game(800, 400);
-game.run();
-},{"./Game":3}]},{},[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21])
+},{}]},{},[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21])

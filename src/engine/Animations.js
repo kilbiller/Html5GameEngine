@@ -2,14 +2,11 @@
 
 var Animation = require('./Animation');
 
-/**
-Animations class
-@class Animations
-**/
 function Animations(spriteSheet, animData) {
+    PIXI.DisplayObjectContainer.call(this);
     this.anims = [];
     this.spriteSheet = spriteSheet;
-
+    this.current = null;
 
     var anim, data;
     try {
@@ -25,12 +22,23 @@ function Animations(spriteSheet, animData) {
     }
 }
 
+Animations.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
+
 Animations.prototype.addAnim = function (name, frames, step, loop) {
     this.anims[name] = new Animation(this.spriteSheet, frames, step, loop);
+    this.addChild(this.anims[name]);
 };
 
-Animations.prototype.getAnim = function (name) {
-    return this.anims[name];
+Animations.prototype.setAnim = function (name) {
+    this.current = name;
+    for (var anim in this.anims) {
+        this.anims[anim].visible = false;
+    }
+    this.anims[anim].visible = true;
+};
+
+Animations.prototype.getCurrent = function () {
+    return this.anims[this.current];
 };
 
 module.exports = Animations;

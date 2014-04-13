@@ -8,21 +8,31 @@ module.exports = function (grunt) {
                 options: {
                     port: 80,
                     //open: {target: 'http://localhost'},
-                    keepalive: true
+                    //keepalive: true // true si pas de watch
                 }
             }
         },
         browserify: {
             dist: {
                 files: {
-                    'game.js': ['js/**/*.js']
+                    'build/game.js': ['src/**/*.js']
                 }
             }
+        },
+        watch: {
+            scripts: {
+                files: ['src/**/*.js'],
+                tasks: ['browserify'],
+                options: {
+                    spawn: false,
+                },
+            },
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['browserify', 'connect']);
+    grunt.registerTask('default', ['browserify', 'connect', 'watch']);
 };

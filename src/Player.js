@@ -13,20 +13,15 @@ function Player(game, x, y, width, height, assetPath) {
     this.isAttacking = false;
     this.attackRect = null;
     this.boundingbox = new Rectangle(6, 20, 20, 10);
-    //this.isMoving = false;
     this.COOLDOWN_TIME = 0.5;
     this.attackCooldown = 0;
-}
 
-Player.prototype = new Actor();
-
-Player.prototype.loadContent = function (assetManager) {
-    var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
+    var spriteSheet = new SpriteSheet(this.assetPath, this.width, this.height);
     this.anims = new Animations(spriteSheet, {
-        idleDown: { frames: [0],  step: 0.15, loop: false },
-        idleUp: { frames: [1], step: 0.15, loop: false },
-        idleLeft: { frames: [2], step: 0.15, loop: false },
-        idleRight: { frames: [3], step: 0.15, loop: false },
+        idleDown: { frames: [0],  step: 0.15, loop: true },
+        idleUp: { frames: [1], step: 0.15, loop: true },
+        idleLeft: { frames: [2], step: 0.15, loop: true },
+        idleRight: { frames: [3], step: 0.15, loop: true },
         moveDown: { frames: [4, 5, 6, 7], step: 0.15, loop: true },
         moveUp: { frames: [8, 9, 10, 11], step: 0.15, loop: true },
         moveLeft: { frames: [12, 13, 14, 15], step: 0.15, loop: true },
@@ -37,50 +32,43 @@ Player.prototype.loadContent = function (assetManager) {
         attackRight: {  frames: [32, 33, 34], step: 0.1, loop: false },
         death: { frames: [36, 37, 38], step: 0.12, loop: false }
     });
-};
+
+    this.addChild(this.anims);
+}
+
+Player.prototype = Object.create(Actor.prototype);
 
 Player.prototype.update = function (dt) {
-    Actor.prototype.update.call(this, dt);
-
     var kb = this.game.keyboard,
         ms = this.game.mouse;
 
     if (!this.isAttacking && this.isAlive) {
-        this.currentAnim = this.anims.getAnim("idle" + this.direction);
+        this.anims.setAnim("idle" + this.direction);
 
         if (kb.keysDown.hasOwnProperty(90)) { // Player holding z
             this.direction = "Up";
-            this.pos.y -= this.speed * dt;
-            this.currentAnim = this.anims.getAnim("moveUp");
+            this.y -= this.speed * dt;
+            this.anims.setAnim("moveUp");
         }
         if (kb.keysDown.hasOwnProperty(83)) { // Player holding s
             this.direction = "Down";
-            this.pos.y += this.speed * dt;
-            this.currentAnim = this.anims.getAnim("moveDown");
+            this.y += this.speed * dt;
+            this.anims.setAnim("moveDown");
         }
         if (kb.keysDown.hasOwnProperty(81)) { // Player holding q
             this.direction = "Left";
-            this.pos.x -= this.speed * dt;
-            this.currentAnim = this.anims.getAnim("moveLeft");
+            this.x -= this.speed * dt;
+            this.anims.setAnim("moveLeft");
         }
         if (kb.keysDown.hasOwnProperty(68)) { // Player holding d
             this.direction = "Right";
-            this.pos.x += this.speed * dt;
-            this.currentAnim = this.anims.getAnim("moveRight");
+            this.x += this.speed * dt;
+            this.anims.setAnim("moveRight");
         }
 
-        /*
-        // Mouse movement.
-        if (ms.leftClick) {
-            this.isMoving = true;
-        }
-        if (this.isMoving) {
-            this.pos = Vector.moveTowards(this.pos, ms.pos, this.speed * dt);
-            if (Math.abs(ms.pos.x - this.pos.x) <=  this.speed * dt && Math.abs(ms.pos.y - this.pos.y) <= this.speed * dt) {
-                this.isMoving = false;
-            }
-        }
-        */
+        // Prevent sub-pixel movements
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
 
         // Collision logic.
         this.updateCollisions();
@@ -91,51 +79,43 @@ Player.prototype.update = function (dt) {
         }
     }
 
-    this.currentAnim.update(dt);
+    this.anims.getCurrent().update(dt);
 
     // If player has finished his attack.
-    if (this.isAttacking && this.currentAnim.isDone()) {
-        this.currentAnim.reset();
+    if (this.isAttacking && this.anims.getCurrent().isDone()) {
+        this.anims.getCurrent().reset();
         this.isAttacking = false;
         this.attackRect = null;
     }
 
     if (this.attackCooldown > 0) {this.attackCooldown -= dt; }
-    this.zIndex = this.pos.y + this.height;
-    this.previousPos = new Vector(this.pos.x, this.pos.y);
-};
-
-Player.prototype.draw = function (ctx) {
-    Actor.prototype.draw.call(this, ctx);
-
-    this.getHitBox().draw(ctx);
-    this.getCollisionBox().draw(ctx);
-    if (this.attackRect !== null) {this.attackRect.draw(ctx); }
+    this.zIndex = this.y + this.height;
+    this.previousPos = new Vector(this.x, this.y);
 };
 
 Player.prototype.attack = function () {
     var i, punchSound, entity;
     punchSound = this.game.assetManager.getSound("sounds/punch.wav");
-    punchSound.play();
+    //punchSound.play();
     this.isAttacking = true;
     this.attackCooldown = this.COOLDOWN_TIME;
 
     if (this.direction === "Up") {
-        this.attackRect = new Rectangle(this.pos.x + 12, this.pos.y - 1, 10, 1);
-        this.currentAnim = this.anims.getAnim("attackUp");
+        this.attackRect = new Rectangle(this.x + 12, this.y - 1, 10, 1);
+        this.anims.setAnim("attackUp");
     } else if (this.direction === "Down") {
-        this.attackRect = new Rectangle(this.pos.x + 8, this.pos.y + 18, 20, 12);
-        this.currentAnim = this.anims.getAnim("attackDown");
+        this.attackRect = new Rectangle(this.x + 8, this.y + 18, 20, 12);
+        this.anims.setAnim("attackDown");
     } else if (this.direction === "Left") {
-        this.attackRect = new Rectangle(this.pos.x - 4, this.pos.y + 13, 25, 12);
-        this.currentAnim = this.anims.getAnim("attackLeft");
+        this.attackRect = new Rectangle(this.x - 4, this.y + 13, 25, 12);
+        this.anims.setAnim("attackLeft");
     } else if (this.direction === "Right") {
-        this.attackRect = new Rectangle(this.pos.x + 8, this.pos.y + 13, 25, 12);
-        this.currentAnim = this.anims.getAnim("attackRight");
+        this.attackRect = new Rectangle(this.x + 8, this.y + 13, 25, 12);
+        this.anims.setAnim("attackRight");
     }
 
-    for (i = 0; i < this.game.entities.length; i += 1) {
-        entity = this.game.entities[i];
+    for (i = 0; i < this.game.entities.children.length; i += 1) {
+        entity = this.game.entities.children[i];
         if (this !== entity && entity.hitbox !== null && entity.isAlive && this.attackRect.intersects(entity.getHitBox())) {
             entity.takeDamage(10);
         }

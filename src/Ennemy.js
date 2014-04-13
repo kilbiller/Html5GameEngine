@@ -12,17 +12,13 @@ function Ennemy(game, x, y, width, height, assetPath) {
     this.speed = 150;
     this.hp = 30;
     this.boundingbox = new Rectangle(6, 20, 20, 10);
-}
 
-Ennemy.prototype = new Actor();
-
-Ennemy.prototype.loadContent = function (assetManager) {
-    var spriteSheet = new SpriteSheet(assetManager.getAsset(this.assetPath), this.width, this.height);
+    var spriteSheet = new SpriteSheet(this.assetPath, this.width, this.height);
     this.anims = new Animations(spriteSheet, {
         idle: {
             frames: [0],
             step: 0.15,
-            loop: false
+            loop: true
         },
         death: {
             frames: [36, 37, 38],
@@ -30,25 +26,19 @@ Ennemy.prototype.loadContent = function (assetManager) {
             loop: false
         }
     });
-};
+    this.addChild(this.anims);
+}
+
+Ennemy.prototype = Object.create(Actor.prototype);
 
 Ennemy.prototype.update = function (dt) {
-    Actor.prototype.update.call(this, dt);
-
     if (this.isAlive) {
-        this.currentAnim = this.anims.getAnim("idle");
+        this.anims.setAnim("idle");
     }
 
-    this.currentAnim.update(dt);
-    this.zIndex = this.pos.y + this.height;
-    this.previousPos = new Vector(this.pos.x, this.pos.y);
-};
-
-Ennemy.prototype.draw = function (ctx) {
-    Actor.prototype.draw.call(this, ctx);
-
-    this.getHitBox().draw(ctx);
-    this.getCollisionBox().draw(ctx);
+    this.anims.getCurrent().update(dt);
+    this.zIndex = this.y + this.height;
+    this.previousPos = new Vector(this.x, this.y);
 };
 
 Ennemy.prototype.takeDamage = function (damage) {

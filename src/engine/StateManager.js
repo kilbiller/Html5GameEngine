@@ -9,11 +9,6 @@ StateManager.prototype.update = function (dt) {
     if (state) {state.update(dt); }
 };
 
-StateManager.prototype.draw = function (ctx) {
-    var state = this.states[this.states.length - 1];
-    if (state) {state.draw(ctx); }
-};
-
 StateManager.prototype.push = function (state) {
     this.states.push(state);
     state.onEnter();

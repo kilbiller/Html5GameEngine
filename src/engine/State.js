@@ -12,10 +12,6 @@ State.prototype.update = function (dt) {
 
 };
 
-State.prototype.draw = function (ctx) {
-
-};
-
 State.prototype.onExit = function () {
 
 };
