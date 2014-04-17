@@ -1,18 +1,17 @@
 "use strict";
 
-var gulp = require('gulp'),
-    source = require('vinyl-source-stream'),
-    connect = require('connect'),
-    serveStatic = require('serve-static'),
-    http = require('http'),
-    browserify = require('browserify');
+var gulp = require('gulp');
+var source = require('vinyl-source-stream');
+var connect = require('connect');
+var serveStatic = require('serve-static');
+var browserify = require('browserify');
+var traceur = require('gulp-traceur');
 
 gulp.task('browserify', function() {
-    var bundleStream = browserify('./src/Main.js').bundle();
-
-    bundleStream
-    .pipe(source('game.js'))
-    .pipe(gulp.dest('./build'));
+    browserify('./src/Main.js')
+        .bundle()
+        .pipe(source('game.js'))
+        .pipe(gulp.dest('build'));
 });
 
 gulp.task('connect', function() {
@@ -20,6 +19,13 @@ gulp.task('connect', function() {
 
     app.use(serveStatic('build'));
     app.listen(3000);
+});
+
+// Use with google traceur compiler (still needs work).
+gulp.task('traceur', function () {
+    gulp.src('src/**/*.js')
+        .pipe(traceur({sourceMaps: true}))
+        .pipe(gulp.dest('build'));
 });
 
 gulp.task('default', ['browserify', 'connect']);

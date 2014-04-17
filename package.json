@@ -9,6 +9,7 @@
     "gulp": "~3.6.0",
     "vinyl-source-stream": "~0.1.1",
     "connect": "~2.14.4",
-    "serve-static": "~1.0.4"
+    "serve-static": "~1.0.4",
+    "gulp-traceur": "~0.4.0"
   }
 }
