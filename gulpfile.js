@@ -1,31 +1,46 @@
 "use strict";
 
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var source = require('vinyl-source-stream');
-var connect = require('connect');
-var serveStatic = require('serve-static');
+var buffer = require('vinyl-buffer');
 var browserify = require('browserify');
-var traceur = require('gulp-traceur');
+var watchify = require('watchify');
+var serveStatic = require('serve-static');
+var uglify = require('gulp-uglify');
+var browserSync = require('browser-sync');
 
-gulp.task('browserify', function() {
-    browserify('./src/Main.js')
-        .bundle()
+gulp.task('javascript', function() {
+    var bundler = watchify(browserify('./src/Main.js', watchify.args));
+
+    bundler.on('update', rebundle);
+
+    function rebundle() {
+        return bundler.bundle()
+        .on('error', gutil.log.bind(gutil, 'Browserify Error'))
         .pipe(source('game.js'))
-        .pipe(gulp.dest('build'));
+        .pipe(buffer())
+        .pipe(uglify())
+        .pipe(gulp.dest('./build'))
+        .pipe(browserSync.reload({stream:true, once: true})); //reload browserSync because javascript doesn't get updated otherwise
+    }
+
+    return rebundle();
 });
 
-gulp.task('connect', function() {
-    var app = connect();
-
-    app.use(serveStatic('build'));
-    app.listen(3000);
+gulp.task('browser-sync', ['javascript'], function() {
+    browserSync.init(null, {
+        server: {
+            baseDir: "./build"
+        }
+    });
 });
 
 // Use with google traceur compiler (still needs work).
 gulp.task('traceur', function () {
-    gulp.src('src/**/*.js')
-        .pipe(traceur({sourceMaps: true}))
-        .pipe(gulp.dest('build'));
+    //gulp.src('src/**/*.js')
+    //.pipe(traceur({sourceMaps: true}))
+    //.pipe(gulp.dest('build'));
 });
 
-gulp.task('default', ['browserify', 'connect']);
+gulp.task('default', ['browser-sync']);

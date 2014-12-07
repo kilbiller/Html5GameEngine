@@ -5,11 +5,14 @@
   "description": "A Game Engine in Html5/Javascript",
   "author": "Rémy Peru",
   "devDependencies": {
-    "browserify": "~3.28.0",
-    "gulp": "~3.6.0",
-    "vinyl-source-stream": "~0.1.1",
-    "connect": "~2.14.4",
-    "serve-static": "~1.0.4",
-    "gulp-traceur": "~0.4.0"
+      "browser-sync": "latest",
+      "browserify": "latest",
+      "gulp": "latest",
+      "gulp-uglify": "latest",
+      "gulp-util": "latest",
+      "serve-static": "latest",
+      "vinyl-buffer": "latest",
+      "vinyl-source-stream": "latest",
+      "watchify": "latest"
   }
 }
