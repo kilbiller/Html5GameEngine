@@ -6,14 +6,17 @@ var Actor = require('./Actor'),
     Rectangle = require('./engine/Rectangle'),
     Vector = require('./engine/Vector');
 
-function Ennemy(game, x, y, width, height, assetPath) {
-    Actor.call(this, game, x, y, width, height, assetPath);
+function Ennemy(game, x, y, width, height, texture) {
+    Actor.call(this, game, x, y, width, height, texture);
 
     this.speed = 150;
     this.hp = 30;
     this.boundingbox = new Rectangle(6, 20, 20, 10);
 
-    var spriteSheet = new SpriteSheet(this.assetPath, this.width, this.height);
+    this.sprite = new PIXI.Sprite(this.texture);
+    this.game.stage.addChild(this.sprite);
+
+    var spriteSheet = new SpriteSheet(this.sprite, this.width, this.height);
     this.anims = new Animations(spriteSheet, {
         idle: {
             frames: [0],
@@ -26,7 +29,6 @@ function Ennemy(game, x, y, width, height, assetPath) {
             loop: false
         }
     });
-    this.addChild(this.anims);
 }
 
 Ennemy.prototype = Object.create(Actor.prototype);
@@ -35,6 +37,9 @@ Ennemy.prototype.update = function (dt) {
     if (this.isAlive) {
         this.anims.setAnim("idle");
     }
+
+    this.sprite.position.x = this.x;
+    this.sprite.position.y = this.y;
 
     this.anims.getCurrent().update(dt);
     this.zIndex = this.y + this.height;

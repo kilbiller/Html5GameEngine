@@ -1,7 +1,6 @@
 "use strict";
 
-var Game = require('./Game'),
-    game;
+var Game = require('./Game');
 
-game = new Game(800, 400);
+var game = new Game(800, 400);
 game.run();

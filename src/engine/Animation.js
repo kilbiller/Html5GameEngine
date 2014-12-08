@@ -3,7 +3,7 @@
 var SpriteSheet = require('./SpriteSheet');
 
 function Animation(spriteSheet, frameList, frameDuration, loop) {
-    PIXI.Sprite.call(this, spriteSheet);
+    this.spriteSheet = spriteSheet;
     this.frameList = frameList;
     this.frameDuration = frameDuration;
     this.totalTime = this.frameList.length * this.frameDuration;
@@ -11,8 +11,6 @@ function Animation(spriteSheet, frameList, frameDuration, loop) {
     this.loop = loop;
     this.source = {};
 }
-
-Animation.prototype = Object.create(PIXI.Sprite.prototype);
 
 Animation.prototype.update = function (dt) {
     this.elapsedTime += dt;
@@ -28,11 +26,11 @@ Animation.prototype.update = function (dt) {
     var index = this.currentFrame();
 
     // Find frame position inside the spritesheet.
-    this.source.x = (this.frameList[index] % this.texture.maxColumn) * this.texture.frameWidth;
-    this.source.y = Math.floor(this.frameList[index] / this.texture.maxColumn) * this.texture.frameHeight;
+    this.source.x = (this.frameList[index] % this.spriteSheet.maxColumn) * this.spriteSheet.frameWidth;
+    this.source.y = Math.floor(this.frameList[index] / this.spriteSheet.maxColumn) * this.spriteSheet.frameHeight;
 
     //Change the frame rectangle position inside the spritesheet
-    this.texture.setFrame(new PIXI.Rectangle(this.source.x, this.source.y, this.texture.frameWidth, this.texture.frameHeight));
+    this.spriteSheet.sprite.texture.setFrame(new PIXI.Rectangle(this.source.x, this.source.y, this.spriteSheet.frameWidth, this.spriteSheet.frameHeight));
 };
 
 Animation.prototype.currentFrame = function () {

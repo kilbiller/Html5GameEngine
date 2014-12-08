@@ -4,11 +4,11 @@ var Entity = require('./engine/Entity'),
     Rectangle = require('./engine/Rectangle'),
     Vector = require('./engine/Vector');
 
-function Actor(game, x, y, width, height, assetPath) {
+function Actor(game, x, y, width, height, texture) {
     Entity.call(this, game, x, y);
     this.width = width;
     this.height = height;
-    this.assetPath = assetPath;
+    this.texture = texture;
 
     this.anims = null;
     this.currentAnim = null;
@@ -46,8 +46,8 @@ Actor.prototype.updateCollisions = function () {
     var i, entity, collisionBox;
     collisionBox = this.getCollisionBox();
 
-    for (i = 0; i < this.game.entities.children.length; i += 1) {
-        entity = this.game.entities.children[i];
+    for (i = 0; i < this.game.entities.length; i += 1) {
+        entity = this.game.entities[i];
         if (this !== entity && entity.boundingbox !== null && collisionBox.intersects(entity.getCollisionBox())) {
             this.x = this.previousPos.x;
             this.y = this.previousPos.y;

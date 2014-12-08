@@ -6,8 +6,8 @@ var SpriteSheet = require('./engine/SpriteSheet'),
     Vector = require('./engine/Vector'),
     Actor = require('./Actor');
 
-function Player(game, x, y, width, height, assetPath) {
-    Actor.call(this, game, x, y, width, height, assetPath);
+function Player(game, x, y, width, height, texture) {
+    Actor.call(this, game, x, y, width, height, texture);
 
     this.speed = 150;
     this.isAttacking = false;
@@ -16,7 +16,11 @@ function Player(game, x, y, width, height, assetPath) {
     this.COOLDOWN_TIME = 0.5;
     this.attackCooldown = 0;
 
-    var spriteSheet = new SpriteSheet(this.assetPath, this.width, this.height);
+    this.sprite = new PIXI.Sprite(this.texture);
+    this.game.stage.addChild(this.sprite);
+
+    var spriteSheet = new SpriteSheet(this.sprite, this.width, this.height);
+
     this.anims = new Animations(spriteSheet, {
         idleDown: { frames: [0],  step: 0.15, loop: true },
         idleUp: { frames: [1], step: 0.15, loop: true },
@@ -32,8 +36,6 @@ function Player(game, x, y, width, height, assetPath) {
         attackRight: {  frames: [32, 33, 34], step: 0.1, loop: false },
         death: { frames: [36, 37, 38], step: 0.12, loop: false }
     });
-
-    this.addChild(this.anims);
 }
 
 Player.prototype = Object.create(Actor.prototype);
@@ -70,6 +72,9 @@ Player.prototype.update = function (dt) {
         this.x = Math.round(this.x);
         this.y = Math.round(this.y);
 
+        this.sprite.position.x = this.x;
+        this.sprite.position.y = this.y;
+
         // Collision logic.
         this.updateCollisions();
 
@@ -87,8 +92,8 @@ Player.prototype.update = function (dt) {
         this.isAttacking = false;
         this.attackRect = null;
     }
-
     if (this.attackCooldown > 0) {this.attackCooldown -= dt; }
+
     this.zIndex = this.y + this.height;
     this.previousPos = new Vector(this.x, this.y);
 };
@@ -114,8 +119,8 @@ Player.prototype.attack = function () {
         this.anims.setAnim("attackRight");
     }
 
-    for (i = 0; i < this.game.entities.children.length; i += 1) {
-        entity = this.game.entities.children[i];
+    for (i = 0; i < this.game.entities.length; i += 1) {
+        entity = this.game.entities[i];
         if (this !== entity && entity.hitbox !== null && entity.isAlive && this.attackRect.intersects(entity.getHitBox())) {
             entity.takeDamage(10);
         }

@@ -5,17 +5,20 @@ var Entity = require('./engine/Entity'),
     Animations = require('./engine/Animations'),
     Rectangle = require('./engine/Rectangle');
 
-function StaticObject(game, x, y, width, height, assetPath) {
+function StaticObject(game, x, y, width, height, texture) {
     Entity.call(this, game, x, y);
     this.width = width;
     this.height = height;
-    this.assetPath = assetPath;
+    this.texture = texture;
     this.anims = null;
     this.currentAnim = null;
     this.boundingbox = new Rectangle(0, 0, this.width, this.height);
     this.zIndex = this.y + this.height;
 
-    var spriteSheet = new SpriteSheet(this.assetPath, this.width, this.height);
+    this.sprite = new PIXI.Sprite(this.texture);
+    this.game.stage.addChild(this.sprite);
+
+    var spriteSheet = new SpriteSheet(this.sprite, this.width, this.height);
     this.anims = new Animations(spriteSheet, {
         idle: {
             frames: [0],
@@ -23,13 +26,16 @@ function StaticObject(game, x, y, width, height, assetPath) {
             loop: true
         }
     });
-    this.addChild(this.anims);
 }
 
 StaticObject.prototype = Object.create(Entity.prototype);
 
 StaticObject.prototype.update = function (dt) {
     this.anims.setAnim("idle");
+
+    this.sprite.position.x = this.x;
+    this.sprite.position.y = this.y;
+
     this.anims.getCurrent().update(dt);
 };
 
