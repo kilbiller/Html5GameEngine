@@ -18,18 +18,21 @@ LevelState.prototype.onEnter = function () {
 
     game.entities = new PIXI.DisplayObjectContainer();
 
+    var trunksPath = "assets/images/trunks.png";
+    var playerPath = "assets/images/player.png";
+
     // Create the entities.
-    game.entities.addChild(new StaticObject(game, 150, 150, 32, 32, "img/trunks.png"));
-    game.entities.addChild(new StaticObject(game, 180, 230, 32, 32, "img/trunks.png"));
-    game.entities.addChild(new StaticObject(game, 340, 200, 32, 32, "img/trunks.png"));
+    game.entities.addChild(new StaticObject(game, 150, 150, 32, 32, trunksPath));
+    game.entities.addChild(new StaticObject(game, 180, 230, 32, 32, trunksPath));
+    game.entities.addChild(new StaticObject(game, 340, 200, 32, 32, trunksPath));
 
-    game.entities.addChild(new Ennemy(game, 300, 300, 32, 32, "img/player.png"));
-    game.entities.addChild(new Ennemy(game, 400, 300, 32, 32, "img/player.png"));
-    game.entities.addChild(new Ennemy(game, 300, 20, 32, 32, "img/player.png"));
-    game.entities.addChild(new Ennemy(game, 50, 300, 32, 32, "img/player.png"));
-    game.entities.addChild(new Ennemy(game, 90, 300, 32, 32, "img/player.png"));
+    game.entities.addChild(new Ennemy(game, 300, 300, 32, 32, playerPath));
+    game.entities.addChild(new Ennemy(game, 400, 300, 32, 32, playerPath));
+    game.entities.addChild(new Ennemy(game, 300, 20, 32, 32, playerPath));
+    game.entities.addChild(new Ennemy(game, 50, 300, 32, 32, playerPath));
+    game.entities.addChild(new Ennemy(game, 90, 300, 32, 32, playerPath));
 
-    game.entities.addChild(new Player(game, 50, 50, 32, 32, "img/player.png"));
+    game.entities.addChild(new Player(game, 50, 50, 32, 32, playerPath));
 
     //Follow the player
     //game.camera.follow(game.entities.children[game.entities.children.length - 1]);

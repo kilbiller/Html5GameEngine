@@ -11,7 +11,7 @@ var uglify = require('gulp-uglify');
 var browserSync = require('browser-sync');
 
 gulp.task('javascript', function() {
-    var bundler = watchify(browserify('./src/Main.js', watchify.args));
+    var bundler = watchify(browserify('./src/index.js', watchify.args));
 
     bundler.on('update', rebundle);
 
@@ -28,7 +28,13 @@ gulp.task('javascript', function() {
     return rebundle();
 });
 
-gulp.task('browser-sync', ['javascript'], function() {
+gulp.task('copy-assets', function() {
+    // copy html, css, assets and lib to build directory
+    gulp.src(['./src/index.html', './src/assets/**', './src/css/**', './src/lib/**'], { base: './src' })
+    .pipe(gulp.dest('./build'));
+});
+
+gulp.task('browser-sync', ['copy-assets', 'javascript'], function() {
     browserSync.init(null, {
         server: {
             baseDir: "./build"
