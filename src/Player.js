@@ -1,10 +1,12 @@
 "use strict";
 
-var SpriteSheet = require('./engine/SpriteSheet'),
-    Animations = require('./engine/Animations'),
-    Rectangle = require('./engine/Rectangle'),
-    Vector = require('./engine/Vector'),
-    Actor = require('./Actor');
+var SpriteSheet = require('./engine/SpriteSheet');
+var Animations = require('./engine/Animations');
+var Rectangle = require('./engine/Rectangle');
+var Vector = require('./engine/Vector');
+var Actor = require('./Actor');
+var PIXI = require('pixi.js');
+var key = require('keymaster');
 
 function Player(game, x, y, width, height, texture) {
     Actor.call(this, game, x, y, width, height, texture);
@@ -41,28 +43,27 @@ function Player(game, x, y, width, height, texture) {
 Player.prototype = Object.create(Actor.prototype);
 
 Player.prototype.update = function (dt) {
-    var kb = this.game.keyboard,
-        ms = this.game.mouse;
+    var ms = this.game.mouse;
 
     if (!this.isAttacking && this.isAlive) {
         this.anims.setAnim("idle" + this.direction);
 
-        if (kb.keysDown.hasOwnProperty(90)) { // Player holding z
+        if (key.isPressed("Z")) {
             this.direction = "Up";
             this.y -= this.speed * dt;
             this.anims.setAnim("moveUp");
         }
-        if (kb.keysDown.hasOwnProperty(83)) { // Player holding s
+        if (key.isPressed("S")) {
             this.direction = "Down";
             this.y += this.speed * dt;
             this.anims.setAnim("moveDown");
         }
-        if (kb.keysDown.hasOwnProperty(81)) { // Player holding q
+        if (key.isPressed("Q")) {
             this.direction = "Left";
             this.x -= this.speed * dt;
             this.anims.setAnim("moveLeft");
         }
-        if (kb.keysDown.hasOwnProperty(68)) { // Player holding d
+        if (key.isPressed("D")) {
             this.direction = "Right";
             this.x += this.speed * dt;
             this.anims.setAnim("moveRight");
@@ -79,7 +80,7 @@ Player.prototype.update = function (dt) {
         this.updateCollisions();
 
         // Player attack if press space
-        if (this.attackCooldown <= 0 && kb.keysDown.hasOwnProperty(32)) {
+        if (this.attackCooldown <= 0 && key.isPressed("space")) {
             this.attack();
         }
     }

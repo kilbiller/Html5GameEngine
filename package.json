@@ -4,6 +4,10 @@
   "version": "0.0.0",
   "description": "A Game Engine in Html5/Javascript",
   "author": "Rémy Peru",
+  "dependencies": {
+      "keymaster": "latest",
+      "pixi.js": "https://github.com/GoodBoyDigital/pixi.js/tarball/master"
+  },
   "devDependencies": {
       "browser-sync": "latest",
       "browserify": "latest",

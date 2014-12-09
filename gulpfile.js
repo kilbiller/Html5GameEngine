@@ -29,8 +29,8 @@ gulp.task('javascript', function() {
 });
 
 gulp.task('copy-assets', function() {
-    // copy html, css, assets and lib to build directory
-    gulp.src(['./src/index.html', './src/assets/**', './src/css/**', './src/lib/**'], { base: './src' })
+    // copy html, css, assets to build directory
+    gulp.src(['./src/index.html', './src/assets/**', './src/css/**'], { base: './src' })
     .pipe(gulp.dest('./build'));
 });
 

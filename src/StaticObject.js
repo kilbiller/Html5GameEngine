@@ -1,9 +1,10 @@
 "use strict";
 
-var Entity = require('./engine/Entity'),
-    SpriteSheet = require('./engine/SpriteSheet'),
-    Animations = require('./engine/Animations'),
-    Rectangle = require('./engine/Rectangle');
+var Entity = require('./engine/Entity');
+var SpriteSheet = require('./engine/SpriteSheet');
+var Animations = require('./engine/Animations');
+var Rectangle = require('./engine/Rectangle');
+var PIXI = require('pixi.js');
 
 function StaticObject(game, x, y, width, height, texture) {
     Entity.call(this, game, x, y);

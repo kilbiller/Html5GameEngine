@@ -1,6 +1,7 @@
 "use strict";
 
 var SpriteSheet = require('./SpriteSheet');
+var PIXI = require('pixi.js');
 
 function Animation(spriteSheet, frameList, frameDuration, loop) {
     this.spriteSheet = spriteSheet;

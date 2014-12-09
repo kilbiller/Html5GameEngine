@@ -1,10 +1,11 @@
 "use strict";
 
-var State = require('./engine/State'),
-    Camera = require('./engine/Camera'),
-    Player = require('./Player'),
-    Ennemy = require('./Ennemy'),
-    StaticObject = require('./StaticObject');
+var State = require('./engine/State');
+var Camera= require('./engine/Camera');
+var Player = require('./Player');
+var Ennemy = require('./Ennemy');
+var StaticObject = require('./StaticObject');
+var PIXI = require('pixi.js');
 
 
 function LevelState(game) {

@@ -1,10 +1,11 @@
 "use strict";
 
-var Actor = require('./Actor'),
-    SpriteSheet = require('./engine/SpriteSheet'),
-    Animations = require('./engine/Animations'),
-    Rectangle = require('./engine/Rectangle'),
-    Vector = require('./engine/Vector');
+var Actor = require('./Actor');
+var SpriteSheet = require('./engine/SpriteSheet');
+var Animations = require('./engine/Animations');
+var Rectangle = require('./engine/Rectangle');
+var Vector = require('./engine/Vector');
+var PIXI = require('pixi.js');
 
 function Ennemy(game, x, y, width, height, texture) {
     Actor.call(this, game, x, y, width, height, texture);
