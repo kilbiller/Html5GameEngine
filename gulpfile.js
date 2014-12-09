@@ -9,6 +9,7 @@ var watchify = require('watchify');
 var serveStatic = require('serve-static');
 var uglify = require('gulp-uglify');
 var browserSync = require('browser-sync');
+var del = require('del');
 
 gulp.task('javascript', function() {
     var bundler = watchify(browserify('./src/index.js', watchify.args));
@@ -43,10 +44,14 @@ gulp.task('browser-sync', ['copy-assets', 'javascript'], function() {
 });
 
 // Use with google traceur compiler (still needs work).
-gulp.task('traceur', function () {
+gulp.task('traceur', function() {
     //gulp.src('src/**/*.js')
     //.pipe(traceur({sourceMaps: true}))
     //.pipe(gulp.dest('build'));
+});
+
+gulp.task('clean', function(cb) {
+    del(['build'], cb);
 });
 
 gulp.task('default', ['browser-sync']);

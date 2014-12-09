@@ -17,6 +17,7 @@
       "serve-static": "latest",
       "vinyl-buffer": "latest",
       "vinyl-source-stream": "latest",
-      "watchify": "latest"
+      "watchify": "latest",
+      "del": "latest"
   }
 }
