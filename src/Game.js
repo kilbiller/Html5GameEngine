@@ -1,21 +1,19 @@
 "use strict";
 
-var GameEngine = require('./engine/GameEngine'),
-    Camera = require('./engine/Camera'),
-    Player = require('./Player'),
-    StaticObject = require('./StaticObject'),
-    Ennemy = require('./Ennemy'),
-    StateManager = require('./engine/StateManager'),
-    LevelState = require('./LevelState');
+var X = require('./X');
+var Player = require('./Player');
+var StaticObject = require('./StaticObject');
+var Ennemy = require('./Ennemy');
+var LevelState = require('./LevelState');
 
 function Game(width, height) {
-    GameEngine.call(this, width, height);
+    X.GameEngine.call(this, width, height);
     this.entities = null;
-    this.camera = new Camera(0, 0, width, height);
-    this.stateManager = new StateManager();
+    this.camera = new X.Camera(0, 0, width, height);
+    this.stateManager = new X.StateManager();
 }
 
-Game.prototype = Object.create(GameEngine.prototype);
+Game.prototype = Object.create(X.GameEngine.prototype);
 
 Game.prototype.init = function () {
     this.stateManager.push(new LevelState(this));

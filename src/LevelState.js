@@ -1,7 +1,6 @@
 "use strict";
 
-var State = require('./engine/State');
-var Camera= require('./engine/Camera');
+var X = require('./X');
 var Player = require('./Player');
 var Ennemy = require('./Ennemy');
 var StaticObject = require('./StaticObject');
@@ -9,10 +8,10 @@ var PIXI = require('pixi.js');
 
 
 function LevelState(game) {
-    State.call(this, game);
+    X.State.call(this, game);
 }
 
-LevelState.prototype = Object.create(State.prototype);
+LevelState.prototype = Object.create(X.State.prototype);
 
 LevelState.prototype.onEnter = function () {
     var game = this.game;
@@ -41,7 +40,7 @@ LevelState.prototype.onEnter = function () {
 };
 
 LevelState.prototype.update = function (dt) {
-    State.prototype.update.call(this, dt);
+    X.State.prototype.update.call(this, dt);
 
     /*//Spawn a box each time left mouse button is clicked
     if (game.mouse.leftClick) {

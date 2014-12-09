@@ -1,10 +1,7 @@
 "use strict";
 
+var X = require('./X');
 var Actor = require('./Actor');
-var SpriteSheet = require('./engine/SpriteSheet');
-var Animations = require('./engine/Animations');
-var Rectangle = require('./engine/Rectangle');
-var Vector = require('./engine/Vector');
 var PIXI = require('pixi.js');
 
 function Ennemy(game, x, y, width, height, texture) {
@@ -12,13 +9,13 @@ function Ennemy(game, x, y, width, height, texture) {
 
     this.speed = 150;
     this.hp = 30;
-    this.boundingbox = new Rectangle(6, 20, 20, 10);
+    this.boundingbox = new X.Rectangle(6, 20, 20, 10);
 
     this.sprite = new PIXI.Sprite(this.texture);
     this.game.stage.addChild(this.sprite);
 
-    var spriteSheet = new SpriteSheet(this.sprite, this.width, this.height);
-    this.anims = new Animations(spriteSheet, {
+    var spriteSheet = new X.SpriteSheet(this.sprite, this.width, this.height);
+    this.anims = new X.Animations(spriteSheet, {
         idle: {
             frames: [0],
             step: 0.15,
@@ -44,7 +41,7 @@ Ennemy.prototype.update = function (dt) {
 
     this.anims.getCurrent().update(dt);
     this.zIndex = this.y + this.height;
-    this.previousPos = new Vector(this.x, this.y);
+    this.previousPos = new X.Vector(this.x, this.y);
 };
 
 Ennemy.prototype.takeDamage = function (damage) {

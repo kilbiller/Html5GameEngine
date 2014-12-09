@@ -1,9 +1,6 @@
 "use strict";
 
-var SpriteSheet = require('./engine/SpriteSheet');
-var Animations = require('./engine/Animations');
-var Rectangle = require('./engine/Rectangle');
-var Vector = require('./engine/Vector');
+var X = require('./X');
 var Actor = require('./Actor');
 var PIXI = require('pixi.js');
 var key = require('keymaster');
@@ -14,16 +11,16 @@ function Player(game, x, y, width, height, texture) {
     this.speed = 150;
     this.isAttacking = false;
     this.attackRect = null;
-    this.boundingbox = new Rectangle(6, 20, 20, 10);
+    this.boundingbox = new X.Rectangle(6, 20, 20, 10);
     this.COOLDOWN_TIME = 0.5;
     this.attackCooldown = 0;
 
     this.sprite = new PIXI.Sprite(this.texture);
     this.game.stage.addChild(this.sprite);
 
-    var spriteSheet = new SpriteSheet(this.sprite, this.width, this.height);
+    var spriteSheet = new X.SpriteSheet(this.sprite, this.width, this.height);
 
-    this.anims = new Animations(spriteSheet, {
+    this.anims = new X.Animations(spriteSheet, {
         idleDown: { frames: [0],  step: 0.15, loop: true },
         idleUp: { frames: [1], step: 0.15, loop: true },
         idleLeft: { frames: [2], step: 0.15, loop: true },
@@ -96,7 +93,7 @@ Player.prototype.update = function (dt) {
     if (this.attackCooldown > 0) {this.attackCooldown -= dt; }
 
     this.zIndex = this.y + this.height;
-    this.previousPos = new Vector(this.x, this.y);
+    this.previousPos = new X.Vector(this.x, this.y);
 };
 
 Player.prototype.attack = function () {
@@ -107,16 +104,16 @@ Player.prototype.attack = function () {
     this.attackCooldown = this.COOLDOWN_TIME;
 
     if (this.direction === "Up") {
-        this.attackRect = new Rectangle(this.x + 12, this.y - 1, 10, 1);
+        this.attackRect = new X.Rectangle(this.x + 12, this.y - 1, 10, 1);
         this.anims.setAnim("attackUp");
     } else if (this.direction === "Down") {
-        this.attackRect = new Rectangle(this.x + 8, this.y + 18, 20, 12);
+        this.attackRect = new X.Rectangle(this.x + 8, this.y + 18, 20, 12);
         this.anims.setAnim("attackDown");
     } else if (this.direction === "Left") {
-        this.attackRect = new Rectangle(this.x - 4, this.y + 13, 25, 12);
+        this.attackRect = new X.Rectangle(this.x - 4, this.y + 13, 25, 12);
         this.anims.setAnim("attackLeft");
     } else if (this.direction === "Right") {
-        this.attackRect = new Rectangle(this.x + 8, this.y + 13, 25, 12);
+        this.attackRect = new X.Rectangle(this.x + 8, this.y + 13, 25, 12);
         this.anims.setAnim("attackRight");
     }
 
