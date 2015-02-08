@@ -5,17 +5,18 @@ var Actor = require('./Actor');
 var PIXI = require('pixi.js');
 
 class Ennemy extends Actor {
-  constructor(game, x, y, width, height, texture) {
-    super(game, x, y, width, height, texture);
+  constructor(game, x, y, width, height, textureName) {
+    super(game, x, y, width, height, textureName);
 
     this.speed = 150;
     this.hp = 30;
     this.boundingbox = new X.Rectangle(6, 20, 20, 10);
 
-    this.sprite = new PIXI.Sprite(this.texture);
+    var spriteSheet = new X.SpriteSheet(textureName, this.width, this.height);
+
+    this.sprite = spriteSheet.getSprite();
     this.game.stage.addChild(this.sprite);
 
-    var spriteSheet = new X.SpriteSheet(this.sprite, this.width, this.height);
     this.anims = new X.Animations(spriteSheet, {
       idle: {
         frames: [0],

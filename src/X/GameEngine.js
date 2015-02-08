@@ -24,8 +24,13 @@ class GameEngine {
     requestAnimationFrame(this.gameloop.bind(this));
   }
 
-  run() {
-    this.init();
+  run(assets) {
+    var loader = new PIXI.AssetLoader(assets);
+    loader.onComplete = function() {
+      this.init();
+    }.bind(this);
+
+    loader.load();
   }
 }
 

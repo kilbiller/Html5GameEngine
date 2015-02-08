@@ -17,22 +17,22 @@ class LevelState extends X.State {
 
     game.entities = [];
 
-    var trunksTexture = PIXI.Texture.fromImage("assets/images/trunks.png");
-    var playerTexture = PIXI.Texture.fromImage("assets/images/player.png");
-    var ennemyTexture = PIXI.Texture.fromImage("assets/images/player.png");
+    var trunksTextureName = "assets/images/trunks.png";
+    var playerTextureName = "assets/images/player.png";
+    var ennemyTextureName = "assets/images/player.png";
 
     // Create the entities.
-    game.entities.push(new StaticObject(game, 150, 150, 32, 32, trunksTexture));
-    game.entities.push(new StaticObject(game, 180, 230, 32, 32, trunksTexture));
-    game.entities.push(new StaticObject(game, 340, 200, 32, 32, trunksTexture));
+    game.entities.push(new StaticObject(game, 150, 150, 32, 32, trunksTextureName));
+    game.entities.push(new StaticObject(game, 180, 230, 32, 32, trunksTextureName));
+    game.entities.push(new StaticObject(game, 340, 200, 32, 32, trunksTextureName));
 
-    /*game.entities.push(new Ennemy(game, 300, 300, 32, 32, playerTexture));
-    game.entities.push(new Ennemy(game, 400, 300, 32, 32, playerTexture));
-    game.entities.push(new Ennemy(game, 300, 20, 32, 32, playerTexture));
-    game.entities.push(new Ennemy(game, 50, 300, 32, 32, playerTexture));
-    game.entities.push(new Ennemy(game, 90, 300, 32, 32, ennemyTexture));*/
+    game.entities.push(new Ennemy(game, 300, 300, 32, 32, ennemyTextureName));
+    game.entities.push(new Ennemy(game, 400, 300, 32, 32, ennemyTextureName));
+    game.entities.push(new Ennemy(game, 300, 20, 32, 32, ennemyTextureName));
+    game.entities.push(new Ennemy(game, 50, 300, 32, 32, ennemyTextureName));
+    game.entities.push(new Ennemy(game, 90, 300, 32, 32, ennemyTextureName));
 
-    game.entities.push(new Player(game, 50, 50, 32, 32, playerTexture));
+    game.entities.push(new Player(game, 50, 50, 32, 32, playerTextureName));
 
     // Camera follow the player
     //game.camera.follow(game.entities.children[game.entities.children.length - 1]);
@@ -59,7 +59,12 @@ class LevelState extends X.State {
       }
     }
 
+    // z-order
     game.entities.sort(function (a, b) { return a.zIndex - b.zIndex; });
+    game.stage.removeChildren();
+    for (var entity of game.entities) {
+      game.stage.addChild(entity.sprite);
+    }
 
     //game.camera.update(game.stage);
   }

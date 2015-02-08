@@ -26,13 +26,7 @@ class Animation {
     }
 
     var index = this.currentFrame();
-
-    // Find frame position inside the spritesheet.
-    this.source.x = (this.frameList[index] % this.spriteSheet.maxColumn) * this.spriteSheet.frameWidth;
-    this.source.y = Math.floor(this.frameList[index] / this.spriteSheet.maxColumn) * this.spriteSheet.frameHeight;
-
-    //Change the frame rectangle position inside the spritesheet
-    this.spriteSheet.sprite.texture.setFrame(new PIXI.Rectangle(this.source.x, this.source.y, this.spriteSheet.frameWidth, this.spriteSheet.frameHeight));
+    this.spriteSheet.sprite.setTexture(this.spriteSheet.textures[this.frameList[index]]);
   }
 
   currentFrame() {

@@ -3,11 +3,11 @@
 var X = require('./X');
 
 class Actor extends X.Entity {
-  constructor(game, x, y, width, height, texture) {
+  constructor(game, x, y, width, height, textureName) {
     super(game, x, y);
     this.width = width;
     this.height = height;
-    this.texture = texture;
+    this.textureName = textureName;
 
     this.anims = null;
     this.currentAnim = null;
@@ -29,7 +29,7 @@ class Actor extends X.Entity {
     this.isAlive = false;
   }
 
-  getCollisionBox() {
+  getCollisionBox(x=this.x, y=this.y) {
     return new X.Rectangle(this.x + this.boundingbox.x, this.y + this.boundingbox.y,
                            this.boundingbox.width, this.boundingbox.height);
   }
@@ -50,6 +50,8 @@ class Actor extends X.Entity {
         this.y = this.previousPos.y;
       }
     }
+
+    return
   }
 }
 

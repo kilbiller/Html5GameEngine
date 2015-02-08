@@ -4,20 +4,20 @@ var X = require('./X');
 var PIXI = require('pixi.js');
 
 class StaticObject extends X.Entity {
-  constructor(game, x, y, width, height, texture) {
+  constructor(game, x, y, width, height, textureName) {
     super(game, x, y);
     this.width = width;
     this.height = height;
-    this.texture = texture;
     this.anims = null;
     this.currentAnim = null;
     this.boundingbox = new X.Rectangle(0, 0, this.width, this.height);
     this.zIndex = this.y + this.height;
 
-    this.sprite = new PIXI.Sprite(this.texture);
+    var spriteSheet = new X.SpriteSheet(textureName, this.width, this.height);
+
+    this.sprite = spriteSheet.getSprite();
     this.game.stage.addChild(this.sprite);
 
-    var spriteSheet = new X.SpriteSheet(this.sprite, this.width, this.height);
     this.anims = new X.Animations(spriteSheet, {
       idle: {
         frames: [0],

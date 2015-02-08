@@ -6,8 +6,8 @@ var PIXI = require('pixi.js');
 var key = require('keymaster');
 
 class Player extends Actor {
-  constructor(game, x, y, width, height, texture) {
-    super(game, x, y, width, height, texture);
+  constructor(game, x, y, width, height, textureName) {
+    super(game, x, y, width, height, textureName);
 
     this.speed = 150;
     this.isAttacking = false;
@@ -16,10 +16,9 @@ class Player extends Actor {
     this.COOLDOWN_TIME = 0.5;
     this.attackCooldown = 0;
 
-    this.sprite = new PIXI.Sprite(this.texture);
+    var spriteSheet = new X.SpriteSheet(textureName, this.width, this.height);
+    this.sprite = spriteSheet.getSprite();
     this.game.stage.addChild(this.sprite);
-
-    var spriteSheet = new X.SpriteSheet(this.sprite, this.width, this.height);
 
     this.anims = new X.Animations(spriteSheet, {
       idleDown: { frames: [0],  step: 0.15, loop: true },
@@ -69,11 +68,10 @@ class Player extends Actor {
       this.x = Math.round(this.x);
       this.y = Math.round(this.y);
 
+      // Collision logic. !!! ALWAYS TEST FOR COLLISIONS BEFORE UPDATING POSITIONS
+      this.updateCollisions();
       this.sprite.position.x = this.x;
       this.sprite.position.y = this.y;
-
-      // Collision logic.
-      this.updateCollisions();
 
       // Player attack if press space
       if (this.attackCooldown <= 0 && key.isPressed("space")) {
