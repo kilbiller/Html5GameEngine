@@ -5,7 +5,7 @@ var PIXI = require('pixi.js');
 class SpriteSheet {
   constructor(baseTextureName, frameWidth, frameHeight) {
     var baseTexture = PIXI.BaseTextureCache[baseTextureName];
-
+    
     this.frameWidth = frameWidth;
     this.frameHeight = frameHeight;
 

@@ -1,9 +1,8 @@
 "use strict";
 
-var Game = require('./Game');
+var X = require('./X');
+var LevelState = require('./LevelState');
 
-var game = new Game(800, 400);
-
+var game = new X.Game(800, 400);
 var assets = ["assets/images/player.png", "assets/images/trunks.png"];
-
-game.run(assets);
+game.start(assets, new LevelState(game));
