@@ -1,27 +1,19 @@
 "use strict";
 
-function State(game) {
+class State {
+  constructor(game) {
     this.game = game;
+  }
+
+  onEnter() {}
+
+  update() {}
+
+  onExit() {}
+
+  onPause() {}
+
+  onResume() {}
 }
-
-State.prototype.onEnter = function () {
-
-};
-
-State.prototype.update = function (dt) {
-
-};
-
-State.prototype.onExit = function () {
-
-};
-
-State.prototype.onPause = function () {
-
-};
-
-State.prototype.onResume = function () {
-
-};
 
 module.exports = State;

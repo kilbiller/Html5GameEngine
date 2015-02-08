@@ -3,7 +3,8 @@
 var SpriteSheet = require('./SpriteSheet');
 var PIXI = require('pixi.js');
 
-function Animation(spriteSheet, frameList, frameDuration, loop) {
+class Animation {
+  constructor(spriteSheet, frameList, frameDuration, loop) {
     this.spriteSheet = spriteSheet;
     this.frameList = frameList;
     this.frameDuration = frameDuration;
@@ -11,17 +12,17 @@ function Animation(spriteSheet, frameList, frameDuration, loop) {
     this.elapsedTime = 0;
     this.loop = loop;
     this.source = {};
-}
+  }
 
-Animation.prototype.update = function (dt) {
+  update(dt) {
     this.elapsedTime += dt;
 
     if (this.isDone()) {
-        if (this.loop) {
-            this.reset();
-        } else {
-            return;
-        }
+      if (this.loop) {
+        this.reset();
+      } else {
+        return;
+      }
     }
 
     var index = this.currentFrame();
@@ -32,22 +33,23 @@ Animation.prototype.update = function (dt) {
 
     //Change the frame rectangle position inside the spritesheet
     this.spriteSheet.sprite.texture.setFrame(new PIXI.Rectangle(this.source.x, this.source.y, this.spriteSheet.frameWidth, this.spriteSheet.frameHeight));
-};
+  }
 
-Animation.prototype.currentFrame = function () {
+  currentFrame() {
     if (this.elapsedTime <= this.totalTime) {
-        return Math.floor(this.elapsedTime / this.frameDuration);
+      return Math.floor(this.elapsedTime / this.frameDuration);
     } else {
-        return this.frameList.length - 1;
+      return this.frameList.length - 1;
     }
-};
+  }
 
-Animation.prototype.isDone = function () {
+  isDone() {
     return (this.elapsedTime >= this.totalTime);
-};
+  }
 
-Animation.prototype.reset = function () {
+  reset() {
     this.elapsedTime = 0;
-};
+  }
+}
 
 module.exports = Animation;

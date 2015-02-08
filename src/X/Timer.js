@@ -1,20 +1,13 @@
 "use strict";
 
-/**
-Timer class
-@class Timer
-**/
-function Timer() {
+class Timer {
+  constructor() {
     this.gameTime = 0;
     this.maxStep = 0.05;
     this.previousTime = 0;
-}
+  }
 
-/**
-Update the timer.
-@method tick
-**/
-Timer.prototype.tick = function () {
+  tick() {
     var now, actualDelta, gameDelta;
     now = Date.now();
     actualDelta = (now - this.previousTime) / 1000;
@@ -23,6 +16,7 @@ Timer.prototype.tick = function () {
     gameDelta = Math.min(actualDelta, this.maxStep);
     this.gameTime += gameDelta;
     return gameDelta;
-};
+  }
+}
 
 module.exports = Timer;

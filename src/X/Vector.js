@@ -1,21 +1,23 @@
 "use strict";
 
-function Vector(x, y) {
+class Vector {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
-}
+  }
 
-Vector.prototype.normalize = function () {
+  normalize() {
     var hyp = Math.sqrt(this.x * this.x + this.y * this.y);
     this.x /= hyp;
     this.y /= hyp;
-};
+  }
 
-Vector.moveTowards = function (origin, goal, step) {
+  moveTowards(origin, goal, step) {
     var dir = new Vector(goal.x - origin.x, goal.y - origin.y);
     dir.normalize();
 
     return new Vector(origin.x + dir.x * step, origin.y + dir.y * step);
-};
+  }
+}
 
 module.exports = Vector;

@@ -6,7 +6,8 @@ var Entity = require('./Entity');
 var Mouse = require('./Mouse');
 var PIXI = require('pixi.js');
 
-function GameEngine(width, height) {
+class GameEngine {
+  constructor(width, height) {
     this.stage = new PIXI.Stage(0x008000);
     this.renderer = PIXI.autoDetectRenderer(width, height);
     document.body.appendChild(this.renderer.view);
@@ -14,17 +15,18 @@ function GameEngine(width, height) {
     this.timer = new Timer();
     this.assetManager = new AssetManager();
     //this.mouse = new Mouse(this);
-}
+  }
 
-GameEngine.prototype.gameloop = function () {
+  gameloop() {
     var dt = this.timer.tick();
     this.update(dt);
     this.renderer.render(this.stage);
     requestAnimationFrame(this.gameloop.bind(this));
-};
+  }
 
-GameEngine.prototype.run = function () {
+  run() {
     this.init();
-};
+  }
+}
 
 module.exports = GameEngine;

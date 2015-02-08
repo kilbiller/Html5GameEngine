@@ -1,40 +1,42 @@
 "use strict";
 
-function AssetManager() {
+class AssetManager {
+  constructor() {
     this.successCount = 0;
     this.errorCount = 0;
     this.cache = {};
     this.soundsQueue = [];
-}
+  }
 
-AssetManager.prototype.queueSound = function (path) {
+  queueSound(path) {
     if (!this.soundsQueue.hasOwnProperty(path)) {
-        this.soundsQueue.push(path);
+      this.soundsQueue.push(path);
     }
-};
+  }
 
-AssetManager.prototype.isDone = function () {
+  isDone() {
     return (this.soundsQueue.length === this.successCount + this.errorCount);
-};
+  }
 
-AssetManager.prototype.downloadAll = function () {
+  downloadAll() {
     var i, path, img, audio, onLoad;
 
     onLoad = function () {
-        this.successCount += 1;
+      this.successCount += 1;
     };
 
     for (i = 0; i < this.soundsQueue.length; i += 1) {
-        path = this.soundsQueue[i];
-        audio = new Audio(path);
-        this.successCount += 1;
-        audio.src = path;
-        this.cache[path] = audio;
+      path = this.soundsQueue[i];
+      audio = new Audio(path);
+      this.successCount += 1;
+      audio.src = path;
+      this.cache[path] = audio;
     }
-};
+  }
 
-AssetManager.prototype.getSound = function (path) {
+  getSound(path) {
     return this.cache[path];
-};
+  }
+}
 
 module.exports = AssetManager;

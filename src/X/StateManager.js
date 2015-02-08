@@ -1,37 +1,39 @@
 "use strict";
 
-function StateManager() {
+class StateManager {
+  constructor() {
     this.states = [];
-}
+  }
 
-StateManager.prototype.update = function (dt) {
+  update(dt) {
     var state = this.states[this.states.length - 1];
     if (state) {state.update(dt); }
-};
+  }
 
-StateManager.prototype.push = function (state) {
+  push(state) {
     this.states.push(state);
     state.onEnter();
-};
+  }
 
-StateManager.prototype.pop = function () {
+  pop() {
     var state = this.states[this.states.length - 1];
     state.onExit();
     return this.states[this.states.length - 1];
-};
+  }
 
-StateManager.prototype.pause = function () {
+  pause() {
     var state = this.states[this.states.length - 1];
     if (state.onPause) {
-        state.onPause();
+      state.onPause();
     }
-};
+  }
 
-StateManager.prototype.resume = function () {
+  resume() {
     var state = this.states[this.states.length - 1];
     if (state.onResume) {
-        state.onResume();
+      state.onResume();
     }
-};
+  }
+}
 
 module.exports = StateManager;

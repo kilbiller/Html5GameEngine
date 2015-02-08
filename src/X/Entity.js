@@ -1,13 +1,15 @@
 "use strict";
 
-function Entity(game, x, y) {
+class Entity {
+  constructor(game, x, y) {
     this.game = game;
     this.x = x;
     this.y = y;
     this.zIndex = y;
     this.removeFromWorld = false;
-}
+  }
 
-Entity.prototype.update = function (dt) {};
+  update(dt) {}
+}
 
 module.exports = Entity;
