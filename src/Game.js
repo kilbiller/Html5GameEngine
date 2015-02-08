@@ -6,22 +6,22 @@ var StaticObject = require('./StaticObject');
 var Ennemy = require('./Ennemy');
 var LevelState = require('./LevelState');
 
-function Game(width, height) {
-    X.GameEngine.call(this, width, height);
+class Game extends X.GameEngine {
+  constructor(width, height) {
+    super(width, height);
     this.entities = null;
     this.camera = new X.Camera(0, 0, width, height);
     this.stateManager = new X.StateManager();
-}
+  }
 
-Game.prototype = Object.create(X.GameEngine.prototype);
-
-Game.prototype.init = function () {
+  init() {
     this.stateManager.push(new LevelState(this));
     this.gameloop();
-};
+  }
 
-Game.prototype.update = function (dt) {
+  update(dt) {
     this.stateManager.update(dt);
-};
+  }
+}
 
 module.exports = Game;

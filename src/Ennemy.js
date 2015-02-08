@@ -4,8 +4,9 @@ var X = require('./X');
 var Actor = require('./Actor');
 var PIXI = require('pixi.js');
 
-function Ennemy(game, x, y, width, height, texture) {
-    Actor.call(this, game, x, y, width, height, texture);
+class Ennemy extends Actor {
+  constructor(game, x, y, width, height, texture) {
+    super(game, x, y, width, height, texture);
 
     this.speed = 150;
     this.hp = 30;
@@ -16,24 +17,22 @@ function Ennemy(game, x, y, width, height, texture) {
 
     var spriteSheet = new X.SpriteSheet(this.sprite, this.width, this.height);
     this.anims = new X.Animations(spriteSheet, {
-        idle: {
-            frames: [0],
-            step: 0.15,
-            loop: true
-        },
-        death: {
-            frames: [36, 37, 38],
-            step: 0.15,
-            loop: false
-        }
+      idle: {
+        frames: [0],
+        step: 0.15,
+        loop: true
+      },
+      death: {
+        frames: [36, 37, 38],
+        step: 0.15,
+        loop: false
+      }
     });
-}
+  }
 
-Ennemy.prototype = Object.create(Actor.prototype);
-
-Ennemy.prototype.update = function (dt) {
+  update(dt) {
     if (this.isAlive) {
-        this.anims.setAnim("idle");
+      this.anims.setAnim("idle");
     }
 
     this.sprite.position.x = this.x;
@@ -42,11 +41,12 @@ Ennemy.prototype.update = function (dt) {
     this.anims.getCurrent().update(dt);
     this.zIndex = this.y + this.height;
     this.previousPos = new X.Vector(this.x, this.y);
-};
+  }
 
-Ennemy.prototype.takeDamage = function (damage) {
+  takeDamage(damage) {
     this.hp -= damage;
     if (this.hp <= 0) {this.die(); }
-};
+  }
+}
 
 module.exports = Ennemy;

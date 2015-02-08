@@ -7,13 +7,12 @@ var StaticObject = require('./StaticObject');
 var PIXI = require('pixi.js');
 
 
-function LevelState(game) {
-    X.State.call(this, game);
-}
+class LevelState extends X.State {
+  constructor(game) {
+    super(game);
+  }
 
-LevelState.prototype = Object.create(X.State.prototype);
-
-LevelState.prototype.onEnter = function () {
+  onEnter() {
     var game = this.game;
 
     game.entities = [];
@@ -37,10 +36,10 @@ LevelState.prototype.onEnter = function () {
 
     // Camera follow the player
     //game.camera.follow(game.entities.children[game.entities.children.length - 1]);
-};
+  }
 
-LevelState.prototype.update = function (dt) {
-    X.State.prototype.update.call(this, dt);
+  update(dt) {
+    super.update(dt);
 
     /*//Spawn a box each time left mouse button is clicked
     if (game.mouse.leftClick) {
@@ -49,22 +48,23 @@ LevelState.prototype.update = function (dt) {
 
     var game = this.game;
     for (var i = 0; i < game.entities.length; i += 1) {
-        if (!game.entities[i].removeFromWorld) {
-            game.entities[i].update(dt);
-        }
+      if (!game.entities[i].removeFromWorld) {
+        game.entities[i].update(dt);
+      }
     }
 
     for (i = game.entities.length - 1; i >= 0;  i -= 1) {
-        if (game.entities[i].removeFromWorld) {
-            game.entities.splice(i, 1);
-        }
+      if (game.entities[i].removeFromWorld) {
+        game.entities.splice(i, 1);
+      }
     }
 
     game.entities.sort(function (a, b) { return a.zIndex - b.zIndex; });
 
     //game.camera.update(game.stage);
-};
+  }
 
-LevelState.prototype.onExit = function () {};
+  onExit() {}
+}
 
 module.exports = LevelState;
