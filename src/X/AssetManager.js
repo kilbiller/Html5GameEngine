@@ -1,41 +1,50 @@
 "use strict";
 
+var PIXI = require('pixi.js');
+var Howl = require('howler').Howl;
+
 class AssetManager {
   constructor() {
-    this.successCount = 0;
-    this.errorCount = 0;
-    this.cache = {};
-    this.soundsQueue = [];
+    this.cache = [];
+    this.promiseQueue= [];
   }
 
-  queueSound(path) {
-    if (!this.soundsQueue.hasOwnProperty(path)) {
-      this.soundsQueue.push(path);
-    }
+  addImages(assets) {
+    this.loader = new PIXI.AssetLoader(assets);
+    this.loader.load();
   }
 
-  isDone() {
-    return (this.soundsQueue.length === this.successCount + this.errorCount);
-  }
+  addSound(path) {
+    var self = this;
 
-  downloadAll() {
-    var i, path, img, audio, onLoad;
+    var promise = new Promise(function(resolve, reject) {
+      var sound = new Howl({
+        urls: [path],
+        onload: () => resolve()
+      });
 
-    onLoad = function () {
-      this.successCount += 1;
-    };
+      self.cache[path] = sound;
+    });
 
-    for (i = 0; i < this.soundsQueue.length; i += 1) {
-      path = this.soundsQueue[i];
-      audio = new Audio(path);
-      this.successCount += 1;
-      audio.src = path;
-      this.cache[path] = audio;
-    }
+    this.promiseQueue.push(promise);
   }
 
   getSound(path) {
     return this.cache[path];
+  }
+
+  loadSounds() {
+    return Promise.all(this.promiseQueue);
+  }
+
+  loadImages() {
+    return new Promise((resolve, reject) => {
+      this.loader.onComplete = () => resolve();
+    });
+  }
+
+  loadAll() {
+    return Promise.all([this.loadImages(), this.loadSounds()]);
   }
 }
 

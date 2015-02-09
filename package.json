@@ -5,6 +5,7 @@
   "description": "A Game Engine in Html5/Javascript",
   "author": "Rémy Peru",
   "dependencies": {
+    "howler": "^1.1.25",
     "keymaster": "^1.6.2",
     "pixi.js": "^2.2.5"
   },

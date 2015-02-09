@@ -95,8 +95,8 @@ class Player extends Actor {
 
   attack() {
     var i, punchSound, entity;
-    punchSound = this.game.assetManager.getSound("sounds/punch.wav");
-    //punchSound.play();
+    punchSound = this.game.assetManager.getSound("assets/sounds/test.mp3");
+    punchSound.play();
     this.isAttacking = true;
     this.attackCooldown = this.COOLDOWN_TIME;
 

@@ -23,7 +23,6 @@ gulp.task('javascript', function() {
         .on('error', gutil.log.bind(gutil, 'Browserify Error'))
         .pipe(source('game.js'))
         .pipe(buffer())
-        //.pipe(uglify())
         .pipe(gulp.dest('./build'))
         .pipe(browserSync.reload({stream:true, once: true}));
     }

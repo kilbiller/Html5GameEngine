@@ -34,14 +34,16 @@ class Game {
     requestAnimationFrame(this.gameloop.bind(this));
   }
 
-  start(assets, state) {
-    var loader = new PIXI.AssetLoader(assets);
-    loader.onComplete = function() {
-      this.stateManager.push(state);
-      this.gameloop();
-    }.bind(this);
+  start(images, sound, state) {
+    var game = this;
 
-    loader.load();
+    this.assetManager.addImages(images);
+    this.assetManager.addSound(sound);
+
+    this.assetManager.loadAll().then(function() {
+      game.stateManager.push(state);
+      game.gameloop();
+    });
   }
 }
 
