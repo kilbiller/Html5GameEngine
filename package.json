@@ -2,7 +2,7 @@
   "name": "Html5GameEngine",
   "private": true,
   "version": "0.0.0",
-  "description": "A Game Engine in Html5/Javascript",
+  "description": "An ECS Game Engine in Html5/Javascript",
   "author": "Rémy Peru",
   "dependencies": {
     "howler": "^1.1.25",
@@ -11,14 +11,12 @@
   },
   "devDependencies": {
     "6to5ify": "^4.1.0",
-    "browser-sync": "^1.9.1",
+    "browser-sync": "^2.0.0-rc10",
     "browserify": "^8.1.3",
     "del": "^1.1.1",
     "gulp": "^3.8.10",
     "gulp-uglify": "^1.1.0",
-    "gulp-util": "^3.0.3",
     "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.0.0",
-    "watchify": "^2.3.0"
+    "vinyl-source-stream": "^1.0.0"
   }
 }

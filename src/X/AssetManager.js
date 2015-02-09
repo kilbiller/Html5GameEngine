@@ -20,7 +20,8 @@ class AssetManager {
     var promise = new Promise(function(resolve, reject) {
       var sound = new Howl({
         urls: [path],
-        onload: () => resolve()
+        onload: () => resolve(),
+        onerror: () => reject()
       });
 
       self.cache[path] = sound;
