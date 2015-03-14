@@ -18,6 +18,11 @@ gulp.task('javascript', function() {
 
 // copy html, css, assets to build directory
 gulp.task('copy-assets', function() {
+  // create build directory if it doesn't already exists
+  if (!fs.existsSync("./build")) {
+    fs.mkdirSync("./build");
+  }
+
   gulp.src(['./src/index.html', './src/assets/**', './src/css/**'], { base: './src' })
   .pipe(gulp.dest('./build'));
 });
