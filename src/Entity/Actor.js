@@ -1,6 +1,6 @@
 "use strict";
 
-var X = require('./X');
+var X = require('./../X');
 
 class Actor extends X.Entity {
   constructor(game, x, y, width, height, textureName) {

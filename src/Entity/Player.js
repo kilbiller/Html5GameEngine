@@ -1,6 +1,6 @@
 "use strict";
 
-var X = require('./X');
+var X = require('./../X');
 var Actor = require('./Actor');
 var PIXI = require('pixi.js');
 var key = require('keymaster');
