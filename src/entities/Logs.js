@@ -3,25 +3,18 @@
 var X = require('./../X');
 var PIXI = require('pixi.js');
 var Entity = require('./Entity');
-var PositionComponent = require('../Component/Position');
-var SpriteComponent = require('../Component/Sprite');
+var components = require('../components');
 
-class LogsPile extends Entity {
+class Logs extends Entity {
   constructor(game, x, y, width, height, textureName) {
     super(game);
-    super.addComponent(new PositionComponent(x, y));
-    super.addComponent(new SpriteComponent(new PIXI.Sprite.fromImage(textureName)));
+    super.addComponent(new components.position(x, y));
+    super.addComponent(new components.sprite(new PIXI.Sprite.fromImage(textureName)));
     /*this.width = width;
     this.height = height;*/
     /*this.boundingbox = new X.Rectangle(0, 0, this.width, this.height);
     this.zIndex = this.y + this.height;*/
-    console.log(this.components);
     this.game.stage.addChild(this.components.sprite.sprite);
-  }
-
-  update(dt) {
-    this.components.sprite.sprite.position.x = this.components.position.x;
-    this.components.sprite.sprite.position.y = this.components.position.y;
   }
 
   /*getCollisionBox() {
@@ -30,4 +23,4 @@ class LogsPile extends Entity {
   }*/
 }
 
-module.exports = LogsPile;
+module.exports = Logs;
