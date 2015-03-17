@@ -5,8 +5,8 @@ var X = require('./X');
 var Ennemy = require('./Entity/Ennemy');*/
 var PIXI = require('pixi.js');
 
-var entities = require('./entities');
-var systems = require('./systems');
+var Entities = require('./entities');
+var Systems = require('./systems');
 
 
 class LevelState extends X.State {
@@ -24,9 +24,9 @@ class LevelState extends X.State {
     var ennemyTexture = "assets/images/player.png";
 
     // Create the entities.
-    game.entities.push(new entities.logs(game, 150, 150, 32, 32, logsTexture));
-    game.entities.push(new entities.logs(game, 180, 230, 32, 32, logsTexture));
-    game.entities.push(new entities.logs(game, 340, 200, 32, 32, logsTexture));
+    game.entities.push(new Entities.Logs(game, 150, 150, 32, 32, logsTexture));
+    game.entities.push(new Entities.Logs(game, 180, 230, 32, 32, logsTexture));
+    game.entities.push(new Entities.Logs(game, 340, 200, 32, 32, logsTexture));
 
     /*game.entities.push(new Ennemy(game, 300, 300, 32, 32, ennemyTextureName));
     game.entities.push(new Ennemy(game, 400, 300, 32, 32, ennemyTextureName));
@@ -34,13 +34,15 @@ class LevelState extends X.State {
     game.entities.push(new Ennemy(game, 50, 300, 32, 32, ennemyTextureName));
     game.entities.push(new Ennemy(game, 90, 300, 32, 32, ennemyTextureName));*/
 
-    //game.entities.push(new Player(game, 50, 50, 32, 32, playerTexture));
+    game.entities.push(new Entities.Player(game, 50, 50, 32, 32, playerTexture));
 
     // Camera follow the player
     //game.camera.follow(game.entities.children[game.entities.children.length - 1]);
 
     this.systems = [
-      systems.positionning
+      /*Systems.Animation,*/
+      Systems.Input,
+      Systems.Positionning
     ];
   }
 
@@ -49,7 +51,7 @@ class LevelState extends X.State {
 
     var game = this.game;
     for(var system of this.systems){
-      system(game.entities);
+      system(game.entities, dt);
     }
 
     /*//Spawn a box each time left mouse button is clicked

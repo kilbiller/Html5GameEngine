@@ -1,1 +1,2 @@
-exports.logs = require('./Logs.js');
+exports.Logs = require('./Logs');
+exports.Player = require('./Player');

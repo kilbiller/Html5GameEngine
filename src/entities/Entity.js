@@ -1,8 +1,10 @@
 "use strict";
 
+var uuid = require('node-uuid');
+
 class Entity {
   constructor(game) {
-    this.id = (+new Date()).toString(16) + (Math.random() * 100000000 | 0).toString(16) + Entity.prototype.count;
+    this.id = uuid.v4();
     this.game = game;
     this.components = [];
     Entity.prototype.count++;

@@ -4,23 +4,20 @@ var X = require('./../X');
 var Actor = require('./Actor');
 var PIXI = require('pixi.js');
 var key = require('keymaster');
+var Entity = require('./Entity');
+var Components = require('../Components');
 
-class Player extends Actor {
+class Player extends Entity {
   constructor(game, x, y, width, height, textureName) {
-    super(game, x, y, width, height, textureName);
+    super(game);
 
-    this.speed = 150;
-    this.isAttacking = false;
-    this.attackRect = null;
-    this.boundingbox = new X.Rectangle(6, 20, 20, 10);
-    this.COOLDOWN_TIME = 0.5;
-    this.attackCooldown = 0;
+    super.addComponent(new Components.Position(x, y));
+    super.addComponent(new Components.Dimension(width, height));
 
-    var spriteSheet = new X.SpriteSheet(textureName, this.width, this.height);
-    this.sprite = spriteSheet.getSprite();
-    this.game.stage.addChild(this.sprite);
-
-    this.anims = new X.Animations(spriteSheet, {
+    var spriteSheet = new X.SpriteSheet(textureName, width, height);
+    super.addComponent(new Components.Sprite(spriteSheet.getSprite()));
+    this.game.stage.addChild(this.components.sprite.sprite);
+    super.addComponent(new Components.Animation(new X.Animations(spriteSheet, {
       idleDown: { frames: [0],  step: 0.15, loop: true },
       idleUp: { frames: [1], step: 0.15, loop: true },
       idleLeft: { frames: [2], step: 0.15, loop: true },
@@ -34,10 +31,24 @@ class Player extends Actor {
       attackLeft: { frames: [28, 29, 30], step: 0.1, loop: false },
       attackRight: {  frames: [32, 33, 34], step: 0.1, loop: false },
       death: { frames: [36, 37, 38], step: 0.12, loop: false }
-    });
+    })));
+
+
+    super.addComponent(new Components.Speed(150));
+
+    super.addComponent(new Components.UserInput());
+
+    super.addComponent(new Components.Direction());
+
+    /*this.speed = 150;
+    this.isAttacking = false;
+    this.attackRect = null;
+    this.boundingbox = new X.Rectangle(6, 20, 20, 10);
+    this.COOLDOWN_TIME = 0.5;
+    this.attackCooldown = 0;*/
   }
 
-  update(dt) {
+  /*update(dt) {
     var ms = this.game.mouse;
 
     if (!this.isAttacking && this.isAlive) {
@@ -91,9 +102,9 @@ class Player extends Actor {
 
     this.zIndex = this.y + this.height;
     this.previousPos = new X.Vector(this.x, this.y);
-  }
+  }*/
 
-  attack() {
+  /*attack() {
     var i, punchSound, entity;
     punchSound = this.game.assetManager.getSound("assets/sounds/punch.wav");
     punchSound.play();
@@ -120,7 +131,7 @@ class Player extends Actor {
         entity.takeDamage(10);
       }
     }
-  }
+  }*/
 }
 
 module.exports = Player;

@@ -3,13 +3,13 @@
 var X = require('./../X');
 var PIXI = require('pixi.js');
 var Entity = require('./Entity');
-var components = require('../components');
+var Components = require('../components');
 
 class Logs extends Entity {
   constructor(game, x, y, width, height, textureName) {
     super(game);
-    super.addComponent(new components.position(x, y));
-    super.addComponent(new components.sprite(new PIXI.Sprite.fromImage(textureName)));
+    super.addComponent(new Components.Position(x, y));
+    super.addComponent(new Components.Sprite(new PIXI.Sprite.fromImage(textureName)));
     /*this.width = width;
     this.height = height;*/
     /*this.boundingbox = new X.Rectangle(0, 0, this.width, this.height);
