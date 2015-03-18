@@ -8,6 +8,8 @@ class Position extends Component {
 
     this.x = x;
     this.y = y;
+    this.oldX = x;
+    this.oldY = y;
   }
 }
 

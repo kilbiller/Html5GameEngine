@@ -40,7 +40,13 @@ class Player extends Entity {
 
     super.addComponent(new Components.Direction());
 
-    /*this.speed = 150;
+    super.addComponent(new Components.Health());
+
+    super.addComponent(new Components.Attack(25));
+
+    // TODO component hitbox
+
+    /*
     this.isAttacking = false;
     this.attackRect = null;
     this.boundingbox = new X.Rectangle(6, 20, 20, 10);

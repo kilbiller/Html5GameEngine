@@ -9,6 +9,7 @@ class Logs extends Entity {
   constructor(game, x, y, width, height, textureName) {
     super(game);
     super.addComponent(new Components.Position(x, y));
+    super.addComponent(new Components.Dimension(width, height));
     super.addComponent(new Components.Sprite(new PIXI.Sprite.fromImage(textureName)));
     /*this.width = width;
     this.height = height;*/

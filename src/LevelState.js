@@ -28,11 +28,11 @@ class LevelState extends X.State {
     game.entities.push(new Entities.Logs(game, 180, 230, 32, 32, logsTexture));
     game.entities.push(new Entities.Logs(game, 340, 200, 32, 32, logsTexture));
 
-    /*game.entities.push(new Ennemy(game, 300, 300, 32, 32, ennemyTextureName));
-    game.entities.push(new Ennemy(game, 400, 300, 32, 32, ennemyTextureName));
-    game.entities.push(new Ennemy(game, 300, 20, 32, 32, ennemyTextureName));
-    game.entities.push(new Ennemy(game, 50, 300, 32, 32, ennemyTextureName));
-    game.entities.push(new Ennemy(game, 90, 300, 32, 32, ennemyTextureName));*/
+    game.entities.push(new Entities.Ennemy(game, 300, 300, 32, 32, ennemyTexture));
+    /*game.entities.push(new Entities.Ennemy(game, 400, 300, 32, 32, ennemyTexture));
+    game.entities.push(new Entities.Ennemy(game, 300, 20, 32, 32, ennemyTexture));
+    game.entities.push(new Entities.Ennemy(game, 50, 300, 32, 32, ennemyTexture));
+    game.entities.push(new Entities.Ennemy(game, 90, 300, 32, 32, ennemyTexture));*/
 
     game.entities.push(new Entities.Player(game, 50, 50, 32, 32, playerTexture));
 
@@ -40,8 +40,10 @@ class LevelState extends X.State {
     //game.camera.follow(game.entities.children[game.entities.children.length - 1]);
 
     this.systems = [
-      /*Systems.Animation,*/
       Systems.Input,
+      Systems.Animation,
+      Systems.Collision,
+      Systems.Attack,
       Systems.Positionning
     ];
   }
@@ -51,7 +53,7 @@ class LevelState extends X.State {
 
     var game = this.game;
     for(var system of this.systems){
-      system(game.entities, dt);
+      system(game.entities, dt, game);
     }
 
     /*//Spawn a box each time left mouse button is clicked

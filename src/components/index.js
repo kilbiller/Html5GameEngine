@@ -6,3 +6,5 @@ exports.Animation = require('./Animation');
 exports.UserInput = require('./UserInput');
 exports.Speed = require('./Speed');
 exports.Direction = require('./Direction');
+exports.Health = require('./Health');
+exports.Attack = require('./Attack');

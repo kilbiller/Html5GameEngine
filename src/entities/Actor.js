@@ -39,7 +39,7 @@ class Actor extends X.Entity {
                            this.hitbox.width, this.hitbox.height);
   }
 
-  updateCollisions() {
+  /*updateCollisions() {
     var i, entity, collisionBox;
     collisionBox = this.getCollisionBox();
 
@@ -51,8 +51,8 @@ class Actor extends X.Entity {
       }
     }
 
-    return
-  }
+    return;
+  }*/
 }
 
 module.exports = Actor;
