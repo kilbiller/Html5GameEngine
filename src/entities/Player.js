@@ -8,15 +8,13 @@ var Entity = require('./Entity');
 var Components = require('../Components');
 
 class Player extends Entity {
-  constructor(game, x, y, width, height, textureName) {
-    super(game);
-
+  constructor(x, y, width, height, textureName) {
+    super();
     super.addComponent(new Components.Position(x, y));
     super.addComponent(new Components.Dimension(width, height));
 
     var spriteSheet = new X.SpriteSheet(textureName, width, height);
     super.addComponent(new Components.Sprite(spriteSheet.getSprite()));
-    this.game.stage.addChild(this.components.sprite.sprite);
     super.addComponent(new Components.Animation(new X.Animations(spriteSheet, {
       idleDown: { frames: [0],  step: 0.15, loop: true },
       idleUp: { frames: [1], step: 0.15, loop: true },
@@ -31,7 +29,7 @@ class Player extends Entity {
       attackLeft: { frames: [28, 29, 30], step: 0.1, loop: false },
       attackRight: {  frames: [32, 33, 34], step: 0.1, loop: false },
       death: { frames: [36, 37, 38], step: 0.12, loop: false }
-    })));
+    }), "idleDown"));
 
 
     super.addComponent(new Components.Speed(150));
@@ -42,7 +40,7 @@ class Player extends Entity {
 
     super.addComponent(new Components.Health());
 
-    super.addComponent(new Components.Attack(25));
+    super.addComponent(new Components.Attack(50));
 
     // TODO component hitbox
 

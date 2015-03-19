@@ -1,6 +1,6 @@
 "use strict";
 
-class Timer {
+class Time {
   constructor() {
     this.gameTime = 0;
     this.maxStep = 0.05;
@@ -8,15 +8,14 @@ class Timer {
   }
 
   tick() {
-    var now, actualDelta, gameDelta;
-    now = Date.now();
-    actualDelta = (now - this.previousTime) / 1000;
+    var now = Date.now();
+    var actualDelta = (now - this.previousTime) / 1000;
     this.previousTime = now;
 
-    gameDelta = Math.min(actualDelta, this.maxStep);
+    var gameDelta = Math.min(actualDelta, this.maxStep);
     this.gameTime += gameDelta;
     return gameDelta;
   }
 }
 
-module.exports = Timer;
+module.exports = Time;

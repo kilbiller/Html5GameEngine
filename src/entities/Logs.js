@@ -6,16 +6,13 @@ var Entity = require('./Entity');
 var Components = require('../components');
 
 class Logs extends Entity {
-  constructor(game, x, y, width, height, textureName) {
-    super(game);
+  constructor(x, y, width, height, textureName) {
+    super();
     super.addComponent(new Components.Position(x, y));
     super.addComponent(new Components.Dimension(width, height));
     super.addComponent(new Components.Sprite(new PIXI.Sprite.fromImage(textureName)));
-    /*this.width = width;
-    this.height = height;*/
     /*this.boundingbox = new X.Rectangle(0, 0, this.width, this.height);
     this.zIndex = this.y + this.height;*/
-    this.game.stage.addChild(this.components.sprite.sprite);
   }
 
   /*getCollisionBox() {

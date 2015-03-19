@@ -7,15 +7,13 @@ var Entity = require('./Entity');
 var Components = require('../Components');
 
 class Ennemy extends Entity {
-  constructor(game, x, y, width, height, textureName) {
-    super(game);
-
+  constructor(x, y, width, height, textureName) {
+    super();
     super.addComponent(new Components.Position(x, y));
     super.addComponent(new Components.Dimension(width, height));
 
     var spriteSheet = new X.SpriteSheet(textureName, width, height);
     super.addComponent(new Components.Sprite(spriteSheet.getSprite()));
-    this.game.stage.addChild(this.components.sprite.sprite);
     super.addComponent(new Components.Animation(new X.Animations(spriteSheet, {
       idle: {
         frames: [0],
@@ -27,10 +25,7 @@ class Ennemy extends Entity {
         step: 0.15,
         loop: false
       }
-    })));
-
-    // TODO CHANGE THIS !!!!!
-    this.components.animation.anims.setAnim("idle");
+    }), "idle"));
 
     super.addComponent(new Components.Direction());
 

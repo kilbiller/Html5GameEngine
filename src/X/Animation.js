@@ -11,7 +11,7 @@ class Animation {
     this.totalTime = this.frameList.length * this.frameDuration;
     this.elapsedTime = 0;
     this.loop = loop;
-    this.source = {};
+    /*this.source = {};*/
   }
 
   update(dt) {

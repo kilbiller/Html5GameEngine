@@ -1,7 +1,6 @@
 "use strict";
 
 var X = require('./../X');
-var PIXI = require('pixi.js');
 
 var Attack = function(entities, dt, game) {
   for( var entity of entities ) {
@@ -18,16 +17,16 @@ var Attack = function(entities, dt, game) {
         var attackRect;
         if (entity.components.direction.value === "Up") {
           attackRect = new X.Rectangle(entity.components.position.x + 12, entity.components.position.y - 1, 10, 1);
-          entity.components.animation.anims.setAnim("attackUp");
+          entity.components.animation.state = "attackUp";
         } else if (entity.components.direction.value === "Down") {
           attackRect = new X.Rectangle(entity.components.position.x + 8, entity.components.position.y + 18, 20, 12);
-          entity.components.animation.anims.setAnim("attackDown");
+          entity.components.animation.state = "attackDown";
         } else if (entity.components.direction.value === "Left") {
           attackRect = new X.Rectangle(entity.components.position.x - 4, entity.components.position.y + 13, 25, 12);
-          entity.components.animation.anims.setAnim("attackLeft");
+          entity.components.animation.state = "attackLeft";
         } else if (entity.components.direction.value === "Right") {
           attackRect = new X.Rectangle(entity.components.position.x + 8, entity.components.position.y + 13, 25, 12);
-          entity.components.animation.anims.setAnim("attackRight");
+          entity.components.animation.state = "attackRight";
         }
 
         for (var entity2 of entities) {
@@ -41,7 +40,7 @@ var Attack = function(entities, dt, game) {
                 // TODO find other sound
                 //var deathSound = game.assetManager.getSound("assets/sounds/slime_death.wav");
                 //deathSound.play();
-                entity2.components.animation.anims.setAnim("death");
+                entity2.components.animation.state = "death";
                 entity2.components.health.isAlive = false;
               }
             }
@@ -52,10 +51,11 @@ var Attack = function(entities, dt, game) {
       //-------------------------------------------------------------
       // If player has finished his attack.
       if (entity.components.attack.isAttacking && entity.components.animation.anims.getCurrent().isDone()) {
-        entity.components.animation.anims.getCurrent().reset();
         entity.components.attack.isAttacking = false;
         entity.components.attack.canAttack = true;
-        //this.attackRect = null;
+
+        //TODO find a way to remove this shit (via improving X.Animation)
+        entity.components.animation.anims.getCurrent().reset();
       }
 
       //-------------------------------------------------------------

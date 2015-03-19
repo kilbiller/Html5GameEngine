@@ -3,9 +3,8 @@
 var uuid = require('node-uuid');
 
 class Entity {
-  constructor(game) {
+  constructor() {
     this.id = uuid.v4();
-    this.game = game;
     this.components = [];
     Entity.prototype.count++;
   }

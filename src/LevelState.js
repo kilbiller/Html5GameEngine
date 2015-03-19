@@ -24,17 +24,17 @@ class LevelState extends X.State {
     var ennemyTexture = "assets/images/player.png";
 
     // Create the entities.
-    game.entities.push(new Entities.Logs(game, 150, 150, 32, 32, logsTexture));
-    game.entities.push(new Entities.Logs(game, 180, 230, 32, 32, logsTexture));
-    game.entities.push(new Entities.Logs(game, 340, 200, 32, 32, logsTexture));
+    game.entities.push(new Entities.Logs(150, 150, 32, 32, logsTexture));
+    game.entities.push(new Entities.Logs(180, 230, 32, 32, logsTexture));
+    game.entities.push(new Entities.Logs(340, 200, 32, 32, logsTexture));
 
-    game.entities.push(new Entities.Ennemy(game, 300, 300, 32, 32, ennemyTexture));
-    /*game.entities.push(new Entities.Ennemy(game, 400, 300, 32, 32, ennemyTexture));
-    game.entities.push(new Entities.Ennemy(game, 300, 20, 32, 32, ennemyTexture));
-    game.entities.push(new Entities.Ennemy(game, 50, 300, 32, 32, ennemyTexture));
-    game.entities.push(new Entities.Ennemy(game, 90, 300, 32, 32, ennemyTexture));*/
+    game.entities.push(new Entities.Ennemy(300, 300, 32, 32, ennemyTexture));
+    game.entities.push(new Entities.Ennemy(400, 300, 32, 32, ennemyTexture));
+    game.entities.push(new Entities.Ennemy(300, 20, 32, 32, ennemyTexture));
+    game.entities.push(new Entities.Ennemy(50, 300, 32, 32, ennemyTexture));
+    game.entities.push(new Entities.Ennemy(90, 300, 32, 32, ennemyTexture));
 
-    game.entities.push(new Entities.Player(game, 50, 50, 32, 32, playerTexture));
+    game.entities.push(new Entities.Player(50, 50, 32, 32, playerTexture));
 
     // Camera follow the player
     //game.camera.follow(game.entities.children[game.entities.children.length - 1]);
@@ -44,17 +44,20 @@ class LevelState extends X.State {
       Systems.Animation,
       Systems.Collision,
       Systems.Attack,
-      Systems.Positionning
+      Systems.SpritePosition,
+      //Systems.Debug
     ];
   }
 
   update(dt) {
     super.update(dt);
 
+    //console.time('systems');
     var game = this.game;
     for(var system of this.systems){
       system(game.entities, dt, game);
     }
+    //console.timeEnd('systems');
 
     /*//Spawn a box each time left mouse button is clicked
     if (game.mouse.leftClick) {

@@ -9,5 +9,5 @@ exports.Rectangle = require('./Rectangle');
 exports.SpriteSheet = require('./SpriteSheet');
 exports.State = require('./State');
 exports.StateManager = require('./StateManager');
-exports.Timer = require('./Timer');
+exports.Time = require('./Time');
 exports.Vector = require('./Vector');

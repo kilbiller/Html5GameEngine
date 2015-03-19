@@ -1,6 +1,6 @@
 "use strict";
 
-var Timer = require('./Timer');
+var Time = require('./Time');
 var AssetManager = require('./AssetManager');
 var Entity = require('./Entity');
 var Mouse = require('./Mouse');
@@ -14,7 +14,7 @@ class Game {
     this.renderer = PIXI.autoDetectRenderer(width, height);
     document.body.appendChild(this.renderer.view);
 
-    this.timer = new Timer();
+    this.time = new Time();
     this.assetManager = new AssetManager();
     //this.mouse = new Mouse(this);
 
@@ -28,7 +28,7 @@ class Game {
   }
 
   gameloop() {
-    var dt = this.timer.tick();
+    var dt = this.time.tick();
     this.update(dt);
     this.renderer.render(this.stage);
     requestAnimationFrame(this.gameloop.bind(this));
