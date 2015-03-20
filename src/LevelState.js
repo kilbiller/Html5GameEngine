@@ -77,13 +77,6 @@ class LevelState extends X.State {
       }
     }*/
 
-    // z-order
-    /*game.entities.sort(function (a, b) { return a.zIndex - b.zIndex; });
-    game.stage.removeChildren();
-    for (var entity of game.entities) {
-      game.stage.addChild(entity.sprite);
-    }*/
-
     //game.camera.update(game.stage);
   }
 

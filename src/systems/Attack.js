@@ -42,6 +42,7 @@ var Attack = function(entities, dt, game) {
                 //deathSound.play();
                 entity2.components.animation.state = "death";
                 entity2.components.health.isAlive = false;
+                entity2.removeComponent("collider");
               }
             }
           }

@@ -8,7 +8,7 @@ var Components = require('../Components');
 
 class Ennemy extends Entity {
   constructor(x, y, width, height, textureName) {
-    super();
+    super("ennemy");
     super.addComponent(new Components.Position(x, y));
     super.addComponent(new Components.Dimension(width, height));
 
@@ -30,6 +30,8 @@ class Ennemy extends Entity {
     super.addComponent(new Components.Direction());
 
     super.addComponent(new Components.Health());
+
+    super.addComponent(new Components.Collider(6, 20, 20, 10));
 
     /*this.speed = 150;
     this.hp = 30;
