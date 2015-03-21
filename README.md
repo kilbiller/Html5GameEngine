@@ -1,6 +1,17 @@
 #Html5GameEngine
 
-## TODO:
+A simple HTML5 game framework made for fun & experience
+
+## Include
+
+* ECS (Entity/Component/System Architecture)
+* AssetManager
+* SpriteSheet Animations
+* Collision detection & response
+* StateManager
+* Fixed Time Step
+
+## TODO
 
 * Tile System
 * Debug system

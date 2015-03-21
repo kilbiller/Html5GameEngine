@@ -1,8 +1,9 @@
 "use strict";
 
 var X = require('./../X');
+var Entity = require('./Entity');
 
-class Actor extends X.Entity {
+class Actor extends Entity {
   constructor(game, x, y, width, height, textureName) {
     super(game, x, y);
     this.width = width;

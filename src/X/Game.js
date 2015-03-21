@@ -2,7 +2,6 @@
 
 var Time = require('./Time');
 var AssetManager = require('./AssetManager');
-var Entity = require('./Entity');
 var Mouse = require('./Mouse');
 var PIXI = require('pixi.js');
 var Camera = require('./Camera');

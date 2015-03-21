@@ -2,7 +2,6 @@ exports.Animation = require('./Animation');
 exports.Animations = require('./Animations');
 exports.AssetManager = require('./AssetManager');
 exports.Camera = require('./Camera');
-exports.Entity = require('./Entity');
 exports.Game = require('./Game');
 exports.Mouse = require('./Mouse');
 exports.Rectangle = require('./Rectangle');
