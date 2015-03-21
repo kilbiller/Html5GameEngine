@@ -1,8 +1,6 @@
 "use strict";
 
 var X = require('./X');
-/*var Player = require('./Entity/Player');
-var Ennemy = require('./Entity/Ennemy');*/
 var PIXI = require('pixi.js');
 
 var Entities = require('./entities');
@@ -16,8 +14,6 @@ class LevelState extends X.State {
 
   onEnter() {
     var game = this.game;
-
-    game.entities = [];
 
     var logsTexture = game.assetManager.getImage("logs");
     var playerTexture = game.assetManager.getImage("player");
@@ -44,7 +40,7 @@ class LevelState extends X.State {
       Systems.Animation,
       Systems.Collision,
       Systems.Attack,
-      Systems.SpritePosition,
+      Systems.Render,
       //Systems.Debug
     ];
   }

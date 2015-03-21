@@ -1,8 +1,6 @@
 "use strict";
 
 var X = require('./../X');
-var Actor = require('./Actor');
-var PIXI = require('pixi.js');
 var key = require('keymaster');
 var Entity = require('./Entity');
 var Components = require('../Components');
@@ -43,99 +41,7 @@ class Player extends Entity {
     super.addComponent(new Components.Attack(50));
 
     super.addComponent(new Components.Collider(6, 20, 20, 10));
-
-    /*
-    this.isAttacking = false;
-    this.attackRect = null;
-    this.boundingbox = new X.Rectangle(6, 20, 20, 10);
-    this.COOLDOWN_TIME = 0.5;
-    this.attackCooldown = 0;*/
   }
-
-  /*update(dt) {
-    var ms = this.game.mouse;
-
-    if (!this.isAttacking && this.isAlive) {
-      this.anims.setAnim("idle" + this.direction);
-
-      if (key.isPressed("Z")) {
-        this.direction = "Up";
-        this.y -= this.speed * dt;
-        this.anims.setAnim("moveUp");
-      }
-      if (key.isPressed("S")) {
-        this.direction = "Down";
-        this.y += this.speed * dt;
-        this.anims.setAnim("moveDown");
-      }
-      if (key.isPressed("Q")) {
-        this.direction = "Left";
-        this.x -= this.speed * dt;
-        this.anims.setAnim("moveLeft");
-      }
-      if (key.isPressed("D")) {
-        this.direction = "Right";
-        this.x += this.speed * dt;
-        this.anims.setAnim("moveRight");
-      }
-
-      // Prevent sub-pixel movements
-      this.x = Math.round(this.x);
-      this.y = Math.round(this.y);
-
-      // Collision logic. !!! ALWAYS TEST FOR COLLISIONS BEFORE UPDATING POSITIONS
-      this.updateCollisions();
-      this.sprite.position.x = this.x;
-      this.sprite.position.y = this.y;
-
-      // Player attack if press space
-      if (this.attackCooldown <= 0 && key.isPressed("space")) {
-        this.attack();
-      }
-    }
-
-    this.anims.getCurrent().update(dt);
-
-    // If player has finished his attack.
-    if (this.isAttacking && this.anims.getCurrent().isDone()) {
-      this.anims.getCurrent().reset();
-      this.isAttacking = false;
-      this.attackRect = null;
-    }
-    if (this.attackCooldown > 0) {this.attackCooldown -= dt; }
-
-    this.zIndex = this.y + this.height;
-    this.previousPos = new X.Vector(this.x, this.y);
-  }*/
-
-  /*attack() {
-    var i, punchSound, entity;
-    punchSound = this.game.assetManager.getSound("assets/sounds/punch.wav");
-    punchSound.play();
-    this.isAttacking = true;
-    this.attackCooldown = this.COOLDOWN_TIME;
-
-    if (this.direction === "Up") {
-      this.attackRect = new X.Rectangle(this.x + 12, this.y - 1, 10, 1);
-      this.anims.setAnim("attackUp");
-    } else if (this.direction === "Down") {
-      this.attackRect = new X.Rectangle(this.x + 8, this.y + 18, 20, 12);
-      this.anims.setAnim("attackDown");
-    } else if (this.direction === "Left") {
-      this.attackRect = new X.Rectangle(this.x - 4, this.y + 13, 25, 12);
-      this.anims.setAnim("attackLeft");
-    } else if (this.direction === "Right") {
-      this.attackRect = new X.Rectangle(this.x + 8, this.y + 13, 25, 12);
-      this.anims.setAnim("attackRight");
-    }
-
-    for (i = 0; i < this.game.entities.length; i += 1) {
-      entity = this.game.entities[i];
-      if (this !== entity && entity.hitbox !== null && entity.isAlive && this.attackRect.intersects(entity.getHitBox())) {
-        entity.takeDamage(10);
-      }
-    }
-  }*/
 }
 
 module.exports = Player;

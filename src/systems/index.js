@@ -1,4 +1,4 @@
-exports.SpritePosition = require('./SpritePosition');
+exports.Render = require('./Render');
 exports.Animation = require('./Animation');
 exports.Input = require('./Input');
 exports.Collision = require('./Collision');

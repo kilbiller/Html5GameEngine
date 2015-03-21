@@ -17,7 +17,7 @@ class Game {
     this.assetManager = new AssetManager();
     //this.mouse = new Mouse(this);
 
-    this.entities = null;
+    this.entities = [];
     this.camera = new Camera(0, 0, width, height);
     this.stateManager = new StateManager();
   }
@@ -39,8 +39,6 @@ class Game {
 
   start(state) {
     var game = this;
-    //TODO Change this
-
     this.assetManager.loadAll().then(function() {
       game.stateManager.push(state);
       game.gameloop();

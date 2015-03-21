@@ -22,3 +22,4 @@ A simple HTML5 game framework made for fun & experience
 * Player should always be on top of dead body
 * Maybe class for Systems
 * Refactor X.Game !!! (maybe a preload in each state)
+* Scale
