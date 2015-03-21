@@ -8,12 +8,17 @@ var babelify = require("babelify");
 var fs = require("fs");
 
 gulp.task('javascript', function() {
+  var file = fs.createWriteStream("./build/game.js");
+  file.on("finish", function() {
+    browserSync.reload();
+  });
+
   browserify({ debug: true })
   .transform(babelify)
   .require('./src/index.js', { entry: true })
   .bundle()
   .on("error", function (err) { console.log("Error: " + err.message); })
-  .pipe(fs.createWriteStream("./build/game.js"));
+  .pipe(file);
 });
 
 // copy html, css, assets to build directory
@@ -35,11 +40,11 @@ gulp.task('browser-sync', ['copy-assets', 'javascript'], function() {
   });
 });
 
-// cleazn build directory
+// clean build directory
 gulp.task('clean', function(cb) {
   del(['build'], cb);
 });
 
 gulp.task('default', ['browser-sync'], function() {
-  gulp.watch(['src/*.js','src/*/*.js'], ['javascript', browserSync.reload]);
+  gulp.watch(['src/*.js','src/*/*.js'], ['javascript']);
 });

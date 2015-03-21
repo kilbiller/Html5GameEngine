@@ -1,31 +1,23 @@
 "use strict";
 
-var Rectangle = require('./Rectangle');
+var PIXI = require('pixi.js');
 
 class Camera {
-  constructor(x, y, width, height) {
-    this.viewport = new Rectangle(x, y, width, height);
-    // Entity that should be followed.
-    this.followed = null;
+  constructor(game) {
+    this.game = game;
+    this.target = null;
   }
 
-  offset(x, y) {
-    this.viewport.offset(x, y);
+  follow(target) {
+    this.target = target;
   }
 
-  follow(entity) {
-    this.followed = entity;
-  }
-
-  update(stage) {
-    // Keep following the entity.
-    if (this.followed !== null) {
-      this.offset((this.followed.pos.x  + this.followed.width / 2) - this.viewport.width / 2,
-                  (this.followed.pos.y + this.followed.height / 2) - this.viewport.height / 2);
+  update() {
+    if (this.target !== null) {
+      var targetCenterX = this.target.components.position.x + this.target.components.dimension.width / 2;
+      var targetCenterY = this.target.components.position.y + this.target.components.dimension.height / 2;
+      this.game.renderer.offset = new PIXI.Point(-(targetCenterX - this.game.renderer.width / 2), -(targetCenterY - this.game.renderer.height / 2));
     }
-
-    stage.getChildAt(0).position.x = -this.viewport.x;
-    stage.getChildAt(0).position.y = -this.viewport.y;
   }
 }
 

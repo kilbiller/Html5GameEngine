@@ -8,7 +8,7 @@ var Camera = require('./Camera');
 var StateManager = require('./StateManager');
 
 class Game {
-  constructor(width=500, height=500) {
+  constructor(width = 427, height = 240) {
     this.stage = new PIXI.Stage(0x008000);
     this.renderer = PIXI.autoDetectRenderer(width, height);
     document.body.appendChild(this.renderer.view);
@@ -18,7 +18,6 @@ class Game {
     //this.mouse = new Mouse(this);
 
     this.entities = [];
-    this.camera = new Camera(0, 0, width, height);
     this.stateManager = new StateManager();
   }
 

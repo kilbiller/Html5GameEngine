@@ -29,11 +29,15 @@ class LevelState extends X.State {
     game.entities.push(new Entities.Ennemy(300, 20, 32, 32, ennemyTexture));
     game.entities.push(new Entities.Ennemy(50, 300, 32, 32, ennemyTexture));
     game.entities.push(new Entities.Ennemy(90, 300, 32, 32, ennemyTexture));
+    game.entities.push(new Entities.Ennemy(0, 400, 32, 32, ennemyTexture));
+    game.entities.push(new Entities.Ennemy(868, 400, 32, 32, ennemyTexture));
 
-    game.entities.push(new Entities.Player(50, 50, 32, 32, playerTexture));
+    var player = new Entities.Player(50, 50, 32, 32, playerTexture);
+    game.entities.push(player);
 
     // Camera follow the player
-    //game.camera.follow(game.entities.children[game.entities.children.length - 1]);
+    this.camera = new X.Camera(game);
+    //this.camera.follow(player);
 
     this.systems = [
       Systems.Input,
@@ -55,6 +59,8 @@ class LevelState extends X.State {
     }
     //console.timeEnd('systems');
 
+    this.camera.update();
+
     /*//Spawn a box each time left mouse button is clicked
     if (game.mouse.leftClick) {
         game.entities.push(new StaticObject(game, game.mouse.pos.x, game.mouse.pos.y, 32, 32, "img/trunks.png"));
@@ -72,8 +78,6 @@ class LevelState extends X.State {
         game.entities.splice(i, 1);
       }
     }*/
-
-    //game.camera.update(game.stage);
   }
 
   onExit() {}

@@ -9,7 +9,7 @@ A simple HTML5 game framework made for fun & experience
 * SpriteSheet Animations
 * Collision detection & response
 * StateManager
-* Fixed Time Step
+* Variable Time Step
 
 ## TODO
 
@@ -23,3 +23,11 @@ A simple HTML5 game framework made for fun & experience
 * Maybe class for Systems
 * Refactor X.Game !!! (maybe a preload in each state)
 * Scale
+* Quaternion
+
+## Libs used
+
+* Pixi.js for the WebGL Renderer
+* Howler.js for the sound effects
+* Keymaster for the nice key events
+* node-uuid for entities unique identifiers
