@@ -27,18 +27,20 @@ class Game {
     this.stateManager.update(dt);
   }
 
+  render() {
+    this.renderer.render(this.stage);
+  }
+
   gameloop() {
     var dt = this.time.tick();
     this.update(dt);
-    this.renderer.render(this.stage);
+    this.render();
     requestAnimationFrame(this.gameloop.bind(this));
   }
 
-  start(images, sound, state) {
+  start(state) {
     var game = this;
-
-    this.assetManager.addImages(images);
-    this.assetManager.addSound(sound);
+    //TODO Change this
 
     this.assetManager.loadAll().then(function() {
       game.stateManager.push(state);

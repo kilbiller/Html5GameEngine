@@ -6,17 +6,27 @@ var Howl = require('howler').Howl;
 class AssetManager {
   constructor() {
     this.cache = [];
-    this.promiseQueue= [];
+    this.promiseQueue = [];
+    this.imagePromiseQueue = [];
+    this.images = {};
+    this.sounds = {};
   }
 
-  addImages(assets) {
-    this.loader = new PIXI.AssetLoader(assets);
-    this.loader.load();
+  addImage(name, path) {
+    this.images[name] = path;
+
+    var loader = new PIXI.ImageLoader(path);
+    loader.load();
+    var promise = new Promise(function(resolve, reject) {
+      loader.on("loaded", () => resolve());
+    });
+    this.imagePromiseQueue.push(promise);
   }
 
-  addSound(path) {
+  addSound(name, path) {
+    this.sounds[name] = path;
+
     var self = this;
-
     var promise = new Promise(function(resolve, reject) {
       var sound = new Howl({
         urls: [path],
@@ -24,9 +34,8 @@ class AssetManager {
         onerror: () => reject()
       });
 
-      self.cache[path] = sound;
+      self.cache[name] = sound;
     });
-
     this.promiseQueue.push(promise);
   }
 
@@ -34,14 +43,16 @@ class AssetManager {
     return this.cache[path];
   }
 
+  getImage(name) {
+    return this.images[name];
+  }
+
   loadSounds() {
     return Promise.all(this.promiseQueue);
   }
 
   loadImages() {
-    return new Promise((resolve, reject) => {
-      this.loader.onComplete = () => resolve();
-    });
+    return Promise.all(this.imagePromiseQueue);
   }
 
   loadAll() {

@@ -19,9 +19,9 @@ class LevelState extends X.State {
 
     game.entities = [];
 
-    var logsTexture = "assets/images/logs.png";
-    var playerTexture = "assets/images/player.png";
-    var ennemyTexture = "assets/images/player.png";
+    var logsTexture = game.assetManager.getImage("logs");
+    var playerTexture = game.assetManager.getImage("player");
+    var ennemyTexture = game.assetManager.getImage("player");
 
     // Create the entities.
     game.entities.push(new Entities.Logs(150, 150, 32, 32, logsTexture));

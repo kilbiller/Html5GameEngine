@@ -8,7 +8,7 @@ var Attack = function(entities, dt, game) {
     if(entity.components.attack && entity.components.direction && entity.components.position && entity.components.animation) {
 
       if(entity.components.attack.isAttacking && entity.components.attack.canAttack) {
-        var punchSound = game.assetManager.getSound("assets/sounds/punch.wav");
+        var punchSound = game.assetManager.getSound("punch");
         punchSound.play();
 
         entity.components.attack.canAttack = false;
