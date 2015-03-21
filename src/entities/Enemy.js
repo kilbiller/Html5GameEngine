@@ -4,9 +4,9 @@ var X = require('./../X');
 var Entity = require('./Entity');
 var Components = require('../Components');
 
-class Ennemy extends Entity {
+class Enemy extends Entity {
   constructor(x, y, width, height, textureName) {
-    super("ennemy");
+    super("enemy");
     super.addComponent(new Components.Position(x, y));
     super.addComponent(new Components.Dimension(width, height));
 
@@ -33,4 +33,4 @@ class Ennemy extends Entity {
   }
 }
 
-module.exports = Ennemy;
+module.exports = Enemy;

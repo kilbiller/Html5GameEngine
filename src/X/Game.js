@@ -4,7 +4,6 @@ var Time = require('./Time');
 var AssetManager = require('./AssetManager');
 var Mouse = require('./Mouse');
 var PIXI = require('pixi.js');
-var Camera = require('./Camera');
 var StateManager = require('./StateManager');
 
 class Game {

@@ -1,8 +1,5 @@
 "use strict";
 
-var SpriteSheet = require('./SpriteSheet');
-var PIXI = require('pixi.js');
-
 class Animation {
   constructor(spriteSheet, frameList, frameDuration, loop) {
     this.spriteSheet = spriteSheet;
@@ -17,8 +14,8 @@ class Animation {
   update(dt) {
     this.elapsedTime += dt;
 
-    if (this.isDone()) {
-      if (this.loop) {
+    if(this.isDone()) {
+      if(this.loop) {
         this.reset();
       } else {
         return;
@@ -30,7 +27,7 @@ class Animation {
   }
 
   currentFrame() {
-    if (this.elapsedTime <= this.totalTime) {
+    if(this.elapsedTime <= this.totalTime) {
       return Math.floor(this.elapsedTime / this.frameDuration);
     } else {
       return this.frameList.length - 1;

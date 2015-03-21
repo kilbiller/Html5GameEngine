@@ -7,7 +7,9 @@ class StateManager {
 
   update(dt) {
     var state = this.states[this.states.length - 1];
-    if (state) {state.update(dt); }
+    if(state) {
+      state.update(dt);
+    }
   }
 
   push(state) {
@@ -23,14 +25,14 @@ class StateManager {
 
   pause() {
     var state = this.states[this.states.length - 1];
-    if (state.onPause) {
+    if(state.onPause) {
       state.onPause();
     }
   }
 
   resume() {
     var state = this.states[this.states.length - 1];
-    if (state.onResume) {
+    if(state.onResume) {
       state.onResume();
     }
   }

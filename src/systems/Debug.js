@@ -5,7 +5,7 @@ var PIXI = require('pixi.js');
 
 var Debug = function(entities, dt, game) {
   //console.time('debug');
-  for( var entity of entities ) {
+  for(var entity of entities ) {
     if(entity.components.sprite) {
       //game.stage.removeChildren();
       var graphics = new PIXI.Graphics();

@@ -3,28 +3,28 @@
 var key = require('keymaster');
 
 var Input = function(entities, dt) {
-  for( var entity of entities ) {
+  for(var entity of entities) {
     if(entity.components.userInput && entity.components.position && entity.components.speed && entity.components.animation && entity.components.direction &&
-       entity.components.attack && entity.components.health) {
+      entity.components.attack && entity.components.health) {
 
       if(entity.components.health.isAlive && !entity.components.attack.isAttacking) {
         entity.components.animation.state = "idle" + entity.components.direction.value;
-        if (key.isPressed("Z")) {
+        if(key.isPressed("Z")) {
           entity.components.direction.value = "Up";
           entity.components.position.y -= entity.components.speed.value * dt;
           entity.components.animation.state = "move" + entity.components.direction.value;
         }
-        if (key.isPressed("S")) {
+        if(key.isPressed("S")) {
           entity.components.direction.value = "Down";
           entity.components.position.y += entity.components.speed.value * dt;
           entity.components.animation.state = "move" + entity.components.direction.value;
         }
-        if (key.isPressed("Q")) {
+        if(key.isPressed("Q")) {
           entity.components.direction.value = "Left";
           entity.components.position.x -= entity.components.speed.value * dt;
           entity.components.animation.state = "move" + entity.components.direction.value;
         }
-        if (key.isPressed("D")) {
+        if(key.isPressed("D")) {
           entity.components.direction.value = "Right";
           entity.components.position.x += entity.components.speed.value * dt;
           entity.components.animation.state = "move" + entity.components.direction.value;
@@ -36,7 +36,7 @@ var Input = function(entities, dt) {
 
         // TODO maybe move cooldown to attack system and use canAttack instead
         // Player attack if press space
-        if (entity.components.attack.cooldown <= 0 && key.isPressed("space")) {
+        if(entity.components.attack.cooldown <= 0 && key.isPressed("space")) {
           entity.components.attack.isAttacking = true;
         }
       }

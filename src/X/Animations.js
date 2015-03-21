@@ -11,12 +11,12 @@ class Animations {
     var anim, data;
     try {
       data = JSON.parse(animData);
-    } catch (e) {
+    } catch(e) {
       data = animData;
     }
 
-    for (anim in data) {
-      if (data.hasOwnProperty(anim)) {
+    for(anim in data) {
+      if(data.hasOwnProperty(anim)) {
         this.addAnim(anim, data[anim].frames, data[anim].step, data[anim].loop);
       }
     }
@@ -28,7 +28,7 @@ class Animations {
 
   setAnim(name) {
     this.current = name;
-    for (var anim in this.anims) {
+    for(var anim in this.anims) {
       this.anims[anim].visible = false;
     }
     this.anims[anim].visible = true;

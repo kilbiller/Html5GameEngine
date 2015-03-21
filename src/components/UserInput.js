@@ -3,7 +3,7 @@
 var Component = require('./Component');
 
 class UserInput extends Component {
-  constructor(spriteSheet) {
+  constructor() {
     super("userInput");
   }
 }

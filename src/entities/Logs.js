@@ -11,7 +11,7 @@ class Logs extends Entity {
     super.addComponent(new Components.Position(x, y));
     super.addComponent(new Components.Dimension(width, height));
     super.addComponent(new Components.Sprite(new PIXI.Sprite.fromImage(textureName)));
-    super.addComponent(new Components.Collider(0, 6, width, height-6));
+    super.addComponent(new Components.Collider(0, 6, width, height - 6));
   }
 }
 

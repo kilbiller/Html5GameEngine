@@ -16,7 +16,7 @@ class SpriteSheet {
     var frameCounter = 0;
     for(var i = 0; i < baseTexture.height / this.frameHeight; i++) {
       for(var j = 0; j < baseTexture.width / this.frameWidth; j++) {
-        this.textures[frameCounter] = new PIXI.Texture(baseTexture, new PIXI.Rectangle(j*this.frameWidth, i*this.frameHeight, this.frameWidth, this.frameHeight));
+        this.textures[frameCounter] = new PIXI.Texture(baseTexture, new PIXI.Rectangle(j * this.frameWidth, i * this.frameHeight, this.frameWidth, this.frameHeight));
         frameCounter++;
       }
     }
