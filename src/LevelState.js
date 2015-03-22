@@ -23,12 +23,12 @@ class LevelState extends X.State {
     game.entities.push(new Entities.Logs(340, 200, 32, 32, logsTexture));
 
     game.entities.push(new Entities.Enemy(300, 300, 32, 32, enemyTexture));
-    game.entities.push(new Entities.Enemy(400, 300, 32, 32, enemyTexture));
+    /*game.entities.push(new Entities.Enemy(400, 300, 32, 32, enemyTexture));
     game.entities.push(new Entities.Enemy(300, 20, 32, 32, enemyTexture));
     game.entities.push(new Entities.Enemy(50, 300, 32, 32, enemyTexture));
     game.entities.push(new Entities.Enemy(90, 300, 32, 32, enemyTexture));
     game.entities.push(new Entities.Enemy(0, 400, 32, 32, enemyTexture));
-    game.entities.push(new Entities.Enemy(868, 400, 32, 32, enemyTexture));
+    game.entities.push(new Entities.Enemy(868, 400, 32, 32, enemyTexture));*/
 
     var player = new Entities.Player(50, 50, 32, 32, playerTexture);
     game.entities.push(player);
@@ -38,12 +38,13 @@ class LevelState extends X.State {
     //this.camera.follow(player);
 
     this.systems = [
-      Systems.Input,
-      Systems.Animation,
-      Systems.Collision,
-      Systems.Attack,
-      Systems.Render
-      //Systems.Debug
+      new Systems.Input(game),
+      new Systems.AI(game),
+      new Systems.Animation(game),
+      new Systems.Collision(game),
+      new Systems.Attack(game),
+      new Systems.Render(game)
+      //new Systems.Debug(game)
     ];
   }
 
@@ -53,7 +54,7 @@ class LevelState extends X.State {
     //console.time('systems');
     var game = this.game;
     for(var system of this.systems) {
-      system(game.entities, dt, game);
+      system.update(dt);
     }
     //console.timeEnd('systems');
 

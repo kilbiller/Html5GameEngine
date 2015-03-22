@@ -1,26 +1,30 @@
 "use strict";
 
+var System = require('./System');
 var X = require('./../X');
 
-var Collision = function(entities) {
-  for(var entity of entities) {
-    if(entity.components.collider && entity.components.position) {
-      var collisionBox = new X.Rectangle(entity.components.position.x + entity.components.collider.x,
-        entity.components.position.y + entity.components.collider.y,
-        entity.components.collider.width, entity.components.collider.height);
-      for(var entity2 of entities) {
-        if(entity2.components.collider && entity.components.position) {
-          var collisionBox2 = new X.Rectangle(entity2.components.position.x + entity2.components.collider.x,
-            entity2.components.position.y + entity2.components.collider.y,
-            entity2.components.collider.width, entity2.components.collider.height);
-          if(entity !== entity2 && collisionBox.intersects(collisionBox2)) {
-            entity.components.position.x = entity.components.position.oldX;
-            entity.components.position.y = entity.components.position.oldY;
+class Collision extends System {
+  constructor(game) {
+    super(game);
+  }
+
+  update(dt) {
+    for(var entity of this.game.entities) {
+      var ec = entity.components;
+      if(ec.collider && ec.position) {
+        var collisionBox = new X.Rectangle(ec.position.current.x + ec.collider.x, ec.position.current.y + ec.collider.y, ec.collider.width, ec.collider.height);
+        for(var entity2 of this.game.entities) {
+          var ec2 = entity2.components;
+          if(ec2.collider && ec.position) {
+            var collisionBox2 = new X.Rectangle(ec2.position.current.x + ec2.collider.x, ec2.position.current.y + ec2.collider.y, ec2.collider.width, ec2.collider.height);
+            if(entity !== entity2 && collisionBox.intersects(collisionBox2)) {
+              ec.position.current.copy(ec.position.old);
+            }
           }
         }
       }
     }
   }
-};
+}
 
 module.exports = Collision;

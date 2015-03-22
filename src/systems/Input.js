@@ -1,47 +1,48 @@
 "use strict";
 
+var System = require('./System');
 var key = require('keymaster');
 
-var Input = function(entities, dt) {
-  for(var entity of entities) {
-    if(entity.components.userInput && entity.components.position && entity.components.speed && entity.components.animation && entity.components.direction &&
-      entity.components.attack && entity.components.health) {
+class Input extends System {
+  constructor(game) {
+    super(game);
+  }
 
-      if(entity.components.health.isAlive && !entity.components.attack.isAttacking) {
-        entity.components.animation.state = "idle" + entity.components.direction.value;
-        if(key.isPressed("Z")) {
-          entity.components.direction.value = "Up";
-          entity.components.position.y -= entity.components.speed.value * dt;
-          entity.components.animation.state = "move" + entity.components.direction.value;
-        }
-        if(key.isPressed("S")) {
-          entity.components.direction.value = "Down";
-          entity.components.position.y += entity.components.speed.value * dt;
-          entity.components.animation.state = "move" + entity.components.direction.value;
-        }
-        if(key.isPressed("Q")) {
-          entity.components.direction.value = "Left";
-          entity.components.position.x -= entity.components.speed.value * dt;
-          entity.components.animation.state = "move" + entity.components.direction.value;
-        }
-        if(key.isPressed("D")) {
-          entity.components.direction.value = "Right";
-          entity.components.position.x += entity.components.speed.value * dt;
-          entity.components.animation.state = "move" + entity.components.direction.value;
-        }
+  update(dt) {
+    for(var entity of this.game.entities) {
+      var ec = entity.components;
+      if(ec.userInput && ec.position && ec.speed && ec.animation && ec.direction && ec.attack && ec.health) {
 
-        // Prevent sub-pixel movements
-        entity.components.position.x = Math.round(entity.components.position.x);
-        entity.components.position.y = Math.round(entity.components.position.y);
+        if(ec.health.isAlive && !ec.attack.isAttacking) {
+          ec.animation.state = "idle" + ec.direction.value;
+          if(key.isPressed("Z")) {
+            ec.direction.value = "Up";
+            ec.position.current.y -= ec.speed.value * dt;
+            ec.animation.state = "move" + ec.direction.value;
+          }
+          if(key.isPressed("S")) {
+            ec.direction.value = "Down";
+            ec.position.current.y += ec.speed.value * dt;
+            ec.animation.state = "move" + ec.direction.value;
+          }
+          if(key.isPressed("Q")) {
+            ec.direction.value = "Left";
+            ec.position.current.x -= ec.speed.value * dt;
+            ec.animation.state = "move" + ec.direction.value;
+          }
+          if(key.isPressed("D")) {
+            ec.direction.value = "Right";
+            ec.position.current.x += ec.speed.value * dt;
+            ec.animation.state = "move" + ec.direction.value;
+          }
 
-        // TODO maybe move cooldown to attack system and use canAttack instead
-        // Player attack if press space
-        if(entity.components.attack.cooldown <= 0 && key.isPressed("space")) {
-          entity.components.attack.isAttacking = true;
+          if(ec.attack.canAttack && key.isPressed("space")) {
+            ec.attack.isAttacking = true;
+          }
         }
       }
     }
   }
-};
+}
 
 module.exports = Input;

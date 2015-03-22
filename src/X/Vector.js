@@ -6,17 +6,57 @@ class Vector {
     this.y = y;
   }
 
-  normalize() {
-    var hyp = Math.sqrt(this.x * this.x + this.y * this.y);
-    this.x /= hyp;
-    this.y /= hyp;
+  copy(vector) {
+    this.x = vector.x;
+    this.y = vector.y;
+    return this;
   }
 
-  moveTowards(origin, goal, step) {
-    var dir = new Vector(goal.x - origin.x, goal.y - origin.y);
-    dir.normalize();
+  clone() {
+    return new Vector(this.x, this.y);
+  }
 
-    return new Vector(origin.x + dir.x * step, origin.y + dir.y * step);
+  add(vector) {
+    this.x += vector.x;
+    this.y += vector.y;
+    return this;
+  }
+
+  sub(vector) {
+    this.x -= vector.x;
+    this.y -= vector.y;
+    return this;
+  }
+
+  norm() {
+    var hyp = this.len();
+    if(hyp > 0) {
+      this.x /= hyp;
+      this.y /= hyp;
+    }
+    return this;
+  }
+
+  getDirection(target) {
+    var dir = new Vector(target.x - this.x, target.y - this.y);
+    dir.norm();
+    return dir;
+  }
+
+  dot(vector) {
+    return this.x * vector.x + this.y * vector.y;
+  }
+
+  len2() {
+    return this.dot(this);
+  }
+
+  len() {
+    return Math.sqrt(this.len2());
+  }
+
+  print() {
+    console.log(this);
   }
 }
 

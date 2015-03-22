@@ -1,24 +1,34 @@
 "use strict";
 
-var Render = function(entities, dt, game) {
-  //console.time('sprite');
-  game.entities.sort(function(a, b) {
-    return(a.components.position.y + a.components.dimension.height) - (b.components.position.y + b.components.dimension.height);
-  });
-  //game.stage.removeChildren();
-  for(var entity of entities) {
-    if(entity.components.sprite && entity.components.position) {
-      entity.components.sprite.sprite.position.x = entity.components.position.x;
-      entity.components.sprite.sprite.position.y = entity.components.position.y;
+var System = require('./System');
 
-      // save positions
-      entity.components.position.oldX = entity.components.position.x;
-      entity.components.position.oldY = entity.components.position.y;
+class Render extends System {
+  constructor(game) {
+    super(game);
+  }
 
-      game.stage.addChild(entity.components.sprite.sprite);
+  update(dt) {
+    // Z-Order
+    this.game.entities.sort(function(a, b) {
+      return(a.components.position.current.y + a.components.dimension.height) - (b.components.position.current.y + b.components.dimension.height);
+    });
+    //game.stage.removeChildren();
+    for(var entity of this.game.entities) {
+      var ec = entity.components;
+      if(ec.sprite && ec.position) {
+        // Prevent sub-pixel movements
+        ec.position.current.x = Math.round(ec.position.current.x);
+        ec.position.current.y = Math.round(ec.position.current.y);
+
+        ec.sprite.sprite.position.x = ec.position.current.x;
+        ec.sprite.sprite.position.y = ec.position.current.y;
+
+        // save positions
+        ec.position.old.copy(ec.position.current);
+
+        this.game.stage.addChild(ec.sprite.sprite);
+      }
     }
   }
-  //console.timeEnd('sprite');
-};
-
+}
 module.exports = Render;
