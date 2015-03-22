@@ -1,11 +1,11 @@
 "use strict";
 
-var X = require('./../X');
-var PIXI = require('pixi.js');
-var Entity = require('./Entity');
-var Components = require('../components');
+import X from './../X';
+import PIXI from 'pixi.js';
+import Entity from './Entity';
+import Components from '../components';
 
-class Logs extends Entity {
+export default class Logs extends Entity {
   constructor(x, y, width, height, textureName) {
     super("logs");
     super.addComponent(new Components.Position(x, y));
@@ -14,5 +14,3 @@ class Logs extends Entity {
     super.addComponent(new Components.Collider(0, 6, width, height - 6));
   }
 }
-
-module.exports = Logs;

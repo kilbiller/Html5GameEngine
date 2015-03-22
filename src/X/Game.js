@@ -1,12 +1,12 @@
 "use strict";
 
-var Time = require('./Time');
-var AssetManager = require('./AssetManager');
-var Mouse = require('./Mouse');
-var PIXI = require('pixi.js');
-var StateManager = require('./StateManager');
+import Time from './Time';
+import AssetManager from './AssetManager';
+import Mouse from './Mouse';
+import PIXI from 'pixi.js';
+import StateManager from './StateManager';
 
-class Game {
+export default class Game {
   constructor(width = 427, height = 240) {
     this.stage = new PIXI.Stage(0x008000);
     this.renderer = PIXI.autoDetectRenderer(width, height);
@@ -43,5 +43,3 @@ class Game {
     });
   }
 }
-
-module.exports = Game;

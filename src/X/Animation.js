@@ -1,6 +1,6 @@
 "use strict";
 
-class Animation {
+export default class Animation {
   constructor(spriteSheet, frameList, frameDuration, loop) {
     this.spriteSheet = spriteSheet;
     this.frameList = frameList;
@@ -8,7 +8,6 @@ class Animation {
     this.totalTime = this.frameList.length * this.frameDuration;
     this.elapsedTime = 0;
     this.loop = loop;
-    /*this.source = {};*/
   }
 
   update(dt) {
@@ -42,5 +41,3 @@ class Animation {
     this.elapsedTime = 0;
   }
 }
-
-module.exports = Animation;

@@ -1,9 +1,7 @@
 "use strict";
 
-class Component {
+export default class Component {
   constructor(name) {
     this.name = name;
   }
 }
-
-module.exports = Component;

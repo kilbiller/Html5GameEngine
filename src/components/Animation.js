@@ -1,13 +1,11 @@
 "use strict";
 
-var Component = require('./Component');
+import Component from './Component';
 
-class Animation extends Component {
+export default class Animation extends Component {
   constructor(anims, state = null) {
     super("animation");
     this.anims = anims;
     this.state = state;
   }
 }
-
-module.exports = Animation;

@@ -1,8 +1,8 @@
 "use strict";
 
-var Animation = require('./Animation');
+import Animation from './Animation';
 
-class Animations {
+export default class Animations {
   constructor(spriteSheet, animData) {
     this.anims = {};
     this.spriteSheet = spriteSheet;
@@ -38,5 +38,3 @@ class Animations {
     return this.anims[this.current];
   }
 }
-
-module.exports = Animations;

@@ -1,6 +1,6 @@
 "use strict";
 
-class Time {
+export default class Time {
   constructor() {
     this.gameTime = 0;
     this.maxStep = 0.05;
@@ -17,5 +17,3 @@ class Time {
     return gameDelta;
   }
 }
-
-module.exports = Time;

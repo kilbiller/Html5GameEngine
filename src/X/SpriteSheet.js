@@ -1,8 +1,8 @@
 "use strict";
 
-var PIXI = require('pixi.js');
+import PIXI from 'pixi.js';
 
-class SpriteSheet {
+export default class SpriteSheet {
   constructor(baseTextureName, frameWidth, frameHeight) {
     var baseTexture = PIXI.BaseTextureCache[baseTextureName];
 
@@ -28,5 +28,3 @@ class SpriteSheet {
     return this.sprite;
   }
 }
-
-module.exports = SpriteSheet;

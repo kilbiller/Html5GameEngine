@@ -1,13 +1,11 @@
 "use strict";
 
-var Component = require('./Component');
+import Component from './Component';
 
-class Sprite extends Component {
+export default class Sprite extends Component {
   constructor(sprite) {
     super("sprite");
 
     this.sprite = sprite;
   }
 }
-
-module.exports = Sprite;

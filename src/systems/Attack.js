@@ -1,10 +1,10 @@
 /*jshint -W079 */
 "use strict";
 
-var System = require('./System');
-var X = require('./../X');
+import System from './System';
+import X from '../X';
 
-class Attack extends System {
+export default class Attack extends System {
   constructor(game) {
     super(game);
   }
@@ -76,5 +76,3 @@ class Attack extends System {
     }
   }
 }
-
-module.exports = Attack;

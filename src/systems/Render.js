@@ -1,9 +1,9 @@
 /*jshint -W079 */
 "use strict";
 
-var System = require('./System');
+import System from './System';
 
-class Render extends System {
+export default class Render extends System {
   constructor(game) {
     super(game);
   }
@@ -29,4 +29,3 @@ class Render extends System {
     }
   }
 }
-module.exports = Render;

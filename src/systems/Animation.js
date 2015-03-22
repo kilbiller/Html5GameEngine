@@ -1,10 +1,10 @@
 /*jshint -W079 */
 "use strict";
 
-var System = require('./System');
-var X = require('../X');
+import System from './System';
+import X from '../X';
 
-class Animation extends System {
+export default class Animation extends System {
   constructor(game) {
     super(game);
   }
@@ -22,5 +22,3 @@ class Animation extends System {
     }
   }
 }
-
-module.exports = Animation;

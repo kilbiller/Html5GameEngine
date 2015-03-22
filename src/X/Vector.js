@@ -1,6 +1,6 @@
 "use strict";
 
-class Vector {
+export default class Vector {
   constructor(x = 0, y = 0) {
     this.x = x;
     this.y = y;
@@ -75,5 +75,3 @@ class Vector {
     return new Vector(1, 0);
   }
 }
-
-module.exports = Vector;

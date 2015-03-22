@@ -1,13 +1,11 @@
 "use strict";
 
-var Component = require('./Component');
+import Component from './Component';
 
-class Dimension extends Component {
+export default class Dimension extends Component {
   constructor(width = 0, height = 0) {
     super("dimension");
     this.width = width;
     this.height = height;
   }
 }
-
-module.exports = Dimension;

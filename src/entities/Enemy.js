@@ -1,10 +1,10 @@
 "use strict";
 
-var X = require('./../X');
-var Entity = require('./Entity');
-var Components = require('../Components');
+import X from './../X';
+import Entity from './Entity';
+import Components from '../Components';
 
-class Enemy extends Entity {
+export default class Enemy extends Entity {
   constructor(x, y, width, height, textureName) {
     super("enemy");
     super.addComponent(new Components.Position(x, y));
@@ -89,5 +89,3 @@ class Enemy extends Entity {
     super.addComponent(new Components.Speed(100));
   }
 }
-
-module.exports = Enemy;

@@ -1,12 +1,10 @@
 "use strict";
 
-var Component = require('./Component');
+import Component from './Component';
 
-class SpriteSheet extends Component {
+export default class SpriteSheet extends Component {
   constructor(spriteSheet) {
     super("spriteSheet");
     this.spriteSheet = spriteSheet;
   }
 }
-
-module.exports = SpriteSheet;

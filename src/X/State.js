@@ -1,6 +1,6 @@
 "use strict";
 
-class State {
+export default class State {
   constructor(game) {
     this.game = game;
   }
@@ -15,5 +15,3 @@ class State {
 
   onResume() {}
 }
-
-module.exports = State;

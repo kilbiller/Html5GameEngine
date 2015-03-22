@@ -1,6 +1,6 @@
 "use strict";
 
-class StateManager {
+export default class StateManager {
   constructor() {
     this.states = [];
   }
@@ -37,5 +37,3 @@ class StateManager {
     }
   }
 }
-
-module.exports = StateManager;

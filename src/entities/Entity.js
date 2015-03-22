@@ -1,8 +1,8 @@
 "use strict";
 
-var uuid = require('node-uuid');
+import uuid from 'node-uuid';
 
-class Entity {
+export default class Entity {
   constructor(type = "default") {
     this.id = uuid.v4();
     this.components = {};
@@ -28,5 +28,3 @@ class Entity {
 
 // only way to get static variables for now
 Entity.prototype.count = 0;
-
-module.exports = Entity;

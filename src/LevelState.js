@@ -1,11 +1,10 @@
 "use strict";
 
-var X = require('./X');
+import X from './X';
+import Entities from './entities';
+import Systems from './systems';
 
-var Entities = require('./entities');
-var Systems = require('./systems');
-
-class LevelState extends X.State {
+export default class LevelState extends X.State {
   constructor(game) {
     super(game);
   }
@@ -81,5 +80,3 @@ class LevelState extends X.State {
 
   onExit() {}
 }
-
-module.exports = LevelState;

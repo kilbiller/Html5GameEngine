@@ -1,8 +1,8 @@
 "use strict";
 
-var PIXI = require('pixi.js');
+import PIXI from 'pixi.js';
 
-class Camera {
+export default class Camera {
   constructor(game) {
     this.game = game;
     this.target = null;
@@ -20,5 +20,3 @@ class Camera {
     }
   }
 }
-
-module.exports = Camera;

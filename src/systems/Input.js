@@ -1,11 +1,11 @@
 /*jshint -W079 */
 "use strict";
 
-var System = require('./System');
-var key = require('keymaster');
-var X = require('../X');
+import System from './System';
+import key from 'keymaster';
+import X from '../X';
 
-class Input extends System {
+export default class Input extends System {
   constructor(game) {
     super(game);
   }
@@ -49,5 +49,3 @@ class Input extends System {
     }
   }
 }
-
-module.exports = Input;

@@ -1,11 +1,9 @@
 "use strict";
 
-var Component = require('./Component');
+import Component from './Component';
 
-class UserInput extends Component {
+export default class UserInput extends Component {
   constructor() {
     super("userInput");
   }
 }
-
-module.exports = UserInput;

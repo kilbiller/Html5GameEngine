@@ -1,11 +1,9 @@
 "use strict";
 
-class System {
+export default class System {
   constructor(game) {
     this.game = game;
   }
 
   update() {}
 }
-
-module.exports = System;

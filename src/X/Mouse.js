@@ -1,8 +1,8 @@
 "use strict";
 
-var Vector = require('./Vector');
+import Vector from './Vector';
 
-class Mouse {
+export default class Mouse {
   constructor(game) {
     this.pos = new Vector(0, 0);
     this.leftClick = false;
@@ -60,5 +60,3 @@ class Mouse {
     return !!(x < 0 || y < 0 || x > canvas.width || y > canvas.height);
   }
 }
-
-module.exports = Mouse;

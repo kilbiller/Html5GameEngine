@@ -1,9 +1,12 @@
 "use strict";
 
-var PIXI = require('pixi.js');
-var Howl = require('howler').Howl;
+import PIXI from 'pixi.js';
+import {
+  Howl
+}
+from 'howler';
 
-class AssetManager {
+export default class AssetManager {
   constructor() {
     this.cache = [];
     this.promiseQueue = [];
@@ -59,5 +62,3 @@ class AssetManager {
     return Promise.all([this.loadImages(), this.loadSounds()]);
   }
 }
-
-module.exports = AssetManager;

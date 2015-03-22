@@ -1,11 +1,11 @@
 /*jshint -W079 */
 "use strict";
 
-var System = require('./System');
-var X = require('./../X');
-var PIXI = require('pixi.js');
+import System from './System';
+import X from '../X';
+import PIXI from 'pixi.js';
 
-class Debug extends System {
+export default class Debug extends System {
   constructor(game) {
     super(game);
   }
@@ -27,5 +27,3 @@ class Debug extends System {
     }
   }
 }
-
-module.exports = Debug;

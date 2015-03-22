@@ -1,8 +1,8 @@
 "use strict";
 
-var Component = require('./Component');
+import Component from './Component';
 
-class Attack extends Component {
+export default class Attack extends Component {
   constructor(damage = 100, cooldownTime = 0.5) {
     super("attack");
     this.damage = damage;
@@ -12,5 +12,3 @@ class Attack extends Component {
     this.canAttack = true;
   }
 }
-
-module.exports = Attack;

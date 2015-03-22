@@ -1,12 +1,10 @@
 "use strict";
 
-var Component = require('./Component');
+import Component from './Component';
 
-class Direction extends Component {
+export default class Direction extends Component {
   constructor(direction = "Down") {
     super("direction");
     this.value = direction;
   }
 }
-
-module.exports = Direction;
