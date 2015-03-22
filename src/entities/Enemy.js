@@ -86,7 +86,7 @@ class Enemy extends Entity {
 
     super.addComponent(new Components.Collider(6, 20, 20, 10));
 
-    super.addComponent(new Components.Speed(80));
+    super.addComponent(new Components.Speed(100));
   }
 }
 

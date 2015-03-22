@@ -24,6 +24,7 @@ A simple HTML5 game framework made for fun & experience
 * Refactor X.Game !!! (maybe a preload in each state)
 * Scale
 * Quaternion
+* Fix collision http://www.sourceofmagicgame.com/2011/11/2d-collision-for-top-down-rpgs/ and SAT.js
 
 ## Libs used
 

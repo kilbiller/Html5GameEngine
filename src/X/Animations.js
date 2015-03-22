@@ -4,7 +4,7 @@ var Animation = require('./Animation');
 
 class Animations {
   constructor(spriteSheet, animData) {
-    this.anims = [];
+    this.anims = {};
     this.spriteSheet = spriteSheet;
     this.current = null;
 

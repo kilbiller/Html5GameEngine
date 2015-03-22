@@ -1,3 +1,4 @@
+/*jshint -W079 */
 "use strict";
 
 var System = require('./System');
@@ -16,12 +17,9 @@ class Render extends System {
     for(var entity of this.game.entities) {
       var ec = entity.components;
       if(ec.sprite && ec.position) {
-        // Prevent sub-pixel movements
-        ec.position.current.x = Math.round(ec.position.current.x);
-        ec.position.current.y = Math.round(ec.position.current.y);
-
-        ec.sprite.sprite.position.x = ec.position.current.x;
-        ec.sprite.sprite.position.y = ec.position.current.y;
+        // Prevent sub-pixel rendering
+        ec.sprite.sprite.position.x = Math.round(ec.position.current.x);
+        ec.sprite.sprite.position.y = Math.round(ec.position.current.y);
 
         // save positions
         ec.position.old.copy(ec.position.current);

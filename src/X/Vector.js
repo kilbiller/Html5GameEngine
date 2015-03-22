@@ -58,6 +58,22 @@ class Vector {
   print() {
     console.log(this);
   }
+
+  static get UP() {
+    return new Vector(0, -1);
+  }
+
+  static get DOWN() {
+    return new Vector(0, 1);
+  }
+
+  static get LEFT() {
+    return new Vector(-1, 0);
+  }
+
+  static get RIGHT() {
+    return new Vector(1, 0);
+  }
 }
 
 module.exports = Vector;

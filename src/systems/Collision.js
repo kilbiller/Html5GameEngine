@@ -1,3 +1,4 @@
+/*jshint -W079 */
 "use strict";
 
 var System = require('./System');
@@ -7,6 +8,8 @@ class Collision extends System {
   constructor(game) {
     super(game);
   }
+
+  //TODO Fix collision that block you on the side of the object
 
   update(dt) {
     for(var entity of this.game.entities) {
