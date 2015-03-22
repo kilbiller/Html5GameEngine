@@ -35,7 +35,7 @@ class Animation {
   }
 
   isDone() {
-    return (this.elapsedTime >= this.totalTime);
+    return(this.elapsedTime >= this.totalTime);
   }
 
   reset() {

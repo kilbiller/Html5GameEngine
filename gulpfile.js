@@ -13,23 +13,31 @@ gulp.task('javascript', function() {
     browserSync.reload();
   });
 
-  browserify({ debug: true })
-  .transform(babelify)
-  .require('./src/index.js', { entry: true })
-  .bundle()
-  .on("error", function (err) { console.log("Error: " + err.message); })
-  .pipe(file);
+  browserify({
+      debug: true
+    })
+    .transform(babelify)
+    .require('./src/index.js', {
+      entry: true
+    })
+    .bundle()
+    .on("error", function(err) {
+      console.log("Error: " + err.message);
+    })
+    .pipe(file);
 });
 
 // copy html, css, assets to build directory
 gulp.task('copy-assets', function() {
   // create build directory if it doesn't already exists
-  if (!fs.existsSync("./build")) {
+  if(!fs.existsSync("./build")) {
     fs.mkdirSync("./build");
   }
 
-  gulp.src(['./src/index.html', './src/assets/**', './src/css/**'], { base: './src' })
-  .pipe(gulp.dest('./build'));
+  gulp.src(['./src/index.html', './src/assets/**', './src/css/**'], {
+      base: './src'
+    })
+    .pipe(gulp.dest('./build'));
 });
 
 gulp.task('browser-sync', ['copy-assets', 'javascript'], function() {
@@ -46,5 +54,5 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('default', ['browser-sync'], function() {
-  gulp.watch(['src/*.js','src/*/*.js'], ['javascript']);
+  gulp.watch(['src/*.js', 'src/*/*.js'], ['javascript']);
 });

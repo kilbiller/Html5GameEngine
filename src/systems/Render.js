@@ -3,7 +3,7 @@
 var Render = function(entities, dt, game) {
   //console.time('sprite');
   game.entities.sort(function(a, b) {
-    return (a.components.position.y + a.components.dimension.height) - (b.components.position.y + b.components.dimension.height);
+    return(a.components.position.y + a.components.dimension.height) - (b.components.position.y + b.components.dimension.height);
   });
   //game.stage.removeChildren();
   for(var entity of entities) {

@@ -5,7 +5,6 @@ var X = require('./X');
 var Entities = require('./entities');
 var Systems = require('./systems');
 
-
 class LevelState extends X.State {
   constructor(game) {
     super(game);
@@ -79,8 +78,7 @@ class LevelState extends X.State {
      }*/
   }
 
-  onExit() {
-  }
+  onExit() {}
 }
 
 module.exports = LevelState;

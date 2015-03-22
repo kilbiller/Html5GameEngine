@@ -1,10 +1,10 @@
 {
-    "node": true,
-    "browser": true,
-    "globalstrict": true,
-    "camelcase": true,
-    "curly": true,
-    "eqeqeq": true,
-    "indent": 2,
-    "esnext": true
+  "node": true,
+  "browser": true,
+  "globalstrict": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "indent": 2,
+  "esnext": true
 }
