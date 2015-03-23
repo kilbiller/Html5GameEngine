@@ -1,6 +1,6 @@
 "use strict";
 
-import Entity from './Entity';
+import Entity from '../X/Entity';
 
 import SpriteSheet from '../X/SpriteSheet';
 import Animations from '../X/Animations';

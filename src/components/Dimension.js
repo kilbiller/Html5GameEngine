@@ -1,6 +1,6 @@
 "use strict";
 
-import Component from './Component';
+import Component from '../X/Component';
 
 export default class Dimension extends Component {
   constructor(width = 0, height = 0) {

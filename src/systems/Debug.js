@@ -1,6 +1,6 @@
 "use strict";
 
-import SystemX from './System';
+import SystemX from '../X/System';
 import PIXI from 'pixi.js';
 
 export default class Debug extends SystemX {

@@ -1,6 +1,6 @@
 "use strict";
 
-import Component from './Component';
+import Component from '../X/Component';
 
 export default class Speed extends Component {
   constructor(value = 150) {

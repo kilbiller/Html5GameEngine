@@ -1,6 +1,6 @@
 "use strict";
 
-import SystemX from './System';
+import SystemX from '../X/System';
 import Vector from '../X/Vector';
 
 export default class AI extends SystemX {

@@ -1,6 +1,6 @@
 "use strict";
 
-import Component from './Component';
+import Component from '../X/Component';
 import Rectangle from '../X/Rectangle';
 
 export default class Collider extends Component {

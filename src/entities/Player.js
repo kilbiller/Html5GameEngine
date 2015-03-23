@@ -1,6 +1,6 @@
 "use strict";
 
-var Entity = require('./Entity');
+import Entity from '../X/Entity';
 
 import SpriteSheet from '../X/SpriteSheet';
 import Animations from '../X/Animations';

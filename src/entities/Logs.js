@@ -1,7 +1,8 @@
 "use strict";
 
+import Entity from '../X/Entity';
+
 import PIXI from 'pixi.js';
-import Entity from './Entity';
 
 import Position from '../components/Position';
 import Dimension from '../components/Dimension';

@@ -1,6 +1,6 @@
 "use strict";
 
-import Component from './Component';
+import Component from '../X/Component';
 
 export default class Health extends Component {
   constructor(hp = 100) {

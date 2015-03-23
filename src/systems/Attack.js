@@ -1,6 +1,6 @@
 "use strict";
 
-import SystemX from './System';
+import SystemX from '../X/System';
 import Rectangle from '../X/Rectangle';
 
 export default class Attack extends SystemX {
