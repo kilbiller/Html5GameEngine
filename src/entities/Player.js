@@ -1,18 +1,31 @@
 "use strict";
 
-var X = require('./../X');
 var Entity = require('./Entity');
-var Components = require('../Components');
+
+import SpriteSheet from '../X/SpriteSheet';
+import Animations from '../X/Animations';
+
+// COMPONENTS
+import Position from '../Components/Position';
+import Dimension from '../Components/Dimension';
+import Sprite from '../Components/Sprite';
+import Animation from '../Components/Animation';
+import Direction from '../Components/Direction';
+import Health from '../Components/Health';
+import Collider from '../Components/Collider';
+import Velocity from '../Components/Velocity';
+import Attack from '../Components/Attack';
+import UserInput from '../Components/UserInput';
 
 class Player extends Entity {
   constructor(x, y, width, height, textureName) {
     super("player");
-    super.addComponent(new Components.Position(x, y));
-    super.addComponent(new Components.Dimension(width, height));
+    super.addComponent(new Position(x, y));
+    super.addComponent(new Dimension(width, height));
 
-    var spriteSheet = new X.SpriteSheet(textureName, width, height);
-    super.addComponent(new Components.Sprite(spriteSheet.getSprite()));
-    super.addComponent(new Components.Animation(new X.Animations(spriteSheet, {
+    var spriteSheet = new SpriteSheet(textureName, width, height);
+    super.addComponent(new Sprite(spriteSheet.getSprite()));
+    super.addComponent(new Animation(new Animations(spriteSheet, {
       idleDown: {
         frames: [0],
         step: 0.15,
@@ -80,17 +93,17 @@ class Player extends Entity {
       }
     }), "idleDown"));
 
-    super.addComponent(new Components.Speed(150));
+    super.addComponent(new Velocity(150));
 
-    super.addComponent(new Components.UserInput());
+    super.addComponent(new UserInput());
 
-    super.addComponent(new Components.Direction());
+    super.addComponent(new Direction());
 
-    super.addComponent(new Components.Health());
+    super.addComponent(new Health());
 
-    super.addComponent(new Components.Attack(50));
+    super.addComponent(new Attack(50));
 
-    super.addComponent(new Components.Collider(6, 20, 20, 10));
+    super.addComponent(new Collider(6, 20, 20, 10));
   }
 }
 

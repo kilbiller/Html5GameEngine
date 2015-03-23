@@ -1,10 +1,24 @@
 "use strict";
 
-import X from './X';
-import Entities from './entities';
-import Systems from './systems';
+// X
+import Camera from './X/Camera';
+import State from './X/State';
 
-export default class LevelState extends X.State {
+// ENTITIES
+import Player from "./entities/Player";
+import Enemy from "./entities/Enemy";
+import Logs from "./entities/Logs";
+
+// SYSTEMS
+import Input from './systems/Input';
+import AI from './systems/AI';
+import Movement from './systems/Movement';
+import Animation from './systems/Animation';
+import Collision from './systems/Collision';
+import Attack from './systems/Attack';
+import Render from './systems/Render';
+
+export default class LevelState extends State {
   constructor(game) {
     super(game);
   }
@@ -17,32 +31,33 @@ export default class LevelState extends X.State {
     var enemyTexture = game.assetManager.getImage("player");
 
     // Create the entities.
-    game.entities.push(new Entities.Logs(150, 150, 32, 32, logsTexture));
-    game.entities.push(new Entities.Logs(180, 230, 32, 32, logsTexture));
-    game.entities.push(new Entities.Logs(340, 200, 32, 32, logsTexture));
+    game.entities.push(new Logs(150, 150, 32, 32, logsTexture));
+    game.entities.push(new Logs(180, 230, 32, 32, logsTexture));
+    game.entities.push(new Logs(340, 200, 32, 32, logsTexture));
 
-    game.entities.push(new Entities.Enemy(300, 300, 32, 32, enemyTexture));
-    game.entities.push(new Entities.Enemy(400, 300, 32, 32, enemyTexture));
-    game.entities.push(new Entities.Enemy(300, 20, 32, 32, enemyTexture));
-    game.entities.push(new Entities.Enemy(50, 300, 32, 32, enemyTexture));
-    game.entities.push(new Entities.Enemy(90, 300, 32, 32, enemyTexture));
-    game.entities.push(new Entities.Enemy(0, 400, 32, 32, enemyTexture));
-    game.entities.push(new Entities.Enemy(868, 400, 32, 32, enemyTexture));
+    game.entities.push(new Enemy(300, 300, 32, 32, enemyTexture));
+    /*game.entities.push(new Enemy(400, 300, 32, 32, enemyTexture));
+    game.entities.push(new Enemy(300, 20, 32, 32, enemyTexture));
+    game.entities.push(new Enemy(50, 300, 32, 32, enemyTexture));
+    game.entities.push(new Enemy(90, 300, 32, 32, enemyTexture));
+    game.entities.push(new Enemy(0, 400, 32, 32, enemyTexture));
+    game.entities.push(new Enemy(868, 400, 32, 32, enemyTexture));*/
 
-    var player = new Entities.Player(50, 50, 32, 32, playerTexture);
+    var player = new Player(50, 50, 32, 32, playerTexture);
     game.entities.push(player);
 
     // Camera follow the player
-    this.camera = new X.Camera(game);
+    this.camera = new Camera(game);
     //this.camera.follow(player);
 
     this.systems = [
-      new Systems.Input(game),
-      new Systems.AI(game),
-      new Systems.Animation(game),
-      new Systems.Collision(game),
-      new Systems.Attack(game),
-      new Systems.Render(game)
+      new Input(game),
+      new AI(game),
+      new Movement(game),
+      new Animation(game),
+      new Collision(game),
+      new Attack(game),
+      new Render(game)
       //new Systems.Debug(game)
     ];
   }

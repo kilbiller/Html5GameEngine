@@ -1,10 +1,9 @@
-/*jshint -W079 */
 "use strict";
 
-import System from './System';
-import X from '../X';
+import SystemX from './System';
+import Rectangle from '../X/Rectangle';
 
-export default class Attack extends System {
+export default class Attack extends SystemX {
   constructor(game) {
     super(game);
   }
@@ -23,16 +22,16 @@ export default class Attack extends System {
 
           var attackRect;
           if(ec.direction.value === "Up") {
-            attackRect = new X.Rectangle(ec.position.current.x + 12, ec.position.current.y - 1, 10, 1);
+            attackRect = new Rectangle(ec.position.current.x + 12, ec.position.current.y - 1, 10, 1);
             ec.animation.state = "attackUp";
           } else if(ec.direction.value === "Down") {
-            attackRect = new X.Rectangle(ec.position.current.x + 8, ec.position.current.y + 18, 20, 12);
+            attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 18, 20, 12);
             ec.animation.state = "attackDown";
           } else if(ec.direction.value === "Left") {
-            attackRect = new X.Rectangle(ec.position.current.x - 4, ec.position.current.y + 13, 25, 12);
+            attackRect = new Rectangle(ec.position.current.x - 4, ec.position.current.y + 13, 25, 12);
             ec.animation.state = "attackLeft";
           } else if(ec.direction.value === "Right") {
-            attackRect = new X.Rectangle(ec.position.current.x + 8, ec.position.current.y + 13, 25, 12);
+            attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 13, 25, 12);
             ec.animation.state = "attackRight";
           }
 
@@ -40,7 +39,7 @@ export default class Attack extends System {
             var ec2 = entity2.components;
             if(ec2.health) {
               // TODO better hitbox
-              var opponentHitbox = new X.Rectangle(ec2.position.current.x, ec2.position.current.y, ec2.dimension.width, ec2.dimension.height);
+              var opponentHitbox = new Rectangle(ec2.position.current.x, ec2.position.current.y, ec2.dimension.width, ec2.dimension.height);
               if(entity !== entity2 && ec2.health.hp > 0 && attackRect.intersects(opponentHitbox)) {
                 ec2.health.hp -= ec.attack.damage;
                 if(ec2.health.hp <= 0) {
@@ -49,6 +48,7 @@ export default class Attack extends System {
                   //deathSound.play();
                   ec2.animation.state = "death";
                   ec2.health.isAlive = false;
+                  entity2.removeComponent("velocity");
                   entity2.removeComponent("collider");
                 }
               }

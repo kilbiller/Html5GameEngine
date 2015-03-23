@@ -1,9 +1,8 @@
-/*jshint -W079 */
 "use strict";
 
-import System from './System';
+import SystemX from './System';
 
-export default class Render extends System {
+export default class Render extends SystemX {
   constructor(game) {
     super(game);
   }

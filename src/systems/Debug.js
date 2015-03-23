@@ -1,11 +1,9 @@
-/*jshint -W079 */
 "use strict";
 
-import System from './System';
-import X from '../X';
+import SystemX from './System';
 import PIXI from 'pixi.js';
 
-export default class Debug extends System {
+export default class Debug extends SystemX {
   constructor(game) {
     super(game);
   }

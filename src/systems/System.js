@@ -1,6 +1,6 @@
 "use strict";
 
-export default class System {
+export default class SystemX {
   constructor(game) {
     this.game = game;
   }

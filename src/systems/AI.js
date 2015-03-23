@@ -1,10 +1,9 @@
-/*jshint -W079 */
 "use strict";
 
-import System from './System';
-import X from '../X';
+import SystemX from './System';
+import Vector from '../X/Vector';
 
-export default class AI extends System {
+export default class AI extends SystemX {
   constructor(game) {
     super(game);
   }
@@ -19,8 +18,7 @@ export default class AI extends System {
             player = e;
           }
         }
-        var dir = ec.position.current.getDirection(player.components.position.current);
-        ec.position.current.add(new X.Vector(dir.x * ec.speed.value * dt, dir.y * ec.speed.value * dt));
+        ec.velocity.current = ec.position.current.getDirection(player.components.position.current);
       }
     }
   }

@@ -1,10 +1,8 @@
-/*jshint -W079 */
 "use strict";
 
-import System from './System';
-import X from '../X';
+import SystemX from './System';
 
-export default class Animation extends System {
+export default class Animation extends SystemX {
   constructor(game) {
     super(game);
   }
