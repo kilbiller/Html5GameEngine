@@ -1,0 +1,14 @@
+{
+  "libs": [
+    "ecma5",
+    "ecma6"
+  ],
+  "loadEagerly": [
+    "src/*.js",
+    "src/*/*.js"
+  ],
+  "plugins": {
+    "complete_strings": {},
+    "node": {}
+  }
+}
