@@ -40,6 +40,7 @@ export default class Input extends SystemX {
             ec.attack.isAttacking = true;
           }
         }
+        ec.velocity.current.norm();
       }
     }
   }

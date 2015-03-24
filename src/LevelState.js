@@ -17,6 +17,7 @@ import Animation from './systems/Animation';
 import Collision from './systems/Collision';
 import Attack from './systems/Attack';
 import Render from './systems/Render';
+import Debug from './systems/Debug';
 
 export default class LevelState extends State {
   constructor(game) {
@@ -31,12 +32,15 @@ export default class LevelState extends State {
     var enemyTexture = game.assetManager.getImage("player");
 
     // Create the entities.
+    for(var i = 0; i < 20; i++) {
+      game.entities.push(new Logs(150 + i * 32, 150, 32, 32, logsTexture));
+    }
     game.entities.push(new Logs(150, 150, 32, 32, logsTexture));
     game.entities.push(new Logs(180, 230, 32, 32, logsTexture));
     game.entities.push(new Logs(340, 200, 32, 32, logsTexture));
 
-    game.entities.push(new Enemy(300, 300, 32, 32, enemyTexture));
-    /*game.entities.push(new Enemy(400, 300, 32, 32, enemyTexture));
+    /*game.entities.push(new Enemy(300, 300, 32, 32, enemyTexture));
+    game.entities.push(new Enemy(400, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(300, 20, 32, 32, enemyTexture));
     game.entities.push(new Enemy(50, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(90, 300, 32, 32, enemyTexture));
@@ -48,17 +52,17 @@ export default class LevelState extends State {
 
     // Camera follow the player
     this.camera = new Camera(game);
-    //this.camera.follow(player);
+    this.camera.follow(player);
 
     this.systems = [
       new Input(game),
       new AI(game),
+      new Collision(game),
       new Movement(game),
       new Animation(game),
-      new Collision(game),
       new Attack(game),
-      new Render(game)
-      //new Systems.Debug(game)
+      new Render(game),
+      //new Debug(game)
     ];
   }
 

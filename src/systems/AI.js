@@ -19,6 +19,7 @@ export default class AI extends SystemX {
           }
         }
         ec.velocity.current = ec.position.current.getDirection(player.components.position.current);
+        ec.velocity.current.norm();
       }
     }
   }

@@ -12,7 +12,7 @@ export default class Render extends SystemX {
     this.game.entities.sort(function(a, b) {
       return(a.components.position.current.y + a.components.dimension.height) - (b.components.position.current.y + b.components.dimension.height);
     });
-    //game.stage.removeChildren();
+    this.game.stage.removeChildren();
     for(var entity of this.game.entities) {
       var ec = entity.components;
       if(ec.sprite && ec.position) {

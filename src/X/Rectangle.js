@@ -25,10 +25,23 @@ export default class Rectangle {
   }
 
   intersects(rect) {
-    return(this.x <= rect.x + rect.width &&
-      this.x + this.width >= rect.x &&
-      this.y <= rect.y + rect.height &&
-      this.y + this.height >= rect.y);
+    return(this.Left <= rect.Right && this.Right >= rect.Left && this.Top <= rect.Bottom && this.Bottom >= rect.Top);
+  }
+
+  get Top() {
+    return this.y;
+  }
+
+  get Bottom() {
+    return this.y + this.height;
+  }
+
+  get Left() {
+    return this.x;
+  }
+
+  get Right() {
+    return this.x + this.width;
   }
 
   print() {
