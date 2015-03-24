@@ -64,6 +64,13 @@ export default class LevelState extends State {
       new Render(game),
       //new Debug(game)
     ];
+
+    // Add each entity sprite to the renderer
+    for(var entity of game.entities) {
+      if(entity.components.sprite) {
+        this.game.stage.addChild(entity.components.sprite.sprite);
+      }
+    }
   }
 
   update(dt) {
