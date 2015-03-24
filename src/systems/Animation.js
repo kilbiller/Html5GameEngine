@@ -13,6 +13,9 @@ export default class Animation extends SystemX {
       var ec = entity.components;
       if(ec.animation) {
         if(entity.type === "enemy") {
+          if(ec.animation.state === null) {
+            ec.animation.state = "idleDown";
+          }
           if(ec.health.isAlive) {
             if(ec.velocity.current.equal(Vector.Zero)) {
               switch(ec.animation.state) {
@@ -48,6 +51,9 @@ export default class Animation extends SystemX {
         }
 
         if(entity.type === "player") {
+          if(ec.animation.state === null) {
+            ec.animation.state = "idleDown";
+          }
           if(ec.health.isAlive && !ec.attack.isAttacking) {
             if(ec.velocity.current.equal(Vector.Zero)) {
               switch(ec.animation.state) {

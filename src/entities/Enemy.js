@@ -89,7 +89,7 @@ export default class Enemy extends Entity {
         step: 0.12,
         loop: false
       }
-    }), "idleDown"));
+    })));
 
     super.addComponent(new Direction());
 

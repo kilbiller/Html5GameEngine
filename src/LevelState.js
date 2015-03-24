@@ -29,7 +29,7 @@ export default class LevelState extends State {
 
     var logsTexture = game.assetManager.getImage("logs");
     var playerTexture = game.assetManager.getImage("player");
-    var enemyTexture = game.assetManager.getImage("player");
+    var enemyTexture = game.assetManager.getImage("enemy");
 
     // Create the entities.
     for(var i = 0; i < 20; i++) {

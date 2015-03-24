@@ -3,9 +3,9 @@
 import Component from '../X/Component';
 
 export default class Animation extends Component {
-  constructor(anims, state = null) {
+  constructor(anims) {
     super("animation");
     this.anims = anims;
-    this.state = state;
+    this.state = null;
   }
 }

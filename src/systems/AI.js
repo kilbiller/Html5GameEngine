@@ -31,7 +31,7 @@ export default class AI extends SystemX {
           } else {
             ec.velocity.current.y = 0;
           }*/
-
+          // TODO right now previousVel is shared by all enemy. FIX THAT
           if(Math.abs(this.previousVel.x) > 0) {
             ec.velocity.current.x = 0;
           } else {

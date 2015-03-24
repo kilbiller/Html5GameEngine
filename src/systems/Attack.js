@@ -23,16 +23,12 @@ export default class Attack extends SystemX {
           var attackRect;
           if(ec.direction.value === "Up") {
             attackRect = new Rectangle(ec.position.current.x + 12, ec.position.current.y - 1, 10, 1);
-            //ec.animation.state = "attackUp";
           } else if(ec.direction.value === "Down") {
             attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 18, 20, 12);
-            //ec.animation.state = "attackDown";
           } else if(ec.direction.value === "Left") {
             attackRect = new Rectangle(ec.position.current.x - 4, ec.position.current.y + 13, 25, 12);
-            //ec.animation.state = "attackLeft";
           } else if(ec.direction.value === "Right") {
             attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 13, 25, 12);
-            //ec.animation.state = "attackRight";
           }
 
           for(var entity2 of this.game.entities) {
@@ -46,7 +42,6 @@ export default class Attack extends SystemX {
                   // TODO find other sound
                   //var deathSound = game.assetManager.getSound("assets/sounds/slime_death.wav");
                   //deathSound.play();
-                  //ec2.animation.state = "death";
                   ec2.health.isAlive = false;
                   entity2.removeComponent("velocity");
                   entity2.removeComponent("collider");

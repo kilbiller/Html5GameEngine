@@ -10,6 +10,7 @@ var height = 576;
 var game = new Game(width, height);
 
 game.assetManager.addImage("player", "assets/images/player.png");
+game.assetManager.addImage("enemy", "assets/images/enemy.png");
 game.assetManager.addImage("logs", "assets/images/logs.png");
 game.assetManager.addSound("punch", "assets/sounds/punch.wav");
 

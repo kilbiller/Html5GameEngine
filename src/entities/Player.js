@@ -91,7 +91,7 @@ class Player extends Entity {
         step: 0.12,
         loop: false
       }
-    }), "idleDown"));
+    })));
 
     super.addComponent(new Velocity(150));
 
