@@ -5,6 +5,7 @@ import AssetManager from './AssetManager';
 import Mouse from './Mouse';
 import PIXI from 'pixi.js';
 import StateManager from './StateManager';
+import Stats from 'stats-js';
 
 export default class Game {
   constructor(width = 427, height = 240) {
@@ -18,6 +19,13 @@ export default class Game {
 
     this.entities = [];
     this.stateManager = new StateManager();
+
+    this.stats = new Stats();
+    this.stats.setMode(0);
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.left = '1000px';
+    this.stats.domElement.style.top = '0px';
+    document.body.appendChild(this.stats.domElement);
   }
 
   update(dt) {
@@ -29,9 +37,11 @@ export default class Game {
   }
 
   gameloop() {
+    this.stats.begin();
     var dt = this.time.tick();
     this.update(dt);
     this.render();
+    this.stats.end();
     requestAnimationFrame(this.gameloop.bind(this));
   }
 

@@ -14,11 +14,11 @@ export default class Debug extends SystemX {
       if(ec.sprite) {
         //game.stage.removeChildren();
         var graphics = new PIXI.Graphics();
-        graphics.lineStyle(1, 0x0000FF, 1);
-        graphics.drawRect(ec.sprite.sprite.x, ec.sprite.sprite.y, ec.sprite.sprite.width, ec.sprite.sprite.height);
+        /*graphics.lineStyle(1, 0x0000FF, 1);
+        graphics.drawRect(ec.sprite.sprite.x, ec.sprite.sprite.y, ec.sprite.sprite.width, ec.sprite.sprite.height);*/
         if(ec.collider) {
           graphics.lineStyle(1, 0xFFFFFF, 1);
-          graphics.drawRect(ec.sprite.sprite.x + ec.collider.hitbox.x, ec.sprite.sprite.y + ec.collider.hitbox.y, ec.collider.hitbox.width, ec.collider.hitbox.height);
+          graphics.drawRect(ec.sprite.sprite.x + ec.collider.bounds.x, ec.sprite.sprite.y + ec.collider.bounds.y, ec.collider.bounds.width, ec.collider.bounds.height);
         }
         this.game.stage.addChild(graphics);
       }
