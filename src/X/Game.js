@@ -23,7 +23,7 @@ export default class Game {
     this.stats = new Stats();
     this.stats.setMode(0);
     this.stats.domElement.style.position = 'absolute';
-    this.stats.domElement.style.left = '1000px';
+    this.stats.domElement.style.left = '1200px';
     this.stats.domElement.style.top = '0px';
     document.body.appendChild(this.stats.domElement);
   }

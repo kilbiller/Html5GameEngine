@@ -28,6 +28,10 @@ export default class Vector {
     return this;
   }
 
+  equal(vector) {
+    return this.x === vector.x && this.y === vector.y;
+  }
+
   norm() {
     var hyp = this.len();
     if(hyp > 0) {
@@ -73,5 +77,9 @@ export default class Vector {
 
   static get RIGHT() {
     return new Vector(1, 0);
+  }
+
+  static get Zero() {
+    return new Vector(0, 0);
   }
 }

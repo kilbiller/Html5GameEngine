@@ -2,7 +2,7 @@
 
 A simple HTML5 game framework made for fun & experience
 
-## Include
+## Features
 
 * ECS (Entity/Component/System Architecture)
 * AssetManager
@@ -14,17 +14,17 @@ A simple HTML5 game framework made for fun & experience
 ## TODO
 
 * Tile System
-* Debug system
+* Betetr Debug system
 * Better collision mask & hitbox
 * Make component pure data
-* Camera
+* Better Camera
 * Maybe change anchor of sprite from top left to center
 * Player should always be on top of dead body
-* Maybe class for Systems
 * Refactor X.Game !!! (maybe a preload in each state)
 * Scale
-* Quaternion
+* QuadTree
 * Fix collision http://www.sourceofmagicgame.com/2011/11/2d-collision-for-top-down-rpgs/ and SAT.js
+* Fix requirements for systems (minimum component required)
 
 ## Libs used
 
@@ -32,3 +32,4 @@ A simple HTML5 game framework made for fun & experience
 * Howler.js for the sound effects
 * Keymaster for the nice key events
 * node-uuid for entities unique identifiers
+* stats-js for the fps meter

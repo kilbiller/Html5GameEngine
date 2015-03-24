@@ -3,8 +3,9 @@
 import Game from './X/Game';
 import LevelState from './LevelState';
 
-var width = 900;
-var height = width / 16 * 9;
+var width = 1024;
+//var height = width / 16 * 9;
+var height = 576;
 
 var game = new Game(width, height);
 

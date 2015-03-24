@@ -39,28 +39,28 @@ export default class LevelState extends State {
     game.entities.push(new Logs(180, 230, 32, 32, logsTexture));
     game.entities.push(new Logs(340, 200, 32, 32, logsTexture));
 
-    /*game.entities.push(new Enemy(300, 300, 32, 32, enemyTexture));
+    game.entities.push(new Enemy(300, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(400, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(300, 20, 32, 32, enemyTexture));
     game.entities.push(new Enemy(50, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(90, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(0, 400, 32, 32, enemyTexture));
-    game.entities.push(new Enemy(868, 400, 32, 32, enemyTexture));*/
+    game.entities.push(new Enemy(868, 400, 32, 32, enemyTexture));
 
     var player = new Player(50, 50, 32, 32, playerTexture);
     game.entities.push(player);
 
     // Camera follow the player
     this.camera = new Camera(game);
-    this.camera.follow(player);
+    //this.camera.follow(player);
 
     this.systems = [
       new Input(game),
       new AI(game),
       new Collision(game),
       new Movement(game),
-      new Animation(game),
       new Attack(game),
+      new Animation(game),
       new Render(game),
       //new Debug(game)
     ];
