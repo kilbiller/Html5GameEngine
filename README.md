@@ -18,8 +18,6 @@ A simple HTML5 game framework made for fun & experience
 * Better collision mask & hitbox
 * Make component pure data
 * Better Camera
-* Maybe change anchor of sprite from top left to center
-* Player should always be on top of dead body
 * Refactor X.Game !!! (maybe a preload in each state)
 * Scale
 * QuadTree
