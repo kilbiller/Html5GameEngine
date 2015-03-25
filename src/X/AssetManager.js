@@ -1,20 +1,23 @@
 "use strict";
 
 import PIXI from 'pixi.js';
-import {Howl} from 'howler';
+import {
+  Howl
+}
+from 'howler';
 
 export default class AssetManager {
   constructor() {
-    this.cache = [];
-    this.promiseQueue = [];
+    this.soundCache = [];
+    this.jsonCache = [];
+    this.soundPromiseQueue = [];
     this.imagePromiseQueue = [];
+    this.jsonPromiseQueue = [];
     this.images = {};
-    this.sounds = {};
   }
 
   addImage(name, path) {
     this.images[name] = path;
-
     var loader = new PIXI.ImageLoader(path);
     loader.load();
     var promise = new Promise(function(resolve, reject) {
@@ -24,8 +27,6 @@ export default class AssetManager {
   }
 
   addSound(name, path) {
-    this.sounds[name] = path;
-
     var self = this;
     var promise = new Promise(function(resolve, reject) {
       var sound = new Howl({
@@ -34,28 +35,49 @@ export default class AssetManager {
         onerror: () => reject()
       });
 
-      self.cache[name] = sound;
+      self.soundCache[name] = sound;
     });
-    this.promiseQueue.push(promise);
+    this.soundPromiseQueue.push(promise);
   }
 
-  getSound(path) {
-    return this.cache[path];
+  addJson(name, path) {
+    var self = this;
+    var loader = new PIXI.JsonLoader(path);
+    loader.load();
+    var promise = new Promise(function(resolve, reject) {
+      loader.on("loaded", function() {
+        self.jsonCache[name] = loader.json;
+        resolve();
+      });
+    });
+    this.jsonPromiseQueue.push(promise);
+  }
+
+  getSound(name) {
+    return this.soundCache[name];
   }
 
   getImage(name) {
     return this.images[name];
   }
 
+  getJson(name) {
+    return this.jsonCache[name];
+  }
+
   loadSounds() {
-    return Promise.all(this.promiseQueue);
+    return Promise.all(this.soundPromiseQueue);
   }
 
   loadImages() {
     return Promise.all(this.imagePromiseQueue);
   }
 
+  loadJsons() {
+    return Promise.all(this.jsonPromiseQueue);
+  }
+
   loadAll() {
-    return Promise.all([this.loadImages(), this.loadSounds()]);
+    return Promise.all([this.loadImages(), this.loadSounds(), this.loadJsons()]);
   }
 }

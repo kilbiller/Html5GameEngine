@@ -7,7 +7,7 @@ export default class AI extends SystemX {
   constructor(game) {
     super(game);
     this.timer = 0;
-    this.previousVel = new Vector();
+    this.dir = 0;
   }
 
   update(dt) {
@@ -32,14 +32,14 @@ export default class AI extends SystemX {
             ec.velocity.current.y = 0;
           }*/
           // TODO right now previousVel is shared by all enemy. FIX THAT
-          if(Math.abs(this.previousVel.x) > 0) {
+          if(this.dir > 0) {
             ec.velocity.current.x = 0;
+            this.dir--;
           } else {
             ec.velocity.current.y = 0;
+            this.dir++;
           }
           ec.velocity.current.norm();
-
-          this.previousVel.copy(ec.velocity.current);
           this.timer = 0;
         }
       }

@@ -3,6 +3,7 @@
 // X
 import Camera from './X/Camera';
 import State from './X/State';
+import Tilemap from './X/Tilemap';
 
 // ENTITIES
 import Player from "./entities/Player";
@@ -27,6 +28,9 @@ export default class LevelState extends State {
   onEnter() {
     var game = this.game;
 
+    game.tilemap = new Tilemap(game, game.assetManager.getJson("test"), game.assetManager.getImage("tileset"));
+    game.tilemap.load();
+
     var logsTexture = game.assetManager.getImage("logs");
     var playerTexture = game.assetManager.getImage("player");
     var enemyTexture = game.assetManager.getImage("enemy");
@@ -35,7 +39,7 @@ export default class LevelState extends State {
     for(var i = 0; i < 20; i++) {
       game.entities.push(new Logs(150 + i * 32, 150, 32, 32, logsTexture));
     }
-    game.entities.push(new Logs(150, 150, 32, 32, logsTexture));
+    game.entities.push(new Logs(150, 120, 32, 32, logsTexture));
     game.entities.push(new Logs(180, 230, 32, 32, logsTexture));
     game.entities.push(new Logs(340, 200, 32, 32, logsTexture));
 
@@ -47,12 +51,12 @@ export default class LevelState extends State {
     game.entities.push(new Enemy(0, 400, 32, 32, enemyTexture));
     game.entities.push(new Enemy(868, 400, 32, 32, enemyTexture));
 
-    var player = new Player(50, 50, 32, 32, playerTexture);
+    var player = new Player(30, 30, 32, 32, playerTexture);
     game.entities.push(player);
 
     // Camera follow the player
     this.camera = new Camera(game);
-    //this.camera.follow(player);
+    this.camera.follow(player);
 
     this.systems = [
       new Input(game),

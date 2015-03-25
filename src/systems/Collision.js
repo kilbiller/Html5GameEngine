@@ -16,6 +16,24 @@ export default class Collision extends SystemX {
       if(ec.collider && ec.position && ec.velocity) {
         let collisionBoxX = ec.collider.bounds.clone().move(ec.position.current.x + (ec.velocity.current.x * ec.velocity.speed * dt), ec.position.current.y);
         let collisionBoxY = ec.collider.bounds.clone().move(ec.position.current.x, ec.position.current.y + (ec.velocity.current.y * ec.velocity.speed * dt));
+
+        // collision with tilemap borders
+        if(this.game.tilemap.isOutsideMap(collisionBoxX)) {
+          ec.velocity.current.x = 0;
+        }
+        if(this.game.tilemap.isOutsideMap(collisionBoxY)) {
+          ec.velocity.current.y = 0;
+        }
+
+        // collision with tiles
+        if(this.game.tilemap.isSolidAt(collisionBoxX)) {
+          ec.velocity.current.x = 0;
+        }
+        if(this.game.tilemap.isSolidAt(collisionBoxY)) {
+          ec.velocity.current.y = 0;
+        }
+
+        // collision with other entities
         for(let entity2 of this.game.entities) {
           let ec2 = entity2.components;
           if(ec2.collider && ec2.position) {
@@ -31,12 +49,6 @@ export default class Collision extends SystemX {
               if(collisionBoxY.intersects(collisionBox2)) {
                 ec.velocity.current.y = 0;
               }
-              //var repelVector = this.intersectionRepelVector(collisionBox2, collisionBox);
-              //ec.position.current.add(new Vector((repelVector.x * ec.velocity.current.x) * ec.velocity.speed * dt, (repelVector.y * ec.velocity.current.y) * ec.velocity.speed * dt));*/
-              //ec.position.current.add(this.intersectionRepelVector(collisionBox, collisionBox2));
-              /*ec.position.current.sub(new Vector(ec.velocity.current.x * ec.velocity.speed * dt, ec.velocity.current.y * ec.velocity.speed * dt));
-              ec2.position.current.sub(new Vector(ec2.velocity.current.x * ec2.velocity.speed * dt, ec2.velocity.current.y * ec2.velocity.speed * dt));*/
-              //console.log(ec.collider.bounds.clone().move(ec.position.current.x, ec.position.current.y).intersects(collisionBox2));
             }
           }
         }
@@ -45,7 +57,6 @@ export default class Collision extends SystemX {
   }
 
   intersectionRepelVector(thisRect, otherRect) {
-
     var x1 = Math.abs(thisRect.Right - otherRect.Left);
     var x2 = Math.abs(thisRect.Left - otherRect.Right);
     var y1 = Math.abs(thisRect.Bottom - otherRect.Top);

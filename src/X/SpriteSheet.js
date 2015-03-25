@@ -13,11 +13,9 @@ export default class SpriteSheet {
     this.maxRow = baseTexture.height / this.frameHeight;
 
     this.textures = [];
-    var frameCounter = 0;
-    for(var i = 0; i < baseTexture.height / this.frameHeight; i++) {
-      for(var j = 0; j < baseTexture.width / this.frameWidth; j++) {
-        this.textures[frameCounter] = new PIXI.Texture(baseTexture, new PIXI.Rectangle(j * this.frameWidth, i * this.frameHeight, this.frameWidth, this.frameHeight));
-        frameCounter++;
+    for(var y = 0; y < this.maxRow; y++) {
+      for(var x = 0; x < this.maxColumn; x++) {
+        this.textures[x + y * this.maxColumn] = new PIXI.Texture(baseTexture, new PIXI.Rectangle(x * this.frameWidth, y * this.frameHeight, this.frameWidth, this.frameHeight));
       }
     }
 

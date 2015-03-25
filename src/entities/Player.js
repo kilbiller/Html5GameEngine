@@ -93,7 +93,7 @@ class Player extends Entity {
       }
     })));
 
-    super.addComponent(new Velocity(150));
+    super.addComponent(new Velocity(200));
 
     super.addComponent(new UserInput());
 

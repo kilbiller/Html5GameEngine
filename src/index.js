@@ -12,7 +12,11 @@ var game = new Game(width, height);
 game.assetManager.addImage("player", "assets/images/player.png");
 game.assetManager.addImage("enemy", "assets/images/enemy.png");
 game.assetManager.addImage("logs", "assets/images/logs.png");
+game.assetManager.addImage("tileset", "assets/images/PathAndObjects_0.png");
+
 game.assetManager.addSound("punch", "assets/sounds/punch.wav");
+
+game.assetManager.addJson("test", "assets/maps/test.json");
 
 // TODO default state ?
 game.start(new LevelState(game));
