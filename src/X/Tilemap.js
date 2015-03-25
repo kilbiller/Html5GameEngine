@@ -2,6 +2,7 @@
 
 import SpriteSheet from './SpriteSheet';
 import Tile from './Tile';
+import Rectangle from './Rectangle';
 
 export default class Tilemap {
   constructor(game, json, tileset) {
@@ -14,21 +15,21 @@ export default class Tilemap {
     this.tiles = new Array(this.layers.length);
     this.tileset = tileset;
     this.tilesetSheet = new SpriteSheet(tileset, this.tilewidth, this.tileheight);
+    this.collidables = {
+      63: new Rectangle(0, 10, this.tilewidth, this.tileheight - 10),
+      164: new Rectangle(0, 6, this.tilewidth, this.tileheight - 6),
+      156: new Rectangle(0, 10, this.tilewidth, this.tileheight - 10),
+      157: new Rectangle(0, 10, this.tilewidth, this.tileheight - 10)
+    };
   }
 
   load() {
-
     for(var i = 0; i < this.layers.length; i++) {
       this.tiles[i] = new Array(this.width * this.height);
-
       for(var y = 0; y < this.height; y++) {
         for(var x = 0; x < this.width; x++) {
           var id = this.layers[i].data[x + y * this.width] - 1;
-          var solid = false;
-          if(id === 63) {
-            solid = true;
-          }
-          this.tiles[i][x + y * this.width] = new Tile(x * this.tilewidth, y * this.tileheight, id, this.tilesetSheet, solid);
+          this.tiles[i][x + y * this.width] = new Tile(x * this.tilewidth, y * this.tileheight, id, this.tilesetSheet, this.collidables);
           if(id !== -1) {
             this.game.stage.addChild(this.tiles[i][x + y * this.width].sprite);
           }
@@ -47,8 +48,16 @@ export default class Tilemap {
   isSolidAt(rect) {
     if(!this.isOutsideMap(rect)) {
       for(var i = 0; i < this.layers.length; i++) {
-        if(this.tiles[i][this.pixelToTile(rect.Left, rect.Top)].isSolid || this.tiles[i][this.pixelToTile(rect.Left, rect.Bottom)].isSolid ||
-          this.tiles[i][this.pixelToTile(rect.Right, rect.Top)].isSolid || this.tiles[i][this.pixelToTile(rect.Right, rect.Bottom)].isSolid) {
+        if(rect.intersects(this.tiles[i][this.pixelToTile(rect.Left, rect.Top)].bounds) && this.tiles[i][this.pixelToTile(rect.Left, rect.Top)].isSolid) {
+          return true;
+        }
+        if(rect.intersects(this.tiles[i][this.pixelToTile(rect.Left, rect.Bottom)].bounds) && this.tiles[i][this.pixelToTile(rect.Left, rect.Bottom)].isSolid) {
+          return true;
+        }
+        if(rect.intersects(this.tiles[i][this.pixelToTile(rect.Right, rect.Top)].bounds) && this.tiles[i][this.pixelToTile(rect.Right, rect.Top)].isSolid) {
+          return true;
+        }
+        if(rect.intersects(this.tiles[i][this.pixelToTile(rect.Right, rect.Bottom)].bounds) && this.tiles[i][this.pixelToTile(rect.Right, rect.Bottom)].isSolid) {
           return true;
         }
       }
@@ -58,9 +67,5 @@ export default class Tilemap {
 
   pixelToTile(x, y) {
     return Math.floor(x / this.tilewidth) + Math.floor(y / this.tileheight) * this.width;
-  }
-
-  TileToPixel() {
-    //TODO
   }
 }
