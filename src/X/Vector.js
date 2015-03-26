@@ -59,6 +59,10 @@ export default class Vector {
     return Math.sqrt(this.len2());
   }
 
+  static lerp(vector1, vector2, amount) {
+    return new Vector(vector1.x + (vector2.x - vector1.x) * amount, vector1.y + (vector2.y - vector1.y) * amount);
+  }
+
   print() {
     console.log(this);
   }

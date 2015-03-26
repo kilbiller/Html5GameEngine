@@ -54,5 +54,5 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('default', ['browser-sync'], function() {
-  gulp.watch(['src/*.js', 'src/*/*.js'], ['javascript']);
+  gulp.watch(['src/*.js', 'src/*/*.js'], ['copy-assets', 'javascript']);
 });

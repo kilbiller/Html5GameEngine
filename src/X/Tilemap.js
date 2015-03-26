@@ -15,12 +15,30 @@ export default class Tilemap {
     this.tiles = new Array(this.layers.length);
     this.tileset = tileset;
     this.tilesetSheet = new SpriteSheet(tileset, this.tilewidth, this.tileheight);
-    this.collidables = {
+    /*this.collidables = {
       63: new Rectangle(0, 10, this.tilewidth, this.tileheight - 10),
       164: new Rectangle(0, 6, this.tilewidth, this.tileheight - 6),
       156: new Rectangle(0, 10, this.tilewidth, this.tileheight - 10),
       157: new Rectangle(0, 10, this.tilewidth, this.tileheight - 10)
-    };
+    };*/
+
+    // add tiles with a collision rectangle to the collidables list
+    this.collidables = {};
+    for(var ts of json.tilesets) {
+      for(var tileID in ts.tiles) {
+        if(ts.tiles[tileID]) {
+          if(ts.tiles[tileID] && ts.tiles[tileID].objectgroup && ts.tiles[tileID].objectgroup.objects[0]) {
+            var object = ts.tiles[tileID].objectgroup.objects[0];
+            if(object.x >= 0 && object.y >= 0) {
+              this.collidables[tileID] = new Rectangle(object.x, object.y, object.width, object.height);
+              //this.collidables[tileID].print();
+              //TODO maybe autofix x<0 & y<0
+            }
+          }
+        }
+      }
+    }
+
   }
 
   load() {

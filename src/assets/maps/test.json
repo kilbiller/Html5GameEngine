@@ -231,6 +231,68 @@
                 {
                  "terrain":[0, 6, 6, 6]
                 },
+             "156":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":15.875,
+                             "id":0,
+                             "name":"",
+                             "properties":
+                                {
+
+                                },
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":31.875,
+                             "x":0,
+                             "y":15.875
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
+             "157":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":15.875,
+                             "id":0,
+                             "name":"",
+                             "properties":
+                                {
+
+                                },
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":31.875,
+                             "x":0.0625,
+                             "y":15.9375
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
+                },
              "16":
                 {
                  "terrain":[0, 1, 0, 1]
@@ -246,6 +308,37 @@
              "162":
                 {
                  "terrain":[-1, -1, 0, -1]
+                },
+             "164":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":23.25,
+                             "id":0,
+                             "name":"",
+                             "properties":
+                                {
+
+                                },
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":30.5,
+                             "x":1,
+                             "y":8.5
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
                 },
              "17":
                 {
@@ -459,6 +552,37 @@
              "6":
                 {
                  "terrain":[0, 0, 0, 5]
+                },
+             "63":
+                {
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "height":0,
+                     "name":"",
+                     "objects":[
+                            {
+                             "height":20.5454545454545,
+                             "id":0,
+                             "name":"",
+                             "properties":
+                                {
+
+                                },
+                             "rotation":0,
+                             "type":"",
+                             "visible":true,
+                             "width":29.1590909090909,
+                             "x":0.045454545454545,
+                             "y":10.3863636363636
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "width":0,
+                     "x":0,
+                     "y":0
+                    }
                 },
              "64":
                 {

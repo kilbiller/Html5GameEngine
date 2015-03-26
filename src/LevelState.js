@@ -83,7 +83,7 @@ export default class LevelState extends State {
     }
     //console.timeEnd('systems');
 
-    this.camera.update();
+    this.camera.update(dt);
 
     /*//Spawn a box each time left mouse button is clicked
      if (game.mouse.leftClick) {
