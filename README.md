@@ -10,11 +10,11 @@ A simple HTML5 game framework made for fun & experience
 * Collision detection & response
 * StateManager
 * Variable Time Step
+* Tilemap from Tiled support
 
 ## TODO
 
-* Tile System
-* Betetr Debug system
+* Better Debug system
 * Better collision mask & hitbox
 * Make component pure data
 * Better Camera
@@ -23,6 +23,13 @@ A simple HTML5 game framework made for fun & experience
 * QuadTree
 * Fix collision http://www.sourceofmagicgame.com/2011/11/2d-collision-for-top-down-rpgs/ and SAT.js
 * Fix requirements for systems (minimum component required)
+* enemy attack
+* menu
+* save system
+* camera lerp
+* usable system
+* show hp bar on screen
+* projectile system
 
 ## Libs used
 
