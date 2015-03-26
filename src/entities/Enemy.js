@@ -10,7 +10,6 @@ import Position from '../Components/Position';
 import Dimension from '../Components/Dimension';
 import Sprite from '../Components/Sprite';
 import Animation from '../Components/Animation';
-import Direction from '../Components/Direction';
 import Health from '../Components/Health';
 import Collider from '../Components/Collider';
 import Velocity from '../Components/Velocity';
@@ -21,7 +20,6 @@ export default class Enemy extends Entity {
     super("enemy");
     super.addComponent(new Position(x, y));
     super.addComponent(new Dimension(width, height));
-    super.addComponent(new Direction());
     super.addComponent(new Health());
     super.addComponent(new Collider(6, 20, 20, 10));
     super.addComponent(new Velocity(100));

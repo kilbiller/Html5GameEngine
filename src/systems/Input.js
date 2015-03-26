@@ -12,22 +12,22 @@ export default class Input extends SystemX {
   update(dt) {
     for(var entity of this.game.entities) {
       var ec = entity.components;
-      if(ec.userInput && ec.position && ec.animation && ec.direction && ec.attack && ec.health && ec.velocity) {
-        ec.velocity.current = new Vector();
+      if(ec.userInput && ec.position && ec.animation && ec.attack && ec.health && ec.velocity) {
+        ec.velocity.current = Vector.Zero;
         if(ec.health.isAlive && !ec.attack.isAttacking) {
           if(key.isPressed("Z")) {
-            ec.direction.value = "Up";
+            ec.position.facing = "UP";
             ec.velocity.current.add(Vector.UP);
           } else if(key.isPressed("S")) {
-            ec.direction.value = "Down";
+            ec.position.facing = "DOWN";
             ec.velocity.current.add(Vector.DOWN);
           }
 
           if(key.isPressed("Q")) {
-            ec.direction.value = "Left";
+            ec.position.facing = "LEFT";
             ec.velocity.current.add(Vector.LEFT);
           } else if(key.isPressed("D")) {
-            ec.direction.value = "Right";
+            ec.position.facing = "RIGHT";
             ec.velocity.current.add(Vector.RIGHT);
           }
 

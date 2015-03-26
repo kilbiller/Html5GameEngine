@@ -11,7 +11,7 @@ export default class Attack extends SystemX {
   update(dt) {
     for(var entity of this.game.entities) {
       var ec = entity.components;
-      if(ec.attack && ec.direction && ec.position && ec.animation) {
+      if(ec.attack && ec.position && ec.animation) {
 
         if(ec.attack.isAttacking && ec.attack.canAttack) {
           var punchSound = this.game.assetManager.getSound("punch");
@@ -21,13 +21,13 @@ export default class Attack extends SystemX {
           ec.attack.cooldown = ec.attack.COOLDOWN_TIME;
 
           var attackRect;
-          if(ec.direction.value === "Up") {
+          if(ec.position.facing === "UP") {
             attackRect = new Rectangle(ec.position.current.x + 12, ec.position.current.y - 1, 10, 1);
-          } else if(ec.direction.value === "Down") {
+          } else if(ec.position.facing === "DOWN") {
             attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 18, 20, 12);
-          } else if(ec.direction.value === "Left") {
+          } else if(ec.position.facing === "LEFT") {
             attackRect = new Rectangle(ec.position.current.x - 4, ec.position.current.y + 13, 25, 12);
-          } else if(ec.direction.value === "Right") {
+          } else if(ec.position.facing === "RIGHT") {
             attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 13, 25, 12);
           }
 

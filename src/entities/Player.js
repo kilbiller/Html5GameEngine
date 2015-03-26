@@ -10,7 +10,6 @@ import Position from '../Components/Position';
 import Dimension from '../Components/Dimension';
 import Sprite from '../Components/Sprite';
 import Animation from '../Components/Animation';
-import Direction from '../Components/Direction';
 import Health from '../Components/Health';
 import Collider from '../Components/Collider';
 import Velocity from '../Components/Velocity';
@@ -24,7 +23,6 @@ class Player extends Entity {
     super.addComponent(new Dimension(width, height));
     super.addComponent(new Velocity(200));
     super.addComponent(new UserInput());
-    super.addComponent(new Direction());
     super.addComponent(new Health());
     super.addComponent(new Attack(50));
     super.addComponent(new Collider(6, 20, 20, 10));

@@ -49,14 +49,14 @@ export default class AI extends SystemX {
 
           // update directions
           if(ec.velocity.current.y < 0) {
-            ec.direction.value = "Up";
+            ec.position.facing = "UP";
           } else if(ec.velocity.current.y > 0) {
-            ec.direction.value = "Down";
+            ec.position.facing = "DOWN";
           }
           if(ec.velocity.current.x < 0) {
-            ec.direction.value = "Left";
+            ec.position.facing = "LEFT";
           } else if(ec.velocity.current.x > 0) {
-            ec.direction.value = "Right";
+            ec.position.facing = "RIGHT";
           }
 
           //if the player is in range
