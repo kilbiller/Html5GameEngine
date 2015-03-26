@@ -63,6 +63,10 @@ export default class Vector {
     return new Vector(vector1.x + (vector2.x - vector1.x) * amount, vector1.y + (vector2.y - vector1.y) * amount);
   }
 
+  static euclidianDistance(vector1, vector2) {
+    return Math.sqrt(Math.pow(vector2.x - vector1.x, 2) + Math.pow(vector2.y - vector1.y, 2))
+  }
+
   print() {
     console.log(this);
   }

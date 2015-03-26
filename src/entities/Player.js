@@ -22,6 +22,12 @@ class Player extends Entity {
     super("player");
     super.addComponent(new Position(x, y));
     super.addComponent(new Dimension(width, height));
+    super.addComponent(new Velocity(200));
+    super.addComponent(new UserInput());
+    super.addComponent(new Direction());
+    super.addComponent(new Health());
+    super.addComponent(new Attack(50));
+    super.addComponent(new Collider(6, 20, 20, 10));
 
     var spriteSheet = new SpriteSheet(textureName, width, height);
     super.addComponent(new Sprite(spriteSheet.getSprite()));
@@ -92,18 +98,6 @@ class Player extends Entity {
         loop: false
       }
     })));
-
-    super.addComponent(new Velocity(200));
-
-    super.addComponent(new UserInput());
-
-    super.addComponent(new Direction());
-
-    super.addComponent(new Health());
-
-    super.addComponent(new Attack(50));
-
-    super.addComponent(new Collider(6, 20, 20, 10));
   }
 }
 

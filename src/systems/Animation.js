@@ -16,7 +16,7 @@ export default class Animation extends SystemX {
           if(ec.animation.state === null) {
             ec.animation.state = "idleDown";
           }
-          if(ec.health.isAlive) {
+          if(ec.health.isAlive && !ec.attack.isAttacking) {
             if(ec.velocity.current.equal(Vector.Zero)) {
               switch(ec.animation.state) {
                 case "moveUp":
@@ -29,6 +29,18 @@ export default class Animation extends SystemX {
                   ec.animation.state = "idleLeft";
                   break;
                 case "moveRight":
+                  ec.animation.state = "idleRight";
+                  break;
+                case "attackUp":
+                  ec.animation.state = "idleUp";
+                  break;
+                case "attackDown":
+                  ec.animation.state = "idleDown";
+                  break;
+                case "attackLeft":
+                  ec.animation.state = "idleLeft";
+                  break;
+                case "attackRight":
                   ec.animation.state = "idleRight";
                   break;
               }
@@ -45,7 +57,17 @@ export default class Animation extends SystemX {
                 ec.animation.state = "moveRight";
               }
             }
-          } else {
+          } else if(ec.attack.isAttacking) {
+            if(ec.animation.state === "idleUp" || ec.animation.state === "moveUp") {
+              ec.animation.state = "attackUp";
+            } else if(ec.animation.state === "idleDown" || ec.animation.state === "moveDown") {
+              ec.animation.state = "attackDown";
+            } else if(ec.animation.state === "idleLeft" || ec.animation.state === "moveLeft") {
+              ec.animation.state = "attackLeft";
+            } else if(ec.animation.state === "idleRight" || ec.animation.state === "moveRight") {
+              ec.animation.state = "attackRight";
+            }
+          } else if(!ec.health.isAlive) {
             ec.animation.state = "death";
           }
         }

@@ -31,21 +31,16 @@ export default class LevelState extends State {
     game.tilemap = new Tilemap(game, game.assetManager.getJson("test"), game.assetManager.getImage("tileset"));
     game.tilemap.load();
 
-    var logsTexture = game.assetManager.getImage("logs");
     var playerTexture = game.assetManager.getImage("player");
     var enemyTexture = game.assetManager.getImage("enemy");
 
-    /*game.entities.push(new Logs(150, 120, 32, 32, logsTexture));
-    game.entities.push(new Logs(180, 230, 32, 32, logsTexture));
-    game.entities.push(new Logs(340, 200, 32, 32, logsTexture));*/
-
     game.entities.push(new Enemy(300, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(400, 300, 32, 32, enemyTexture));
-    game.entities.push(new Enemy(300, 20, 32, 32, enemyTexture));
+    /*game.entities.push(new Enemy(300, 20, 32, 32, enemyTexture));
     game.entities.push(new Enemy(50, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(90, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(0, 400, 32, 32, enemyTexture));
-    game.entities.push(new Enemy(868, 400, 32, 32, enemyTexture));
+    game.entities.push(new Enemy(868, 400, 32, 32, enemyTexture));*/
 
     var player = new Player(30, 30, 32, 32, playerTexture);
     game.entities.push(player);
@@ -88,19 +83,6 @@ export default class LevelState extends State {
     /*//Spawn a box each time left mouse button is clicked
      if (game.mouse.leftClick) {
      game.entities.push(new StaticObject(game, game.mouse.pos.x, game.mouse.pos.y, 32, 32, "img/trunks.png"));
-     }*/
-
-    /*var game = this.game;
-     for (var i = 0; i < game.entities.length; i += 1) {
-     if (!game.entities[i].removeFromWorld) {
-     game.entities[i].update(dt);
-     }
-     }*/
-
-    /*for (i = game.entities.length - 1; i >= 0;  i -= 1) {
-     if (game.entities[i].removeFromWorld) {
-     game.entities.splice(i, 1);
-     }
      }*/
   }
 

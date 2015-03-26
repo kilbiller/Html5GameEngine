@@ -14,12 +14,18 @@ import Direction from '../Components/Direction';
 import Health from '../Components/Health';
 import Collider from '../Components/Collider';
 import Velocity from '../Components/Velocity';
+import Attack from '../Components/Attack';
 
 export default class Enemy extends Entity {
   constructor(x, y, width, height, textureName) {
     super("enemy");
     super.addComponent(new Position(x, y));
     super.addComponent(new Dimension(width, height));
+    super.addComponent(new Direction());
+    super.addComponent(new Health());
+    super.addComponent(new Collider(6, 20, 20, 10));
+    super.addComponent(new Velocity(100));
+    super.addComponent(new Attack(10));
 
     var spriteSheet = new SpriteSheet(textureName, width, height);
     super.addComponent(new Sprite(spriteSheet.getSprite()));
@@ -90,13 +96,5 @@ export default class Enemy extends Entity {
         loop: false
       }
     })));
-
-    super.addComponent(new Direction());
-
-    super.addComponent(new Health());
-
-    super.addComponent(new Collider(6, 20, 20, 10));
-
-    super.addComponent(new Velocity(100));
   }
 }
