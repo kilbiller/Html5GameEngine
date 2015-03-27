@@ -14,6 +14,7 @@ import Health from '../Components/Health';
 import Collider from '../Components/Collider';
 import Velocity from '../Components/Velocity';
 import Attack from '../Components/Attack';
+import Target from '../Components/Target';
 
 export default class Enemy extends Entity {
   constructor(x, y, width, height, textureName) {
@@ -24,6 +25,7 @@ export default class Enemy extends Entity {
     super.addComponent(new Collider(6, 20, 20, 10));
     super.addComponent(new Velocity(100));
     super.addComponent(new Attack(10));
+    super.addComponent(new Target());
 
     var spriteSheet = new SpriteSheet(textureName, width, height);
     super.addComponent(new Sprite(spriteSheet.getSprite()));

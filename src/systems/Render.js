@@ -17,7 +17,7 @@ export default class Render extends SystemX {
 
         ec.sprite.sprite.zOrder = ec.sprite.sprite.y + ec.sprite.sprite.height;
         if(ec.health && !ec.health.isAlive) {
-          ec.sprite.sprite.zOrder -= 100;
+          ec.sprite.sprite.zOrder -= 10;
         }
       }
     }

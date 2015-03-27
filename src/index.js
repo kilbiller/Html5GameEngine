@@ -17,5 +17,7 @@ game.assetManager.addSound("punch", "assets/sounds/punch.wav");
 
 game.assetManager.addJson("test", "assets/maps/test.json");
 
+game.assetManager.addFont("consolas", "assets/fonts/consolas.fnt");
+
 // TODO default state ?
 game.start(new LevelState(game));

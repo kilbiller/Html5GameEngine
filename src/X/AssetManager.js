@@ -13,6 +13,7 @@ export default class AssetManager {
     this.soundPromiseQueue = [];
     this.imagePromiseQueue = [];
     this.jsonPromiseQueue = [];
+    this.fontPromiseQueue = [];
     this.images = {};
   }
 
@@ -53,6 +54,18 @@ export default class AssetManager {
     this.jsonPromiseQueue.push(promise);
   }
 
+  addFont(name, path) {
+    var self = this;
+    var loader = new PIXI.BitmapFontLoader(path);
+    loader.load();
+    var promise = new Promise(function(resolve, reject) {
+      loader.on("loaded", function() {
+        resolve();
+      });
+    });
+    this.fontPromiseQueue.push(promise);
+  }
+
   getSound(name) {
     return this.soundCache[name];
   }
@@ -77,7 +90,11 @@ export default class AssetManager {
     return Promise.all(this.jsonPromiseQueue);
   }
 
+  loadFonts() {
+    return Promise.all(this.fontPromiseQueue);
+  }
+
   loadAll() {
-    return Promise.all([this.loadImages(), this.loadSounds(), this.loadJsons()]);
+    return Promise.all([this.loadImages(), this.loadSounds(), this.loadJsons(), this.loadFonts()]);
   }
 }
