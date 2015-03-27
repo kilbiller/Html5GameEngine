@@ -18,6 +18,7 @@ import Animation from './systems/Animation';
 import Collision from './systems/Collision';
 import Attack from './systems/Attack';
 import Render from './systems/Render';
+import UI from './systems/UI';
 import Debug from './systems/Debug';
 
 export default class LevelState extends State {
@@ -36,17 +37,17 @@ export default class LevelState extends State {
 
     game.entities.push(new Enemy(300, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(400, 300, 32, 32, enemyTexture));
-    /*game.entities.push(new Enemy(300, 20, 32, 32, enemyTexture));
+    game.entities.push(new Enemy(300, 20, 32, 32, enemyTexture));
     game.entities.push(new Enemy(50, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(90, 300, 32, 32, enemyTexture));
-    game.entities.push(new Enemy(0, 400, 32, 32, enemyTexture));
-    game.entities.push(new Enemy(868, 400, 32, 32, enemyTexture));*/
+    game.entities.push(new Enemy(50, 400, 32, 32, enemyTexture));
+    game.entities.push(new Enemy(868, 400, 32, 32, enemyTexture));
 
-    var player = new Player(30, 30, 32, 32, playerTexture);
+    var player = new Player(50, 50, 32, 32, playerTexture);
     game.entities.push(player);
 
     // Camera follow the player
-    this.camera = new Camera(game);
+    this.camera = new Camera(game, game.world);
     this.camera.follow(player);
 
     this.systems = [
@@ -57,13 +58,14 @@ export default class LevelState extends State {
       new Attack(game),
       new Animation(game),
       new Render(game),
+      new UI(game),
       //new Debug(game)
     ];
 
     // Add each entity sprite to the renderer
     for(var entity of game.entities) {
       if(entity.components.sprite) {
-        this.game.stage.addChild(entity.components.sprite.sprite);
+        game.world.addChild(entity.components.sprite.sprite);
       }
     }
   }

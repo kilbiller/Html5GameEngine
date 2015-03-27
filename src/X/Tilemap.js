@@ -49,7 +49,7 @@ export default class Tilemap {
           var id = this.layers[i].data[x + y * this.width] - 1;
           this.tiles[i][x + y * this.width] = new Tile(x * this.tilewidth, y * this.tileheight, id, this.tilesetSheet, this.collidables);
           if(id !== -1) {
-            this.game.stage.addChild(this.tiles[i][x + y * this.width].sprite);
+            this.game.world.addChild(this.tiles[i][x + y * this.width].sprite);
           }
         }
       }

@@ -7,7 +7,7 @@ export default class Debug extends SystemX {
   constructor(game) {
     super(game);
     this.doc = new PIXI.DisplayObjectContainer();
-    this.game.stage.addChild(this.doc);
+    this.game.world.addChild(this.doc);
   }
 
   update(dt) {

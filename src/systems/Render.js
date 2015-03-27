@@ -22,7 +22,7 @@ export default class Render extends SystemX {
       }
     }
     // Z-Order
-    this.game.stage.children.sort(function(a, b) {
+    this.game.world.children.sort(function(a, b) {
       return a.zOrder - b.zOrder;
     });
   }

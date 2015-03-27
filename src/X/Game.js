@@ -9,6 +9,8 @@ import Stats from 'stats-js';
 
 export default class Game {
   constructor(width = 427, height = 240) {
+    this.width = width;
+    this.height = height;
     this.stage = new PIXI.Stage(0x000000);
     this.renderer = PIXI.autoDetectRenderer(width, height);
     document.body.appendChild(this.renderer.view);
@@ -20,6 +22,12 @@ export default class Game {
     this.entities = [];
     this.stateManager = new StateManager();
 
+    this.world = new PIXI.DisplayObjectContainer();
+    this.stage.addChild(this.world);
+    this.ui = new PIXI.DisplayObjectContainer();
+    this.stage.addChild(this.ui);
+
+    // fps counter
     this.stats = new Stats();
     this.stats.setMode(0);
     this.stats.domElement.style.position = 'absolute';
