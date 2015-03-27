@@ -7,20 +7,14 @@ import Rectangle from './Rectangle';
 export default class Tilemap {
   constructor(game, json, tileset) {
     this.game = game;
+    this.json = json;
     this.width = json.width;
     this.height = json.height;
     this.tilewidth = json.tilewidth;
     this.tileheight = json.tileheight;
-    this.layers = json.layers;
-    this.tiles = new Array(this.layers.length);
+    this.layers = new Array(json.layers.length);
     this.tileset = tileset;
     this.tilesetSheet = new SpriteSheet(tileset, this.tilewidth, this.tileheight);
-    /*this.collidables = {
-      63: new Rectangle(0, 10, this.tilewidth, this.tileheight - 10),
-      164: new Rectangle(0, 6, this.tilewidth, this.tileheight - 6),
-      156: new Rectangle(0, 10, this.tilewidth, this.tileheight - 10),
-      157: new Rectangle(0, 10, this.tilewidth, this.tileheight - 10)
-    };*/
 
     // add tiles with a collision rectangle to the collidables list
     this.collidables = {};
@@ -42,14 +36,30 @@ export default class Tilemap {
   }
 
   load() {
-    for(var i = 0; i < this.layers.length; i++) {
-      this.tiles[i] = new Array(this.width * this.height);
+    for(var i = 0; i < this.json.layers.length; i++) {
+      this.layers[i] = {
+        name: this.json.layers[i].name,
+        tiles: new Array(this.width * this.height)
+      };
+
       for(var y = 0; y < this.height; y++) {
         for(var x = 0; x < this.width; x++) {
-          var id = this.layers[i].data[x + y * this.width] - 1;
-          this.tiles[i][x + y * this.width] = new Tile(x * this.tilewidth, y * this.tileheight, id, this.tilesetSheet, this.collidables);
+          // change zOrder depending on layer
+          // Background layer, zOrder = 0
+          // Foreground layer, zOrder = bottom of collision rectangle
+          // Top layer, zOrder = Higher than normal so that it covers everything
+          var zOrder = 0;
+          if(this.layers[i].name === "Top") {
+            zOrder = y * this.tileheight + this.tileheight * 2;
+          }
+
+          // create the tile
+          var id = this.json.layers[i].data[x + y * this.width] - 1;
+          this.layers[i].tiles[x + y * this.width] = new Tile(x * this.tilewidth, y * this.tileheight, id, this.tilesetSheet, this.collidables, zOrder);
+
+          // don't add tile to the renderer if there is no tile to render
           if(id !== -1) {
-            this.game.world.addChild(this.tiles[i][x + y * this.width].sprite);
+            this.game.world.addChild(this.layers[i].tiles[x + y * this.width].sprite);
           }
         }
       }
@@ -66,16 +76,16 @@ export default class Tilemap {
   isSolidAt(rect) {
     if(!this.isOutsideMap(rect)) {
       for(var i = 0; i < this.layers.length; i++) {
-        if(rect.intersects(this.tiles[i][this.pixelToTile(rect.Left, rect.Top)].bounds) && this.tiles[i][this.pixelToTile(rect.Left, rect.Top)].isSolid) {
+        if(rect.intersects(this.layers[i].tiles[this.pixelToTile(rect.Left, rect.Top)].bounds) && this.layers[i].tiles[this.pixelToTile(rect.Left, rect.Top)].isSolid) {
           return true;
         }
-        if(rect.intersects(this.tiles[i][this.pixelToTile(rect.Left, rect.Bottom)].bounds) && this.tiles[i][this.pixelToTile(rect.Left, rect.Bottom)].isSolid) {
+        if(rect.intersects(this.layers[i].tiles[this.pixelToTile(rect.Left, rect.Bottom)].bounds) && this.layers[i].tiles[this.pixelToTile(rect.Left, rect.Bottom)].isSolid) {
           return true;
         }
-        if(rect.intersects(this.tiles[i][this.pixelToTile(rect.Right, rect.Top)].bounds) && this.tiles[i][this.pixelToTile(rect.Right, rect.Top)].isSolid) {
+        if(rect.intersects(this.layers[i].tiles[this.pixelToTile(rect.Right, rect.Top)].bounds) && this.layers[i].tiles[this.pixelToTile(rect.Right, rect.Top)].isSolid) {
           return true;
         }
-        if(rect.intersects(this.tiles[i][this.pixelToTile(rect.Right, rect.Bottom)].bounds) && this.tiles[i][this.pixelToTile(rect.Right, rect.Bottom)].isSolid) {
+        if(rect.intersects(this.layers[i].tiles[this.pixelToTile(rect.Right, rect.Bottom)].bounds) && this.layers[i].tiles[this.pixelToTile(rect.Right, rect.Bottom)].isSolid) {
           return true;
         }
       }
