@@ -8,8 +8,8 @@ export default class Render extends SystemX {
   }
 
   update(dt) {
-    for(var entity of this.game.entities) {
-      var ec = entity.components;
+    for(let entity of this.game.entities) {
+      let ec = entity.components;
       if(ec.sprite && ec.position) {
         // Prevent sub-pixel rendering
         ec.sprite.sprite.x = Math.round(ec.position.current.x);

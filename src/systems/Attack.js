@@ -9,18 +9,18 @@ export default class Attack extends SystemX {
   }
 
   update(dt) {
-    for(var entity of this.game.entities) {
-      var ec = entity.components;
+    for(let entity of this.game.entities) {
+      let ec = entity.components;
       if(ec.attack && ec.position && ec.animation) {
 
         if(ec.attack.isAttacking && ec.attack.canAttack) {
-          var punchSound = this.game.assetManager.getSound("punch");
+          let punchSound = this.game.assetManager.getSound("punch");
           punchSound.play();
 
           ec.attack.canAttack = false;
           ec.attack.cooldown = ec.attack.COOLDOWN_TIME;
 
-          var attackRect;
+          let attackRect;
           if(ec.position.facing === "UP") {
             attackRect = new Rectangle(ec.position.current.x + 12, ec.position.current.y - 1, 10, 1);
           } else if(ec.position.facing === "DOWN") {
@@ -31,16 +31,16 @@ export default class Attack extends SystemX {
             attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 13, 25, 12);
           }
 
-          for(var entity2 of this.game.entities) {
-            var ec2 = entity2.components;
+          for(let entity2 of this.game.entities) {
+            let ec2 = entity2.components;
             if(ec2.health) {
               // TODO better hitbox
-              var opponentHitbox = new Rectangle(ec2.position.current.x, ec2.position.current.y, ec2.dimension.width, ec2.dimension.height);
+              let opponentHitbox = new Rectangle(ec2.position.current.x, ec2.position.current.y, ec2.dimension.width, ec2.dimension.height);
               if(entity !== entity2 && ec2.health.hp > 0 && attackRect.intersects(opponentHitbox)) {
                 ec2.health.hp -= ec.attack.damage;
                 if(ec2.health.hp <= 0) {
                   // TODO find other sound
-                  //var deathSound = game.assetManager.getSound("assets/sounds/slime_death.wav");
+                  //let deathSound = game.assetManager.getSound("assets/sounds/slime_death.wav");
                   //deathSound.play();
                   ec2.health.isAlive = false;
                   entity2.removeComponent("velocity");

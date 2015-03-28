@@ -12,10 +12,10 @@ export default class Debug extends SystemX {
 
   update(dt) {
     this.doc.removeChildren();
-    for(var entity of this.game.entities) {
-      var ec = entity.components;
+    for(let entity of this.game.entities) {
+      let ec = entity.components;
       if(ec.sprite) {
-        var graphics = new PIXI.Graphics();
+        let graphics = new PIXI.Graphics();
         if(ec.collider) {
           graphics.lineStyle(1, 0xFFFFFF, 1);
           graphics.drawRect(ec.sprite.sprite.x + ec.collider.bounds.x, ec.sprite.sprite.y + ec.collider.bounds.y, ec.collider.bounds.width, ec.collider.bounds.height);

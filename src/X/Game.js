@@ -46,7 +46,7 @@ export default class Game {
 
   gameloop() {
     this.stats.begin();
-    var dt = this.time.tick();
+    let dt = this.time.tick();
     this.update(dt);
     this.render();
     this.stats.end();
@@ -54,7 +54,7 @@ export default class Game {
   }
 
   start(state) {
-    var game = this;
+    let game = this;
     this.assetManager.loadAll().then(function() {
       game.stateManager.push(state);
       game.gameloop();

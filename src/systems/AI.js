@@ -12,8 +12,8 @@ export default class AI extends SystemX {
 
   update(dt) {
     this.timer += dt;
-    for(var entity of this.game.entities) {
-      var ec = entity.components;
+    for(let entity of this.game.entities) {
+      let ec = entity.components;
       if(entity.type === "enemy" && ec.health.isAlive) {
 
         if(this.timer > 0.4) {
@@ -21,7 +21,7 @@ export default class AI extends SystemX {
           if(ec.target) {
             // set target.entity
             if(ec.target.entity === null) {
-              for(var e of this.game.entities) {
+              for(let e of this.game.entities) {
                 if(ec.target.type === e.type) {
                   ec.target.entity = e;
                   break;
@@ -30,8 +30,8 @@ export default class AI extends SystemX {
             }
 
             //TODO les positions ne sont pas actualisées PENSE Y
-            var distanceX = (ec.target.entity.components.position.current.x + ec.target.entity.components.dimension.width / 2) - (ec.position.current.x + ec.dimension.width / 2);
-            var distanceY = (ec.target.entity.components.position.current.y + ec.target.entity.components.dimension.height / 2) - (ec.position.current.y + ec.dimension.height / 2);
+            let distanceX = (ec.target.entity.components.position.current.x + ec.target.entity.components.dimension.width / 2) - (ec.position.current.x + ec.dimension.width / 2);
+            let distanceY = (ec.target.entity.components.position.current.y + ec.target.entity.components.dimension.height / 2) - (ec.position.current.y + ec.dimension.height / 2);
 
             // acquire target
             if(Math.abs(distanceX) < ec.target.range && Math.abs(distanceY) < ec.target.range) {
@@ -49,7 +49,7 @@ export default class AI extends SystemX {
               ec.velocity.current.norm();
             } else {
               // else move (or don't) randomly
-              var random = Math.floor(Math.random() * (5 - 0) + 0);
+              let random = Math.floor(Math.random() * (5 - 0) + 0);
               if(random === 0) {
                 ec.velocity.current = Vector.Zero;
               } else if(random === 1) {

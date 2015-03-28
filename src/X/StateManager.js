@@ -6,7 +6,7 @@ export default class StateManager {
   }
 
   update(dt) {
-    var state = this.states[this.states.length - 1];
+    let state = this.states[this.states.length - 1];
     if(state) {
       state.update(dt);
     }
@@ -18,20 +18,20 @@ export default class StateManager {
   }
 
   pop() {
-    var state = this.states[this.states.length - 1];
+    let state = this.states[this.states.length - 1];
     state.onExit();
     return this.states[this.states.length - 1];
   }
 
   pause() {
-    var state = this.states[this.states.length - 1];
+    let state = this.states[this.states.length - 1];
     if(state.onPause) {
       state.onPause();
     }
   }
 
   resume() {
-    var state = this.states[this.states.length - 1];
+    let state = this.states[this.states.length - 1];
     if(state.onResume) {
       state.onResume();
     }

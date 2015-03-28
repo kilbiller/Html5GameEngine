@@ -27,7 +27,7 @@ class Player extends Entity {
     super.addComponent(new Attack(50));
     super.addComponent(new Collider(6, 20, 20, 10));
 
-    var spriteSheet = new SpriteSheet(textureName, width, height);
+    let spriteSheet = new SpriteSheet(textureName, width, height);
     super.addComponent(new Sprite(spriteSheet.getSprite()));
     super.addComponent(new Animation(new Animations(spriteSheet, {
       idleDown: {

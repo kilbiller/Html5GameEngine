@@ -3,11 +3,11 @@
 import Game from './X/Game';
 import LevelState from './LevelState';
 
-var width = 1024;
-//var height = width / 16 * 9;
-var height = 576;
+let width = 1024;
+//let height = width / 16 * 9;
+let height = 576;
 
-var game = new Game(width, height);
+let game = new Game(width, height);
 
 game.assetManager.addImage("player", "assets/images/player.png");
 game.assetManager.addImage("enemy", "assets/images/enemy.png");

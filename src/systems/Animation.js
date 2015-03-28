@@ -9,8 +9,8 @@ export default class Animation extends SystemX {
   }
 
   update(dt) {
-    for(var entity of this.game.entities) {
-      var ec = entity.components;
+    for(let entity of this.game.entities) {
+      let ec = entity.components;
       if(ec.animation) {
         if(entity.type === "enemy") {
           if(ec.animation.state === null) {

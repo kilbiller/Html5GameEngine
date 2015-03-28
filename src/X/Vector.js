@@ -33,7 +33,7 @@ export default class Vector {
   }
 
   norm() {
-    var hyp = this.len();
+    let hyp = this.len();
     if(hyp > 0) {
       this.x /= hyp;
       this.y /= hyp;
@@ -42,7 +42,7 @@ export default class Vector {
   }
 
   getDirection(target) {
-    var dir = new Vector(target.x - this.x, target.y - this.y);
+    let dir = new Vector(target.x - this.x, target.y - this.y);
     dir.norm();
     return dir;
   }

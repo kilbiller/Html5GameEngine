@@ -13,11 +13,11 @@ export default class Debug extends SystemX {
 
   update(dt) {
     //this.doc.removeChildren();
-    for(var entity of this.game.entities) {
-      var ec = entity.components;
+    for(let entity of this.game.entities) {
+      let ec = entity.components;
       if(entity.type === "player") {
         if(!this.texts[entity.id]) {
-          var playerHPBar = new PIXI.BitmapText("Health: " + ec.health.hp, {
+          let playerHPBar = new PIXI.BitmapText("Health: " + ec.health.hp, {
             font: "18px Consolas",
             fill: "#FFFFFF",
             stroke: "#000000",
@@ -31,7 +31,7 @@ export default class Debug extends SystemX {
       }
       if(entity.type === "enemy") {
         if(ec.health.isAlive && !this.texts[entity.id]) {
-          var enemyHPBar = new PIXI.BitmapText("Health: " + ec.health.hp, {
+          let enemyHPBar = new PIXI.BitmapText("Health: " + ec.health.hp, {
             font: "18px Consolas"
           });
           this.doc.addChild(enemyHPBar);

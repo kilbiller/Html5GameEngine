@@ -32,8 +32,36 @@
          "width":64,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":64,
+         "name":"Triggers",
+         "objects":[
+                {
+                 "height":64,
+                 "id":3,
+                 "name":"",
+                 "properties":
+                    {
+                     "TransitionX":"50",
+                     "TransitionY":"50"
+                    },
+                 "rotation":0,
+                 "type":"Transition",
+                 "visible":true,
+                 "width":64,
+                 "x":128,
+                 "y":544
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":64,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":3,
+ "nextobjectid":5,
  "orientation":"orthogonal",
  "properties":
     {

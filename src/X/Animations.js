@@ -4,18 +4,18 @@ import Animation from './Animation';
 
 export default class Animations {
   constructor(spriteSheet, animData) {
-    this.anims = {};
+    this.anims = [];
     this.spriteSheet = spriteSheet;
     this.current = null;
 
-    var anim, data;
+    let data;
     try {
       data = JSON.parse(animData);
     } catch(e) {
       data = animData;
     }
 
-    for(anim in data) {
+    for(let anim in data) {
       if(data.hasOwnProperty(anim)) {
         this.addAnim(anim, data[anim].frames, data[anim].step, data[anim].loop);
       }
@@ -28,10 +28,10 @@ export default class Animations {
 
   setAnim(name) {
     this.current = name;
-    for(var anim in this.anims) {
-      this.anims[anim].visible = false;
+    for(let anim of this.anims) {
+      anim.visible = false;
     }
-    this.anims[anim].visible = true;
+    this.anims[name].visible = true;
   }
 
   getCurrent() {

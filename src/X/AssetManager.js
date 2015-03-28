@@ -19,18 +19,18 @@ export default class AssetManager {
 
   addImage(name, path) {
     this.images[name] = path;
-    var loader = new PIXI.ImageLoader(path);
+    let loader = new PIXI.ImageLoader(path);
     loader.load();
-    var promise = new Promise(function(resolve, reject) {
+    let promise = new Promise(function(resolve, reject) {
       loader.on("loaded", () => resolve());
     });
     this.imagePromiseQueue.push(promise);
   }
 
   addSound(name, path) {
-    var self = this;
-    var promise = new Promise(function(resolve, reject) {
-      var sound = new Howl({
+    let self = this;
+    let promise = new Promise(function(resolve, reject) {
+      let sound = new Howl({
         urls: [path],
         onload: () => resolve(),
         onerror: () => reject()
@@ -42,10 +42,10 @@ export default class AssetManager {
   }
 
   addJson(name, path) {
-    var self = this;
-    var loader = new PIXI.JsonLoader(path);
+    let self = this;
+    let loader = new PIXI.JsonLoader(path);
     loader.load();
-    var promise = new Promise(function(resolve, reject) {
+    let promise = new Promise(function(resolve, reject) {
       loader.on("loaded", function() {
         self.jsonCache[name] = loader.json;
         resolve();
@@ -55,10 +55,10 @@ export default class AssetManager {
   }
 
   addFont(name, path) {
-    var self = this;
-    var loader = new PIXI.BitmapFontLoader(path);
+    let self = this;
+    let loader = new PIXI.BitmapFontLoader(path);
     loader.load();
-    var promise = new Promise(function(resolve, reject) {
+    let promise = new Promise(function(resolve, reject) {
       loader.on("loaded", function() {
         resolve();
       });

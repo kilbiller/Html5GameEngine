@@ -18,11 +18,11 @@ export default class Tilemap {
 
     // add tiles with a collision rectangle to the collidables list
     this.collidables = {};
-    for(var ts of json.tilesets) {
-      for(var tileID in ts.tiles) {
+    for(let ts of json.tilesets) {
+      for(let tileID in ts.tiles) {
         if(ts.tiles[tileID]) {
           if(ts.tiles[tileID] && ts.tiles[tileID].objectgroup && ts.tiles[tileID].objectgroup.objects[0]) {
-            var object = ts.tiles[tileID].objectgroup.objects[0];
+            let object = ts.tiles[tileID].objectgroup.objects[0];
             if(object.x >= 0 && object.y >= 0) {
               this.collidables[tileID] = new Rectangle(object.x, object.y, object.width, object.height);
               //this.collidables[tileID].print();
@@ -36,31 +36,51 @@ export default class Tilemap {
   }
 
   load() {
-    for(var i = 0; i < this.json.layers.length; i++) {
-      this.layers[i] = {
-        name: this.json.layers[i].name,
-        tiles: new Array(this.width * this.height)
-      };
+    for(let i = 0; i < this.json.layers.length; i++) {
+      // if on a tilelayer
+      if(this.json.layers[i].type === "tilelayer") {
+        this.layers[i] = {
+          name: this.json.layers[i].name,
+          tiles: new Array(this.width * this.height),
+          type: this.json.layers[i].type
+        };
 
-      for(var y = 0; y < this.height; y++) {
-        for(var x = 0; x < this.width; x++) {
-          // change zOrder depending on layer
-          // Background layer, zOrder = 0
-          // Foreground layer, zOrder = bottom of collision rectangle
-          // Top layer, zOrder = Higher than normal so that it covers everything
-          var zOrder = 0;
-          if(this.layers[i].name === "Top") {
-            zOrder = y * this.tileheight + this.tileheight * 2;
+        for(let y = 0; y < this.height; y++) {
+          for(let x = 0; x < this.width; x++) {
+            // change zOrder depending on layer
+            // Background layer, zOrder = 0
+            // Foreground layer, zOrder = bottom of collision rectangle
+            // Top layer, zOrder = Higher than normal so that it covers everything
+            let zOrder = 0;
+            if(this.layers[i].name === "Top") {
+              zOrder = y * this.tileheight + this.tileheight * 2;
+            }
+
+            // create the tile
+            let id = this.json.layers[i].data[x + y * this.width] - 1;
+            this.layers[i].tiles[x + y * this.width] = new Tile(x * this.tilewidth, y * this.tileheight, id, this.tilesetSheet, this.collidables, zOrder);
+
+            // don't add tile to the renderer if there is no tile to render
+            if(id !== -1) {
+              this.game.world.addChild(this.layers[i].tiles[x + y * this.width].sprite);
+            }
           }
+        }
+      }
+      // if on a objectgroup
+      if(this.json.layers[i].type === "objectgroup") {
+        this.layers[i] = {
+          name: this.json.layers[i].name,
+          objects: [],
+          type: this.json.layers[i].type
+        };
 
-          // create the tile
-          var id = this.json.layers[i].data[x + y * this.width] - 1;
-          this.layers[i].tiles[x + y * this.width] = new Tile(x * this.tilewidth, y * this.tileheight, id, this.tilesetSheet, this.collidables, zOrder);
-
-          // don't add tile to the renderer if there is no tile to render
-          if(id !== -1) {
-            this.game.world.addChild(this.layers[i].tiles[x + y * this.width].sprite);
-          }
+        for(let object of this.json.layers[i].objects) {
+          this.layers[i].objects.push({
+            type: object.type,
+            bounds: new Rectangle(object.x, object.y, object.width, object.height),
+            props: object.properties
+          });
         }
       }
     }
@@ -75,18 +95,20 @@ export default class Tilemap {
 
   isSolidAt(rect) {
     if(!this.isOutsideMap(rect)) {
-      for(var i = 0; i < this.layers.length; i++) {
-        if(rect.intersects(this.layers[i].tiles[this.pixelToTile(rect.Left, rect.Top)].bounds) && this.layers[i].tiles[this.pixelToTile(rect.Left, rect.Top)].isSolid) {
-          return true;
-        }
-        if(rect.intersects(this.layers[i].tiles[this.pixelToTile(rect.Left, rect.Bottom)].bounds) && this.layers[i].tiles[this.pixelToTile(rect.Left, rect.Bottom)].isSolid) {
-          return true;
-        }
-        if(rect.intersects(this.layers[i].tiles[this.pixelToTile(rect.Right, rect.Top)].bounds) && this.layers[i].tiles[this.pixelToTile(rect.Right, rect.Top)].isSolid) {
-          return true;
-        }
-        if(rect.intersects(this.layers[i].tiles[this.pixelToTile(rect.Right, rect.Bottom)].bounds) && this.layers[i].tiles[this.pixelToTile(rect.Right, rect.Bottom)].isSolid) {
-          return true;
+      for(let layer of this.layers) {
+        if(layer.type === "tilelayer") {
+          if(rect.intersects(layer.tiles[this.pixelToTile(rect.Left, rect.Top)].bounds) && layer.tiles[this.pixelToTile(rect.Left, rect.Top)].isSolid) {
+            return true;
+          }
+          if(rect.intersects(layer.tiles[this.pixelToTile(rect.Left, rect.Bottom)].bounds) && layer.tiles[this.pixelToTile(rect.Left, rect.Bottom)].isSolid) {
+            return true;
+          }
+          if(rect.intersects(layer.tiles[this.pixelToTile(rect.Right, rect.Top)].bounds) && layer.tiles[this.pixelToTile(rect.Right, rect.Top)].isSolid) {
+            return true;
+          }
+          if(rect.intersects(layer.tiles[this.pixelToTile(rect.Right, rect.Bottom)].bounds) && layer.tiles[this.pixelToTile(rect.Right, rect.Bottom)].isSolid) {
+            return true;
+          }
         }
       }
     }
@@ -95,5 +117,18 @@ export default class Tilemap {
 
   pixelToTile(x, y) {
     return Math.floor(x / this.tilewidth) + Math.floor(y / this.tileheight) * this.width;
+  }
+
+  getObject(rect) {
+    for(let layer of this.layers) {
+      if(layer.type === "objectgroup") {
+        for(let object of layer.objects) {
+          if(rect.intersects(object.bounds)) {
+            return object;
+          }
+        }
+      }
+    }
+    return null;
   }
 }

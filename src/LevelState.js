@@ -20,6 +20,7 @@ import Attack from './systems/Attack';
 import Render from './systems/Render';
 import UI from './systems/UI';
 import Debug from './systems/Debug';
+import Trigger from './systems/Trigger';
 
 export default class LevelState extends State {
   constructor(game) {
@@ -27,13 +28,13 @@ export default class LevelState extends State {
   }
 
   onEnter() {
-    var game = this.game;
+    let game = this.game;
 
     game.tilemap = new Tilemap(game, game.assetManager.getJson("test"), game.assetManager.getImage("tileset"));
     game.tilemap.load();
 
-    var playerTexture = game.assetManager.getImage("player");
-    var enemyTexture = game.assetManager.getImage("enemy");
+    let playerTexture = game.assetManager.getImage("player");
+    let enemyTexture = game.assetManager.getImage("enemy");
 
     game.entities.push(new Enemy(300, 300, 32, 32, enemyTexture));
     game.entities.push(new Enemy(400, 300, 32, 32, enemyTexture));
@@ -43,7 +44,7 @@ export default class LevelState extends State {
     game.entities.push(new Enemy(50, 400, 32, 32, enemyTexture));
     game.entities.push(new Enemy(868, 400, 32, 32, enemyTexture));
 
-    var player = new Player(50, 50, 32, 32, playerTexture);
+    let player = new Player(50, 50, 32, 32, playerTexture);
     game.entities.push(player);
 
     // Camera follow the player
@@ -57,13 +58,14 @@ export default class LevelState extends State {
       new Movement(game),
       new Attack(game),
       new Animation(game),
+      new Trigger(game),
       new Render(game),
       new UI(game),
       //new Debug(game)
     ];
 
     // Add each entity sprite to the renderer
-    for(var entity of game.entities) {
+    for(let entity of game.entities) {
       if(entity.components.sprite) {
         game.world.addChild(entity.components.sprite.sprite);
       }
@@ -74,8 +76,8 @@ export default class LevelState extends State {
     super.update(dt);
 
     //console.time('systems');
-    var game = this.game;
-    for(var system of this.systems) {
+    let game = this.game;
+    for(let system of this.systems) {
       system.update(dt);
     }
     //console.timeEnd('systems');

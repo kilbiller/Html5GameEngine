@@ -23,7 +23,7 @@ export default class Mouse {
   }
 
   mouseDown(e) {
-    var x, y;
+    let x, y;
     // Offset to canvas element.
     x = e.clientX - this.game.ctx.canvas.getBoundingClientRect().left;
     y = e.clientY - this.game.ctx.canvas.getBoundingClientRect().top;
@@ -56,7 +56,7 @@ export default class Mouse {
   }
 
   isOutsideCanvas(x, y) {
-    var canvas = this.game.ctx.canvas;
+    let canvas = this.game.ctx.canvas;
     return !!(x < 0 || y < 0 || x > canvas.width || y > canvas.height);
   }
 }

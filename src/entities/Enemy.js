@@ -27,7 +27,7 @@ export default class Enemy extends Entity {
     super.addComponent(new Attack(10));
     super.addComponent(new Target());
 
-    var spriteSheet = new SpriteSheet(textureName, width, height);
+    let spriteSheet = new SpriteSheet(textureName, width, height);
     super.addComponent(new Sprite(spriteSheet.getSprite()));
     super.addComponent(new Animation(new Animations(spriteSheet, {
       idleDown: {
