@@ -1,7 +1,5 @@
-"use strict";
-
-import SystemX from '../X/System';
-import Rectangle from '../X/Rectangle';
+import SystemX from "../X/System";
+import Rectangle from "../X/Rectangle";
 
 export default class Attack extends SystemX {
   constructor(game) {

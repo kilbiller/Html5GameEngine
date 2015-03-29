@@ -1,5 +1,3 @@
-"use strict";
-
 export default class Time {
   constructor() {
     this.gameTime = 0;

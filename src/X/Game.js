@@ -1,11 +1,9 @@
-"use strict";
-
-import Time from './Time';
-import AssetManager from './AssetManager';
-import Mouse from './Mouse';
-import PIXI from 'pixi.js';
-import StateManager from './StateManager';
-import Stats from 'stats-js';
+import Time from "./Time";
+import AssetManager from "./AssetManager";
+import Mouse from "./Mouse";
+import PIXI from "pixi.js";
+import StateManager from "./StateManager";
+import Stats from "stats-js";
 
 export default class Game {
   constructor(width = 427, height = 240) {
@@ -33,9 +31,9 @@ export default class Game {
     // fps counter
     this.stats = new Stats();
     this.stats.setMode(0);
-    this.stats.domElement.style.position = 'absolute';
-    this.stats.domElement.style.left = '1200px';
-    this.stats.domElement.style.top = '0px';
+    this.stats.domElement.style.position = "absolute";
+    this.stats.domElement.style.left = "1200px";
+    this.stats.domElement.style.top = "0px";
     document.body.appendChild(this.stats.domElement);
   }
 

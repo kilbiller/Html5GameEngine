@@ -1,7 +1,5 @@
-"use strict";
-
-import Game from './X/Game';
-import LevelState from './LevelState';
+import Game from "./X/Game";
+import LevelState from "./LevelState";
 
 let width = 1024;
 //let height = width / 16 * 9;

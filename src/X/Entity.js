@@ -1,6 +1,4 @@
-"use strict";
-
-import uuid from 'node-uuid';
+import uuid from "node-uuid";
 
 export default class Entity {
   constructor(type = "default") {

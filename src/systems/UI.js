@@ -1,7 +1,5 @@
-"use strict";
-
-import SystemX from '../X/System';
-import PIXI from 'pixi.js';
+import SystemX from "../X/System";
+import PIXI from "pixi.js";
 
 export default class UI extends SystemX {
   constructor(game) {

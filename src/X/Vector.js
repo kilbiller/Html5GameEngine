@@ -1,5 +1,3 @@
-"use strict";
-
 export default class Vector {
   constructor(x = 0, y = 0) {
     this.x = x;
@@ -64,7 +62,7 @@ export default class Vector {
   }
 
   static euclidianDistance(vector1, vector2) {
-    return Math.sqrt(Math.pow(vector2.x - vector1.x, 2) + Math.pow(vector2.y - vector1.y, 2))
+    return Math.sqrt(Math.pow(vector2.x - vector1.x, 2) + Math.pow(vector2.y - vector1.y, 2));
   }
 
   print() {

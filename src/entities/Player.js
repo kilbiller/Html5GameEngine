@@ -1,22 +1,20 @@
-"use strict";
+import Entity from "../X/Entity";
 
-import Entity from '../X/Entity';
-
-import SpriteSheet from '../X/SpriteSheet';
-import Animations from '../X/Animations';
+import SpriteSheet from "../X/SpriteSheet";
+import Animations from "../X/Animations";
 
 // COMPONENTS
-import Position from '../Components/Position';
-import Dimension from '../Components/Dimension';
-import Sprite from '../Components/Sprite';
-import Animation from '../Components/Animation';
-import Health from '../Components/Health';
-import Collider from '../Components/Collider';
-import Velocity from '../Components/Velocity';
-import Attack from '../Components/Attack';
-import UserInput from '../Components/UserInput';
+import Position from "../Components/Position";
+import Dimension from "../Components/Dimension";
+import Sprite from "../Components/Sprite";
+import Animation from "../Components/Animation";
+import Health from "../Components/Health";
+import Collider from "../Components/Collider";
+import Velocity from "../Components/Velocity";
+import Attack from "../Components/Attack";
+import UserInput from "../Components/UserInput";
 
-class Player extends Entity {
+export default class Player extends Entity {
   constructor(x, y, width, height, textureName) {
     super("player");
     super.addComponent(new Position(x, y));
@@ -98,5 +96,3 @@ class Player extends Entity {
     })));
   }
 }
-
-module.exports = Player;

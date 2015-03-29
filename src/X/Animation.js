@@ -1,5 +1,3 @@
-"use strict";
-
 export default class Animation {
   constructor(spriteSheet, frameList, frameDuration, loop) {
     this.spriteSheet = spriteSheet;

@@ -1,8 +1,6 @@
-"use strict";
-
-import SystemX from '../X/System';
-import key from 'keymaster';
-import Vector from '../X/Vector';
+import SystemX from "../X/System";
+import key from "keymaster";
+import Vector from "../X/Vector";
 
 export default class Input extends SystemX {
   constructor(game) {

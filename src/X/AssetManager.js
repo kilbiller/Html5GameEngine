@@ -1,10 +1,8 @@
-"use strict";
-
-import PIXI from 'pixi.js';
+import PIXI from "pixi.js";
 import {
   Howl
 }
-from 'howler';
+from "howler";
 
 export default class AssetManager {
   constructor() {

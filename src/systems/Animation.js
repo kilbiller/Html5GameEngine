@@ -1,7 +1,5 @@
-"use strict";
-
-import SystemX from '../X/System';
-import Vector from '../X/Vector';
+import SystemX from "../X/System";
+import Vector from "../X/Vector";
 
 export default class Animation extends SystemX {
   constructor(game) {

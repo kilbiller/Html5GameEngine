@@ -1,7 +1,5 @@
-"use strict";
-
-import PIXI from 'pixi.js';
-import Rectangle from './Rectangle';
+import PIXI from "pixi.js";
+import Rectangle from "./Rectangle";
 
 export default class Tile {
   constructor(x, y, id, sheet, collidables, zOrder = 0) {

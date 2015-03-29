@@ -1,26 +1,23 @@
-"use strict";
-
 // X
-import Camera from './X/Camera';
-import State from './X/State';
-import Tilemap from './X/Tilemap';
+import Camera from "./X/Camera";
+import State from "./X/State";
+import Tilemap from "./X/Tilemap";
 
 // ENTITIES
 import Player from "./entities/Player";
 import Enemy from "./entities/Enemy";
-import Logs from "./entities/Logs";
 
 // SYSTEMS
-import Input from './systems/Input';
-import AI from './systems/AI';
-import Movement from './systems/Movement';
-import Animation from './systems/Animation';
-import Collision from './systems/Collision';
-import Attack from './systems/Attack';
-import Render from './systems/Render';
-import UI from './systems/UI';
-import Debug from './systems/Debug';
-import Trigger from './systems/Trigger';
+import Input from "./systems/Input";
+import AI from "./systems/AI";
+import Movement from "./systems/Movement";
+import Animation from "./systems/Animation";
+import Collision from "./systems/Collision";
+import Attack from "./systems/Attack";
+import Render from "./systems/Render";
+import UI from "./systems/UI";
+import Debug from "./systems/Debug";
+import Trigger from "./systems/Trigger";
 
 export default class LevelState extends State {
   constructor(game) {
@@ -67,7 +64,7 @@ export default class LevelState extends State {
       new Animation(this.game),
       new Trigger(this.game),
       new Render(this.game),
-      new UI(this.game),
+      new UI(this.game)
       //new Debug(game)
     ];
 
@@ -83,7 +80,6 @@ export default class LevelState extends State {
     super.update(dt);
 
     //console.time('systems');
-    let game = this.game;
     for(let system of this.systems) {
       system.update(dt);
     }

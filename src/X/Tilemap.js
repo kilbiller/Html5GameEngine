@@ -1,8 +1,6 @@
-"use strict";
-
-import SpriteSheet from './SpriteSheet';
-import Tile from './Tile';
-import Rectangle from './Rectangle';
+import SpriteSheet from "./SpriteSheet";
+import Tile from "./Tile";
+import Rectangle from "./Rectangle";
 
 export default class Tilemap {
   constructor(game, json, tileset) {

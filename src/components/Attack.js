@@ -1,6 +1,4 @@
-"use strict";
-
-import Component from '../X/Component';
+import Component from "../X/Component";
 
 export default class Attack extends Component {
   constructor(damage = 100, cooldownTime = 0.5) {

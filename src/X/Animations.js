@@ -1,6 +1,4 @@
-"use strict";
-
-import Animation from './Animation';
+import Animation from "./Animation";
 
 export default class Animations {
   constructor(spriteSheet, animData) {

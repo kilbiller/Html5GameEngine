@@ -1,6 +1,4 @@
-"use strict";
-
-import PIXI from 'pixi.js';
+import PIXI from "pixi.js";
 
 export default class SpriteSheet {
   constructor(baseTextureName, frameWidth, frameHeight) {

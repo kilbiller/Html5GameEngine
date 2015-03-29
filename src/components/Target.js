@@ -1,6 +1,4 @@
-"use strict";
-
-import Component from '../X/Component';
+import Component from "../X/Component";
 
 export default class Target extends Component {
   constructor(type = "player", range = "200") {

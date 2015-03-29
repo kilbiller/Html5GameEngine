@@ -1,6 +1,4 @@
-"use strict";
-
-import SystemX from '../X/System';
+import SystemX from "../X/System";
 
 export default class Trigger extends SystemX {
   constructor(game) {

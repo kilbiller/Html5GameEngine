@@ -1,6 +1,4 @@
-"use strict";
-
-import Vector from './Vector';
+import Vector from "./Vector";
 
 export default class Mouse {
   constructor(game) {
@@ -49,7 +47,7 @@ export default class Mouse {
     }
   }
 
-  mouseUp(e) {
+  mouseUp() {
     this.leftClick = false;
     this.middleClick = false;
     this.rightClick = false;

@@ -1,11 +1,9 @@
-"use strict";
-
-import PIXI from 'pixi.js';
-import Vector from './Vector';
+import PIXI from "pixi.js";
+import Vector from "./Vector";
 import {
   clamp
 }
-from './Utils';
+from "./Utils";
 
 export default class Camera {
   constructor(game, world) {
