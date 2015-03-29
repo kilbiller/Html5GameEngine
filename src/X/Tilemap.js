@@ -25,8 +25,10 @@ export default class Tilemap {
             let object = ts.tiles[tileID].objectgroup.objects[0];
             if(object.x >= 0 && object.y >= 0) {
               this.collidables[tileID] = new Rectangle(object.x, object.y, object.width, object.height);
-              //this.collidables[tileID].print();
               //TODO maybe autofix x<0 & y<0
+            } else {
+              console.log("Une tile de collision est mal formée !!");
+              console.log("id : " + tileID + ", x : " + object.x + ", y : " + object.y);
             }
           }
         }
