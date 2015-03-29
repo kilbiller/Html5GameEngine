@@ -10,7 +10,7 @@ export default class Input extends SystemX {
   }
 
   update(dt) {
-    for(let entity of this.game.entities) {
+    for(let entity of this.game.world.entities) {
       let ec = entity.components;
       if(ec.userInput && ec.position && ec.animation && ec.attack && ec.health && ec.velocity) {
         ec.velocity.current = Vector.Zero;

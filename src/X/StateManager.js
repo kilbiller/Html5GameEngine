@@ -1,39 +1,36 @@
 "use strict";
 
+import State from './State';
+
 export default class StateManager {
   constructor() {
     this.states = [];
+    this.currentState = State.Empty;
   }
 
   update(dt) {
-    let state = this.states[this.states.length - 1];
-    if(state) {
-      state.update(dt);
-    }
+    this.currentState.update(dt);
   }
 
-  push(state) {
-    this.states.push(state);
-    state.onEnter();
+  change(stateName, params = {}) {
+    this.currentState.onExit();
+    this.currentState = this.states[stateName];
+    this.currentState.onEnter(params);
   }
 
-  pop() {
-    let state = this.states[this.states.length - 1];
-    state.onExit();
-    return this.states[this.states.length - 1];
+  add(name, state) {
+    this.states[name] = state;
   }
 
   pause() {
-    let state = this.states[this.states.length - 1];
-    if(state.onPause) {
-      state.onPause();
+    if(this.currentState.onPause) {
+      this.currentState.onPause();
     }
   }
 
   resume() {
-    let state = this.states[this.states.length - 1];
-    if(state.onResume) {
-      state.onResume();
+    if(this.currentState.onResume) {
+      this.currentState.onResume();
     }
   }
 }

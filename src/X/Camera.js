@@ -24,8 +24,8 @@ export default class Camera {
         this.target.components.sprite.sprite.y + this.target.components.sprite.sprite.height / 2);
       let x = targetCenter.x - this.game.width / 2;
       let y = targetCenter.y - this.game.height / 2;
-      x = clamp(x, 0, this.game.tilemap.width * this.game.tilemap.tilewidth - this.game.width);
-      y = clamp(y, 0, this.game.tilemap.height * this.game.tilemap.tileheight - this.game.height);
+      x = clamp(x, 0, this.game.world.tilemap.width * this.game.world.tilemap.tilewidth - this.game.width);
+      y = clamp(y, 0, this.game.world.tilemap.height * this.game.world.tilemap.tileheight - this.game.height);
 
       //let lerp = Vector.lerp(new Vector(this.game.renderer.x, this.game.renderer.y), new Vector(x, y), 0.1);
       this.world.x = -x;

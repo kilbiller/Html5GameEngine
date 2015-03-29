@@ -8,7 +8,7 @@ export default class Render extends SystemX {
   }
 
   update(dt) {
-    for(let entity of this.game.entities) {
+    for(let entity of this.game.world.entities) {
       let ec = entity.components;
       if(ec.sprite && ec.position) {
         // Prevent sub-pixel rendering
@@ -22,7 +22,7 @@ export default class Render extends SystemX {
       }
     }
     // Z-Order
-    this.game.world.children.sort(function(a, b) {
+    this.game.worldDoc.children.sort(function(a, b) {
       return a.zOrder - b.zOrder;
     });
   }

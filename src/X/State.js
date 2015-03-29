@@ -14,4 +14,8 @@ export default class State {
   onPause() {}
 
   onResume() {}
+
+  static get Empty() {
+    return new State();
+  }
 }

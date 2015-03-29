@@ -9,30 +9,30 @@ export default class Collision extends SystemX {
   }
 
   update(dt) {
-    for(let entity of this.game.entities) {
+    for(let entity of this.game.world.entities) {
       let ec = entity.components;
       if(ec.collider && ec.position && ec.velocity) {
         let collisionBoxX = ec.collider.bounds.clone().move(ec.position.current.x + (ec.velocity.current.x * ec.velocity.speed * dt), ec.position.current.y);
         let collisionBoxY = ec.collider.bounds.clone().move(ec.position.current.x, ec.position.current.y + (ec.velocity.current.y * ec.velocity.speed * dt));
 
         // collision with tilemap borders
-        if(this.game.tilemap.isOutsideMap(collisionBoxX)) {
+        if(this.game.world.tilemap.isOutsideMap(collisionBoxX)) {
           ec.velocity.current.x = 0;
         }
-        if(this.game.tilemap.isOutsideMap(collisionBoxY)) {
+        if(this.game.world.tilemap.isOutsideMap(collisionBoxY)) {
           ec.velocity.current.y = 0;
         }
 
         // collision with tiles
-        if(this.game.tilemap.isSolidAt(collisionBoxX)) {
+        if(this.game.world.tilemap.isSolidAt(collisionBoxX)) {
           ec.velocity.current.x = 0;
         }
-        if(this.game.tilemap.isSolidAt(collisionBoxY)) {
+        if(this.game.world.tilemap.isSolidAt(collisionBoxY)) {
           ec.velocity.current.y = 0;
         }
 
         // collision with other entities
-        this.collisionWithEntities(entity, collisionBoxX, collisionBoxY, this.game.entities, dt);
+        this.collisionWithEntities(entity, collisionBoxX, collisionBoxY, this.game.world.entities, dt);
 
       }
     }

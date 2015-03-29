@@ -7,12 +7,12 @@ export default class Debug extends SystemX {
   constructor(game) {
     super(game);
     this.doc = new PIXI.DisplayObjectContainer();
-    this.game.world.addChild(this.doc);
+    this.game.worldDoc.addChild(this.doc);
   }
 
   update(dt) {
     this.doc.removeChildren();
-    for(let entity of this.game.entities) {
+    for(let entity of this.game.world.entities) {
       let ec = entity.components;
       if(ec.sprite) {
         let graphics = new PIXI.Graphics();

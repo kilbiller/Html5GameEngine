@@ -3,17 +3,17 @@
 import SystemX from '../X/System';
 import PIXI from 'pixi.js';
 
-export default class Debug extends SystemX {
+export default class UI extends SystemX {
   constructor(game) {
     super(game);
     this.doc = new PIXI.DisplayObjectContainer();
-    this.game.ui.addChild(this.doc);
+    this.game.uiDoc.addChild(this.doc);
     this.texts = {};
   }
 
   update(dt) {
     //this.doc.removeChildren();
-    for(let entity of this.game.entities) {
+    for(let entity of this.game.world.entities) {
       let ec = entity.components;
       if(entity.type === "player") {
         if(!this.texts[entity.id]) {

@@ -27,47 +27,54 @@ export default class LevelState extends State {
     super(game);
   }
 
-  onEnter() {
-    let game = this.game;
+  onEnter(params) {
+    let world = this.game.world;
 
-    game.tilemap = new Tilemap(game, game.assetManager.getJson("test"), game.assetManager.getImage("tileset"));
-    game.tilemap.load();
+    world.tilemap = new Tilemap(this.game, this.game.assetManager.getJson("test"), this.game.assetManager.getImage("tileset"));
+    world.tilemap.load();
 
-    let playerTexture = game.assetManager.getImage("player");
-    let enemyTexture = game.assetManager.getImage("enemy");
+    let playerTexture = this.game.assetManager.getImage("player");
+    let enemyTexture = this.game.assetManager.getImage("enemy");
 
-    game.entities.push(new Enemy(300, 300, 32, 32, enemyTexture));
-    game.entities.push(new Enemy(400, 300, 32, 32, enemyTexture));
-    game.entities.push(new Enemy(300, 20, 32, 32, enemyTexture));
-    game.entities.push(new Enemy(50, 300, 32, 32, enemyTexture));
-    game.entities.push(new Enemy(90, 300, 32, 32, enemyTexture));
-    game.entities.push(new Enemy(50, 400, 32, 32, enemyTexture));
-    game.entities.push(new Enemy(868, 400, 32, 32, enemyTexture));
+    world.entities.push(new Enemy(300, 300, 32, 32, enemyTexture));
+    world.entities.push(new Enemy(400, 300, 32, 32, enemyTexture));
+    world.entities.push(new Enemy(300, 20, 32, 32, enemyTexture));
+    world.entities.push(new Enemy(50, 300, 32, 32, enemyTexture));
+    world.entities.push(new Enemy(90, 300, 32, 32, enemyTexture));
+    world.entities.push(new Enemy(50, 400, 32, 32, enemyTexture));
+    world.entities.push(new Enemy(868, 400, 32, 32, enemyTexture));
 
-    let player = new Player(50, 50, 32, 32, playerTexture);
-    game.entities.push(player);
+    let player;
+    if(params.player) {
+      player = params.player;
+      player.components.position.current.x = 50;
+      player.components.position.current.y = 50;
+    } else {
+      player = new Player(50, 50, 32, 32, playerTexture);
+    }
+    world.entities.push(player);
 
     // Camera follow the player
-    this.camera = new Camera(game, game.world);
+    this.camera = new Camera(this.game, this.game.worldDoc);
     this.camera.follow(player);
 
     this.systems = [
-      new Input(game),
-      new AI(game),
-      new Collision(game),
-      new Movement(game),
-      new Attack(game),
-      new Animation(game),
-      new Trigger(game),
-      new Render(game),
-      new UI(game),
+      new Input(this.game),
+      new AI(this.game),
+      new Collision(this.game),
+      new Movement(this.game),
+      new Attack(this.game),
+      new Animation(this.game),
+      new Trigger(this.game),
+      new Render(this.game),
+      new UI(this.game),
       //new Debug(game)
     ];
 
     // Add each entity sprite to the renderer
-    for(let entity of game.entities) {
+    for(let entity of world.entities) {
       if(entity.components.sprite) {
-        game.world.addChild(entity.components.sprite.sprite);
+        this.game.worldDoc.addChild(entity.components.sprite.sprite);
       }
     }
   }
@@ -90,5 +97,10 @@ export default class LevelState extends State {
      }*/
   }
 
-  onExit() {}
+  onExit() {
+    this.game.worldDoc.removeChildren();
+    this.game.uiDoc.removeChildren();
+    this.game.world.entities = [];
+    this.game.world.tilemap = null;
+  }
 }

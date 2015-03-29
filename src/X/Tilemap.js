@@ -51,11 +51,11 @@ export default class Tilemap {
           for(let x = 0; x < this.width; x++) {
             // change zOrder depending on layer
             // Background layer, zOrder = 0
-            // Foreground layer, zOrder = bottom of collision rectangle
-            // Top layer, zOrder = Higher than normal so that it covers everything
+            // Foreground layer, zOrder = bottom of the tile collision rectangle
+            // Top layer, zOrder = 999999 so that it covers everything
             let zOrder = 0;
             if(this.layers[i].name === "Top") {
-              zOrder = y * this.tileheight + this.tileheight * 2;
+              zOrder = 999999;
             }
 
             // create the tile
@@ -64,7 +64,7 @@ export default class Tilemap {
 
             // don't add tile to the renderer if there is no tile to render
             if(id !== -1) {
-              this.game.world.addChild(this.layers[i].tiles[x + y * this.width].sprite);
+              this.game.worldDoc.addChild(this.layers[i].tiles[x + y * this.width].sprite);
             }
           }
         }

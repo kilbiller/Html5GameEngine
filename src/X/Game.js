@@ -17,15 +17,18 @@ export default class Game {
 
     this.time = new Time();
     this.assetManager = new AssetManager();
+    this.stateManager = new StateManager();
     //this.mouse = new Mouse(this);
 
-    this.entities = [];
-    this.stateManager = new StateManager();
+    this.world = {
+      entities: [],
+      tilemap: null
+    };
 
-    this.world = new PIXI.DisplayObjectContainer();
-    this.stage.addChild(this.world);
-    this.ui = new PIXI.DisplayObjectContainer();
-    this.stage.addChild(this.ui);
+    this.worldDoc = new PIXI.DisplayObjectContainer();
+    this.stage.addChild(this.worldDoc);
+    this.uiDoc = new PIXI.DisplayObjectContainer();
+    this.stage.addChild(this.uiDoc);
 
     // fps counter
     this.stats = new Stats();
@@ -53,10 +56,10 @@ export default class Game {
     requestAnimationFrame(this.gameloop.bind(this));
   }
 
-  start(state) {
+  start(stateName) {
     let game = this;
     this.assetManager.loadAll().then(function() {
-      game.stateManager.push(state);
+      game.stateManager.change(stateName);
       game.gameloop();
     });
   }

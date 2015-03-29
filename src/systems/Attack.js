@@ -9,7 +9,7 @@ export default class Attack extends SystemX {
   }
 
   update(dt) {
-    for(let entity of this.game.entities) {
+    for(let entity of this.game.world.entities) {
       let ec = entity.components;
       if(ec.attack && ec.position && ec.animation) {
 
@@ -31,7 +31,7 @@ export default class Attack extends SystemX {
             attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 13, 25, 12);
           }
 
-          for(let entity2 of this.game.entities) {
+          for(let entity2 of this.game.world.entities) {
             let ec2 = entity2.components;
             if(ec2.health) {
               // TODO better hitbox

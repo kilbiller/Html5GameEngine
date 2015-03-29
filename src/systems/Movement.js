@@ -9,7 +9,7 @@ export default class Movement extends SystemX {
   }
 
   update(dt) {
-    for(let entity of this.game.entities) {
+    for(let entity of this.game.world.entities) {
       let ec = entity.components;
       if(ec.position && ec.velocity) {
         ec.velocity.current.norm();

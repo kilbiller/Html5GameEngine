@@ -12,7 +12,7 @@ export default class AI extends SystemX {
 
   update(dt) {
     this.timer += dt;
-    for(let entity of this.game.entities) {
+    for(let entity of this.game.world.entities) {
       let ec = entity.components;
       if(entity.type === "enemy" && ec.health.isAlive) {
 
@@ -21,7 +21,7 @@ export default class AI extends SystemX {
           if(ec.target) {
             // set target.entity
             if(ec.target.entity === null) {
-              for(let e of this.game.entities) {
+              for(let e of this.game.world.entities) {
                 if(ec.target.type === e.type) {
                   ec.target.entity = e;
                   break;
