@@ -27,7 +27,11 @@ export default class LevelState extends State {
   onEnter(params) {
     let world = this.game.world;
 
-    world.tilemap = new Tilemap(this.game, this.game.assetManager.getJson("test"), this.game.assetManager.getImage("tileset"));
+    if(params.tilemapName) {
+      world.tilemap = new Tilemap(this.game, this.game.assetManager.getJson(params.tilemapName));
+    } else {
+      world.tilemap = new Tilemap(this.game, this.game.assetManager.getJson("test"));
+    }
     world.tilemap.load();
 
     let playerTexture = this.game.assetManager.getImage("player");
@@ -44,8 +48,8 @@ export default class LevelState extends State {
     let player;
     if(params.player) {
       player = params.player;
-      player.components.position.current.x = 50;
-      player.components.position.current.y = 50;
+      player.components.position.current.x = params.x;
+      player.components.position.current.y = params.y;
     } else {
       player = new Player(50, 50, 32, 32, playerTexture);
     }
@@ -86,11 +90,6 @@ export default class LevelState extends State {
     //console.timeEnd('systems');
 
     this.camera.update(dt);
-
-    /*//Spawn a box each time left mouse button is clicked
-     if (game.mouse.leftClick) {
-     game.entities.push(new StaticObject(game, game.mouse.pos.x, game.mouse.pos.y, 32, 32, "img/trunks.png"));
-     }*/
   }
 
   onExit() {

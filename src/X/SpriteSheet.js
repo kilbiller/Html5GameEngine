@@ -7,13 +7,13 @@ export default class SpriteSheet {
     this.frameWidth = frameWidth;
     this.frameHeight = frameHeight;
 
-    this.maxColumn = baseTexture.width / this.frameWidth;
-    this.maxRow = baseTexture.height / this.frameHeight;
+    this.width = baseTexture.width / this.frameWidth;
+    this.height = baseTexture.height / this.frameHeight;
 
     this.textures = [];
-    for(let y = 0; y < this.maxRow; y++) {
-      for(let x = 0; x < this.maxColumn; x++) {
-        this.textures[x + y * this.maxColumn] = new PIXI.Texture(baseTexture, new PIXI.Rectangle(x * this.frameWidth, y * this.frameHeight, this.frameWidth, this.frameHeight));
+    for(let y = 0; y < this.height; y++) {
+      for(let x = 0; x < this.width; x++) {
+        this.textures[x + y * this.width] = new PIXI.Texture(baseTexture, new PIXI.Rectangle(x * this.frameWidth, y * this.frameHeight, this.frameWidth, this.frameHeight));
       }
     }
 

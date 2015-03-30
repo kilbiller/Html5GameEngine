@@ -13,9 +13,12 @@ export default class Trigger extends SystemX {
         if(object) {
           if(object.type === "Transition") {
             this.game.stateManager.change("level2", {
-              player: entity
+              player: entity,
+              x: parseInt(object.props.x),
+              y: parseInt(object.props.y),
+              tilemapName: object.props.tilemapName
             });
-            console.log("BOOM!! TransitionX: " + object.props.TransitionX + ", TransitionY: " + object.props.TransitionY);
+            this.game.assetManager.getSound("tilemap_transition").play();
           }
         }
       }

@@ -3,7 +3,7 @@ import Tile from "./Tile";
 import Rectangle from "./Rectangle";
 
 export default class Tilemap {
-  constructor(game, json, tileset) {
+  constructor(game, json) {
     this.game = game;
     this.json = json;
     this.width = json.width;
@@ -11,8 +11,12 @@ export default class Tilemap {
     this.tilewidth = json.tilewidth;
     this.tileheight = json.tileheight;
     this.layers = new Array(json.layers.length);
-    this.tileset = tileset;
-    this.tilesetSheet = new SpriteSheet(tileset, this.tilewidth, this.tileheight);
+
+    // prepare tilesets
+    this.tilesets = new Array(json.tilesets.length);
+    for(let i = 0; i < json.tilesets.length; i++) {
+      this.tilesets[i] = new SpriteSheet(this.game.assetManager.getImage(json.tilesets[i].name), json.tilesets[i].tilewidth, json.tilesets[i].tileheight);
+    }
 
     // add tiles with a collision rectangle to the collidables list
     this.collidables = {};
@@ -58,7 +62,7 @@ export default class Tilemap {
 
             // create the tile
             let id = this.json.layers[i].data[x + y * this.width] - 1;
-            this.layers[i].tiles[x + y * this.width] = new Tile(x * this.tilewidth, y * this.tileheight, id, this.tilesetSheet, this.collidables, zOrder);
+            this.layers[i].tiles[x + y * this.width] = new Tile(x * this.tilewidth, y * this.tileheight, id, this.tilesets, this.collidables, zOrder);
 
             // don't add tile to the renderer if there is no tile to render
             if(id !== -1) {
