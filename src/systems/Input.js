@@ -31,7 +31,7 @@ export default class Input extends SystemX {
 
           if(ec.attack.canAttack && key.isPressed("space")) {
             ec.attack.isAttacking = true;
-            this.game.eventList.dispatch("AttackLaunched", {
+            this.game.eventList.emit("AttackLaunched", {
               entity: entity
             });
           }

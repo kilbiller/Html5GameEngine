@@ -5,6 +5,7 @@ export default class Trigger extends SystemX {
     super(game);
   }
 
+  //TODO: use events
   update(dt) {
     for(let entity of this.game.world.entities) {
       let ec = entity.components;

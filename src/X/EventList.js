@@ -6,7 +6,7 @@ export default class EventList {
     this.events = [];
   }
 
-  dispatch(eventName, data) {
+  emit(eventName, data) {
     this.events.push({
       name: eventName,
       data: data

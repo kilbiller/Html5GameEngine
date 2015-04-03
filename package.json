@@ -12,9 +12,9 @@
     "stats-js": "^1.0.0-alpha1"
   },
   "devDependencies": {
-    "babelify": "^5.0.4",
-    "browser-sync": "^2.4.0",
-    "browserify": "^9.0.3",
+    "babelify": "^6.0.1",
+    "browser-sync": "^2.5.2",
+    "browserify": "^9.0.6",
     "del": "^1.1.1",
     "gulp": "^3.8.11"
   }
