@@ -11,43 +11,45 @@ export default class Attack extends SystemX {
       let ec = entity.components;
       if(ec.attack && ec.position && ec.animation) {
 
-        if(ec.attack.isAttacking && ec.attack.canAttack) {
-          let punchSound = this.game.assetManager.getSound("punch");
-          punchSound.play();
+        this.game.eventList.on("AttackLaunched", function(data) {
+          if(data.entity === entity) {
+            let punchSound = this.game.assetManager.getSound("punch");
+            punchSound.play();
 
-          ec.attack.canAttack = false;
-          ec.attack.cooldown = ec.attack.COOLDOWN_TIME;
+            ec.attack.canAttack = false;
+            ec.attack.cooldown = ec.attack.COOLDOWN_TIME;
 
-          let attackRect;
-          if(ec.position.facing === "UP") {
-            attackRect = new Rectangle(ec.position.current.x + 12, ec.position.current.y - 1, 10, 1);
-          } else if(ec.position.facing === "DOWN") {
-            attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 18, 20, 12);
-          } else if(ec.position.facing === "LEFT") {
-            attackRect = new Rectangle(ec.position.current.x - 4, ec.position.current.y + 13, 25, 12);
-          } else if(ec.position.facing === "RIGHT") {
-            attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 13, 25, 12);
-          }
+            let attackRect;
+            if(ec.position.facing === "UP") {
+              attackRect = new Rectangle(ec.position.current.x + 12, ec.position.current.y - 1, 10, 1);
+            } else if(ec.position.facing === "DOWN") {
+              attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 18, 20, 12);
+            } else if(ec.position.facing === "LEFT") {
+              attackRect = new Rectangle(ec.position.current.x - 4, ec.position.current.y + 13, 25, 12);
+            } else if(ec.position.facing === "RIGHT") {
+              attackRect = new Rectangle(ec.position.current.x + 8, ec.position.current.y + 13, 25, 12);
+            }
 
-          for(let entity2 of this.game.world.entities) {
-            let ec2 = entity2.components;
-            if(ec2.health) {
-              // TODO better hitbox
-              let opponentHitbox = new Rectangle(ec2.position.current.x, ec2.position.current.y, ec2.dimension.width, ec2.dimension.height);
-              if(entity !== entity2 && ec2.health.hp > 0 && attackRect.intersects(opponentHitbox)) {
-                ec2.health.hp -= ec.attack.damage;
-                if(ec2.health.hp <= 0) {
-                  // TODO find other sound
-                  //let deathSound = game.assetManager.getSound("assets/sounds/slime_death.wav");
-                  //deathSound.play();
-                  ec2.health.isAlive = false;
-                  entity2.removeComponent("velocity");
-                  entity2.removeComponent("collider");
+            for(let entity2 of this.game.world.entities) {
+              let ec2 = entity2.components;
+              if(ec2.health) {
+                // TODO better hitbox
+                let opponentHitbox = new Rectangle(ec2.position.current.x, ec2.position.current.y, ec2.dimension.width, ec2.dimension.height);
+                if(entity !== entity2 && ec2.health.hp > 0 && attackRect.intersects(opponentHitbox)) {
+                  ec2.health.hp -= ec.attack.damage;
+                  if(ec2.health.hp <= 0) {
+                    // TODO find other sound
+                    //let deathSound = game.assetManager.getSound("assets/sounds/slime_death.wav");
+                    //deathSound.play();
+                    ec2.health.isAlive = false;
+                    entity2.removeComponent("velocity");
+                    entity2.removeComponent("collider");
+                  }
                 }
               }
             }
           }
-        }
+        }.bind(this));
 
         //-------------------------------------------------------------
         // If player has finished his attack.

@@ -78,6 +78,9 @@ export default class AI extends SystemX {
               if(ec.target.entity.components.health.isAlive) {
                 if(ec.attack.canAttack) {
                   ec.attack.isAttacking = true;
+                  this.game.eventList.dispatch("AttackLaunched", {
+                    entity: entity
+                  });
                 }
                 ec.velocity.current = Vector.Zero;
               }

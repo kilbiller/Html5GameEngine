@@ -4,6 +4,7 @@ import Mouse from "./Mouse";
 import PIXI from "pixi.js";
 import StateManager from "./StateManager";
 import Stats from "stats-js";
+import EventList from "./EventList";
 
 export default class Game {
   constructor(width = 427, height = 240) {
@@ -17,6 +18,7 @@ export default class Game {
     this.assetManager = new AssetManager();
     this.stateManager = new StateManager();
     //this.mouse = new Mouse(this);
+    this.eventList = new EventList();
 
     this.world = {
       entities: [],
@@ -48,6 +50,7 @@ export default class Game {
   gameloop() {
     this.stats.begin();
     let dt = this.time.tick();
+    this.eventList.reset();
     this.update(dt);
     this.render();
     this.stats.end();
