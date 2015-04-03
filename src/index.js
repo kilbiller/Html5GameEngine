@@ -8,20 +8,20 @@ let height = 576;
 let game = new Game(width, height);
 
 // textures
-game.assetManager.addImage("player", "assets/images/player.png");
-game.assetManager.addImage("enemy", "assets/images/enemy.png");
-game.assetManager.addImage("tileset", "assets/images/tileset.png");
+game.assetManager.addImage("player", "images/player.png");
+game.assetManager.addImage("enemy", "images/enemy.png");
+game.assetManager.addImage("tileset", "images/tileset.png");
 
 // SFX
-game.assetManager.addSound("punch", "assets/sounds/punch.wav");
-game.assetManager.addSound("tilemap_transition", "assets/sounds/tilemap_transition.wav");
+game.assetManager.addSound("punch", "sounds/punch.wav");
+game.assetManager.addSound("tilemap_transition", "sounds/tilemap_transition.wav");
 
 //Tilemaps
-game.assetManager.addJson("test", "assets/maps/test.json");
-game.assetManager.addJson("test2", "assets/maps/test2.json");
+game.assetManager.addJson("test", "maps/test.json");
+game.assetManager.addJson("test2", "maps/test2.json");
 
 // Bitmap fonts
-game.assetManager.addFont("consolas", "assets/fonts/consolas.fnt");
+game.assetManager.addFont("consolas", "fonts/consolas.fnt");
 
 // states
 game.stateManager.add("level", new LevelState(game));
