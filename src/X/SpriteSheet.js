@@ -2,7 +2,7 @@ import PIXI from "pixi.js";
 
 export default class SpriteSheet {
   constructor(baseTextureName, frameWidth, frameHeight) {
-    let baseTexture = PIXI.BaseTextureCache[baseTextureName];
+    let baseTexture = PIXI.utils.TextureCache[baseTextureName];
 
     this.frameWidth = frameWidth;
     this.frameHeight = frameHeight;

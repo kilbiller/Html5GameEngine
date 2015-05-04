@@ -20,7 +20,7 @@ export default class Animation {
     }
 
     let index = this.currentFrame();
-    this.spriteSheet.sprite.setTexture(this.spriteSheet.textures[this.frameList[index]]);
+    this.spriteSheet.sprite.texture = this.spriteSheet.textures[this.frameList[index]];
   }
 
   currentFrame() {

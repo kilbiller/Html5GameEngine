@@ -10,7 +10,7 @@ export default class Game {
   constructor(width = 427, height = 240) {
     this.width = width;
     this.height = height;
-    this.stage = new PIXI.Stage(0x000000);
+    this.stage = new PIXI.Container();
     this.renderer = PIXI.autoDetectRenderer(width, height);
     document.body.appendChild(this.renderer.view);
 
@@ -25,9 +25,9 @@ export default class Game {
       tilemap: null
     };
 
-    this.worldDoc = new PIXI.DisplayObjectContainer();
+    this.worldDoc = new PIXI.Container();
     this.stage.addChild(this.worldDoc);
-    this.uiDoc = new PIXI.DisplayObjectContainer();
+    this.uiDoc = new PIXI.Container();
     this.stage.addChild(this.uiDoc);
 
     // fps counter

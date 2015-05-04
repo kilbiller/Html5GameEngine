@@ -4,7 +4,7 @@ import PIXI from "pixi.js";
 export default class Debug extends SystemX {
   constructor(game) {
     super(game);
-    this.doc = new PIXI.DisplayObjectContainer();
+    this.doc = new PIXI.Container();
     this.game.worldDoc.addChild(this.doc);
   }
 

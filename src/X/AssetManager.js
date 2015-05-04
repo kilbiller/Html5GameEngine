@@ -4,6 +4,8 @@ import {
 }
 from "howler";
 
+//TODO: redo the whole thing
+
 export default class AssetManager {
   constructor() {
     this.soundCache = [];
@@ -17,10 +19,9 @@ export default class AssetManager {
 
   addImage(name, path) {
     this.images[name] = path;
-    let loader = new PIXI.ImageLoader(path);
-    loader.load();
+    PIXI.loader.add(name, path);
     let promise = new Promise(function(resolve, reject) {
-      loader.on("loaded", () => resolve());
+      PIXI.loader.once("complete", () => resolve());
     });
     this.imagePromiseQueue.push(promise);
   }
@@ -41,25 +42,24 @@ export default class AssetManager {
 
   addJson(name, path) {
     let self = this;
-    let loader = new PIXI.JsonLoader(path);
-    loader.load();
+    PIXI.loader.add(name, path);
     let promise = new Promise(function(resolve, reject) {
-      loader.on("loaded", function() {
-        self.jsonCache[name] = loader.json;
+      PIXI.loader.once("complete", function() {
+        self.jsonCache[name] = PIXI.loader.resources[name].data;
         resolve();
       });
+      // do error stuff
     });
     this.jsonPromiseQueue.push(promise);
   }
 
   addFont(name, path) {
-    let self = this;
-    let loader = new PIXI.BitmapFontLoader(path);
-    loader.load();
+    PIXI.loader.add(name, path);
     let promise = new Promise(function(resolve, reject) {
-      loader.on("loaded", function() {
+      PIXI.loader.once("complete", function() {
         resolve();
       });
+      // do error stuff
     });
     this.fontPromiseQueue.push(promise);
   }
@@ -93,6 +93,7 @@ export default class AssetManager {
   }
 
   loadAll() {
+    PIXI.loader.load();
     return Promise.all([this.loadImages(), this.loadSounds(), this.loadJsons(), this.loadFonts()]);
   }
 }
