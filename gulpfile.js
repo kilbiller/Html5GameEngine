@@ -32,7 +32,7 @@ gulp.task("javascript", function() {
 gulp.task("browser-sync", ["javascript"], function() {
   browserSync.init({
     server: {
-      baseDir: ["app", "build", "assets"]
+      baseDir: ["./", "assets"]
     }
   });
 });
