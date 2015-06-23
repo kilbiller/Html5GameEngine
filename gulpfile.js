@@ -11,9 +11,13 @@ var sourcemaps = require("gulp-sourcemaps");
 var watchify = require("watchify");
 var spawn = require("child_process").spawn;
 
+var config = {
+  production: false
+};
+
 var b = watchify(browserify({
   entries: "./src/index.js",
-  debug: true,
+  debug: !config.production,
   cache: {},
   packageCache: {}
 }));
@@ -21,20 +25,26 @@ b.transform(babelify);
 
 gulp.task("javascript", function() {
   function rebundle() {
-    return b.bundle()
+    var bundle = b.bundle()
       .pipe(source("game.js"))
-      .pipe(buffer())
-      /*.pipe(sourcemaps.init({
-        loadMaps: true
-      }))
-      .pipe(uglify())
-      .pipe(sourcemaps.write("./"))*/
+      .pipe(buffer());
+    if(config.production) {
+      bundle
+        .pipe(sourcemaps.init({
+          loadMaps: true
+        }))
+        .pipe(uglify())
+        .pipe(sourcemaps.write("./"));
+    }
+    bundle
       .on("error", gutil.log)
       .pipe(gulp.dest("./build/"))
       .pipe(browserSync.reload({
         stream: true,
         once: true
       }));
+
+    return bundle;
   }
 
   b.on("update", rebundle);
@@ -72,3 +82,9 @@ gulp.task("clean", function(cb) {
 gulp.task("default", ["javascript", "server", "browser-sync"], function() {
   gulp.watch("index.js", ["server", browserSync.reload]);
 });
+
+gulp.task("set-production", function() {
+  config.production = true;
+});
+
+gulp.task("production", ["set-production", "javascript", "server"]);
