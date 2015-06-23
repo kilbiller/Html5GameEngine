@@ -10,7 +10,7 @@
   "rules": {
     "strict": [2, "global"],
     "space-return-throw-case": 0,
-    "no-console": 1,
+    "no-console": 0,
     "no-unused-vars": 1
   }
 }

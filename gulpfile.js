@@ -9,6 +9,7 @@ var buffer = require("vinyl-buffer");
 var gutil = require("gulp-util");
 var sourcemaps = require("gulp-sourcemaps");
 var watchify = require("watchify");
+var spawn = require("child_process").spawn;
 
 var b = watchify(browserify({
   entries: "./src/index.js",
@@ -41,10 +42,24 @@ gulp.task("javascript", function() {
   return rebundle();
 });
 
-gulp.task("browser-sync", ["javascript"], function() {
+gulp.task("browser-sync", function() {
   browserSync.init({
-    server: {
-      baseDir: ["./", "assets"]
+    port: 3000,
+    proxy: "http://localhost:8000"
+  });
+});
+
+var node;
+gulp.task("server", function() {
+  if(node) {
+    node.kill();
+  }
+  node = spawn("node", ["index.js"], {
+    stdio: "inherit"
+  });
+  node.on("close", function(code) {
+    if(code === 8) {
+      gulp.log("Error detected, waiting for changes...");
     }
   });
 });
@@ -54,4 +69,6 @@ gulp.task("clean", function(cb) {
   del(["build"], cb);
 });
 
-gulp.task("default", ["javascript", "browser-sync"], function() {});
+gulp.task("default", ["javascript", "server", "browser-sync"], function() {
+  gulp.watch("index.js", ["server", browserSync.reload]);
+});

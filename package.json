@@ -5,6 +5,7 @@
   "description": "An ECS Game Engine in Html5/Javascript",
   "author": "Rémy Peru",
   "dependencies": {
+    "express": "^4.13.0",
     "howler": "^1.1.26",
     "keymaster": "^1.6.2",
     "node-uuid": "^1.4.3",
