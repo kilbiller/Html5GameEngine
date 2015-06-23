@@ -3,30 +3,42 @@ var browserify = require("browserify");
 var browserSync = require("browser-sync");
 var del = require("del");
 var babelify = require("babelify");
-var fs = require("fs");
+var uglify = require("gulp-uglify");
+var source = require("vinyl-source-stream");
+var buffer = require("vinyl-buffer");
+var gutil = require("gulp-util");
+var sourcemaps = require("gulp-sourcemaps");
+var watchify = require("watchify");
+
+var b = watchify(browserify({
+  entries: "./src/index.js",
+  debug: true,
+  cache: {},
+  packageCache: {}
+}));
+b.transform(babelify);
 
 gulp.task("javascript", function() {
-  if(!fs.existsSync("./build")) {
-    fs.mkdirSync("./build");
+  function rebundle() {
+    return b.bundle()
+      .pipe(source("game.js"))
+      .pipe(buffer())
+      /*.pipe(sourcemaps.init({
+        loadMaps: true
+      }))
+      .pipe(uglify())
+      .pipe(sourcemaps.write("./"))*/
+      .on("error", gutil.log)
+      .pipe(gulp.dest("./build/"))
+      .pipe(browserSync.reload({
+        stream: true,
+        once: true
+      }));
   }
 
-  var file = fs.createWriteStream("./build/game.js");
-  file.on("finish", function() {
-    browserSync.reload();
-  });
+  b.on("update", rebundle);
 
-  browserify({
-      debug: true
-    })
-    .transform(babelify)
-    .require("./src/index.js", {
-      entry: true
-    })
-    .bundle()
-    .on("error", function(err) {
-      console.log("Error: " + err.message);
-    })
-    .pipe(file);
+  return rebundle();
 });
 
 gulp.task("browser-sync", ["javascript"], function() {
@@ -42,6 +54,4 @@ gulp.task("clean", function(cb) {
   del(["build"], cb);
 });
 
-gulp.task("default", ["browser-sync"], function() {
-  gulp.watch(["src/*.js", "src/*/*.js"], ["javascript"]);
-});
+gulp.task("default", ["javascript", "browser-sync"], function() {});
