@@ -83,8 +83,8 @@ gulp.task("default", ["javascript", "server", "browser-sync"], function() {
   gulp.watch("index.js", ["server", browserSync.reload]);
 });
 
-gulp.task("set-production", function() {
+gulp.task("production", function() {
   config.production = true;
 });
 
-gulp.task("production", ["set-production", "javascript", "server"]);
+gulp.task("build", ["production", "javascript"]);
