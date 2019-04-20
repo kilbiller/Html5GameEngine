@@ -5,24 +5,24 @@
   "description": "An ECS Game Engine in Html5/Javascript",
   "author": "Rémy Peru",
   "dependencies": {
-    "express": "^4.13.0",
-    "howler": "^1.1.26",
-    "keymaster": "^1.6.2",
-    "node-uuid": "^1.4.3",
-    "pixi.js": "^3.0.6",
-    "stats-js": "^1.0.0-alpha1"
+    "express": "4.13.0",
+    "howler": "1.1.26",
+    "keymaster": "1.6.2",
+    "node-uuid": "1.4.3",
+    "pixi.js": "3.0.6",
+    "stats-js": "1.0.0-alpha1"
   },
   "devDependencies": {
-    "babelify": "^6.1.2",
-    "browser-sync": "^2.7.12",
-    "browserify": "^10.2.4",
-    "del": "^1.2.0",
-    "gulp": "^3.9.0",
-    "gulp-sourcemaps": "^1.5.2",
-    "gulp-uglify": "^1.2.0",
-    "gulp-util": "^3.0.6",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.2.2"
+    "babelify": "6.1.2",
+    "browser-sync": "2.7.12",
+    "browserify": "10.2.4",
+    "del": "1.2.0",
+    "gulp": "3.9.0",
+    "gulp-sourcemaps": "1.5.2",
+    "gulp-uglify": "1.2.0",
+    "gulp-util": "3.0.6",
+    "vinyl-buffer": "1.0.0",
+    "vinyl-source-stream": "1.1.0",
+    "watchify": "3.2.2"
   }
 }
