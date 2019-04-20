@@ -1,8 +1,5 @@
 import PIXI from "pixi.js";
-import {
-  Howl
-}
-from "howler";
+import { Howl } from "howler";
 
 //TODO: redo the whole thing
 
@@ -30,7 +27,7 @@ export default class AssetManager {
     let self = this;
     let promise = new Promise(function(resolve, reject) {
       let sound = new Howl({
-        urls: [path],
+        src: [path],
         onload: () => resolve(),
         onerror: () => reject()
       });
@@ -94,6 +91,11 @@ export default class AssetManager {
 
   loadAll() {
     PIXI.loader.load();
-    return Promise.all([this.loadImages(), this.loadSounds(), this.loadJsons(), this.loadFonts()]);
+    return Promise.all([
+      this.loadImages(),
+      this.loadSounds(),
+      this.loadJsons(),
+      this.loadFonts()
+    ]);
   }
 }

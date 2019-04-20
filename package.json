@@ -1,28 +1,27 @@
 {
-  "name": "Html5GameEngine",
+  "name": "html5gameengine",
   "private": true,
   "version": "0.0.1",
   "description": "An ECS Game Engine in Html5/Javascript",
   "author": "Rémy Peru",
   "dependencies": {
-    "express": "4.13.0",
-    "howler": "1.1.26",
-    "keymaster": "1.6.2",
-    "node-uuid": "1.4.3",
-    "pixi.js": "3.0.6",
-    "stats-js": "1.0.0-alpha1"
+    "express": "^4.13.0",
+    "howler": "^2.1.2",
+    "keymaster": "^1.6.2",
+    "node-uuid": "^1.4.8",
+    "pixi.js": "4.0.3",
+    "stats-js": "^1.0.0"
   },
   "devDependencies": {
-    "babelify": "6.1.2",
-    "browser-sync": "2.7.12",
-    "browserify": "10.2.4",
-    "del": "1.2.0",
-    "gulp": "3.9.0",
-    "gulp-sourcemaps": "1.5.2",
-    "gulp-uglify": "1.2.0",
-    "gulp-util": "3.0.6",
-    "vinyl-buffer": "1.0.0",
-    "vinyl-source-stream": "1.1.0",
-    "watchify": "3.2.2"
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "babelify": "^10.0.0",
+    "browser-sync": "^2.26.3",
+    "browserify": "^16.2.3",
+    "del": "^4.1.0",
+    "gulp": "^4.0.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.1"
   }
 }
