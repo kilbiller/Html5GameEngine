@@ -1,4 +1,4 @@
-import PIXI from "pixi.js";
+import * as PIXI from "pixi.js";
 import Rectangle from "./Rectangle";
 
 export default class Tile {
@@ -11,9 +11,14 @@ export default class Tile {
     this.sprite.zOrder = zOrder;
     this.isSolid = false;
 
-    if(collidables[id]) {
+    if (collidables[id]) {
       this.isSolid = true;
-      this.bounds = new Rectangle(x + collidables[id].x, y + collidables[id].y, collidables[id].width, collidables[id].height);
+      this.bounds = new Rectangle(
+        x + collidables[id].x,
+        y + collidables[id].y,
+        collidables[id].width,
+        collidables[id].height
+      );
       this.sprite.zOrder = this.bounds.Bottom;
     }
   }

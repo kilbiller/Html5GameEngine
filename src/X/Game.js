@@ -1,7 +1,7 @@
 import Time from "./Time";
 import AssetManager from "./AssetManager";
 import Mouse from "./Mouse";
-import PIXI from "pixi.js";
+import * as PIXI from "pixi.js";
 import StateManager from "./StateManager";
 import Stats from "stats-js";
 import EventList from "./EventList";
